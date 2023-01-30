@@ -1,0 +1,364 @@
+{
+  "lists": [
+    {
+      "id": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+      "title": "Backlog",
+      "cards": [
+        {
+          "id": "fca9ae1f-c1ee-4a2e-8f05-203ecfd35900",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a user, I can select and configure tools in a toolbar, so I can quickly adapt the tools and see what tool is active.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [
+            {
+              "id": "37e2f6d1-15b6-47ee-b6a6-6141f51274c8",
+              "title": "Create overall App Layout",
+              "checked": false
+            },
+            {
+              "id": "2a816368-afba-4361-a586-9168093c1990",
+              "title": "Create a toolbar container",
+              "checked": false
+            },
+            {
+              "id": "5e746421-51eb-47d0-a57f-4b2bfef44fa1",
+              "title": "Create a tool template (UI)",
+              "checked": false
+            },
+            {
+              "id": "b8e7cca3-25cc-4d9d-bb33-50f085050798",
+              "title": "Create a tool template (code)",
+              "checked": false
+            },
+            {
+              "id": "2c8a371b-d016-47ab-b491-c534a4e312e9",
+              "title": "Add pen, textmarker and move/zoom tool buttons",
+              "checked": false
+            },
+            {
+              "id": "0d87481e-2a2c-408b-acf1-bd8165c7c89e",
+              "title": "Switch/toggle tool when clicking on UI",
+              "checked": false
+            }
+          ],
+          "comments": []
+        },
+        {
+          "id": "978046bd-b347-49a5-acb8-0941e6f8260a",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a user I can write text using my stylus, so I do not need paper anymore.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [
+            {
+              "id": "10bc3b4c-71ef-4051-a0ef-20173fe9f8c9",
+              "title": "Add canvas to page",
+              "checked": false
+            },
+            {
+              "id": "f0c82fc9-c935-4d1f-9a9c-e3cdcb09535b",
+              "title": "Tile Rendering (movable and zoomable canvas)",
+              "checked": false
+            },
+            {
+              "id": "9c7b97d1-a465-4282-9851-8dd79e168fa3",
+              "title": "Add pen handler (drawing)",
+              "checked": false
+            },
+            {
+              "id": "23979b6c-e0c8-46dd-8f9f-c70cac2043d0",
+              "title": "Add touch handler (zoom and move)",
+              "checked": false
+            }
+          ],
+          "comments": []
+        },
+        {
+          "id": "9ce08fdb-a08f-4f7f-895f-e14a4e79a852",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a user without pen I can write text using my keyboard, so I do not need a pen everywhere.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [
+            {
+              "id": "e4bdedd0-20cf-482c-ba2c-ef91b93eb9a5",
+              "title": "Add a text tool button",
+              "checked": false
+            },
+            {
+              "id": "ec9e9a57-c0d4-4487-9c13-5a9532029a87",
+              "title": "Implement rendering of text",
+              "checked": false
+            },
+            {
+              "id": "d642ddd0-0337-4ea3-9290-4225f18d77a0",
+              "title": "Implement typing and editing of text",
+              "checked": false
+            },
+            {
+              "id": "644443b2-e10c-467f-ace6-8c299000716d",
+              "title": "Implement resizing of text",
+              "checked": false
+            },
+            {
+              "id": "69541cd5-84cf-4a62-ade5-18ad418fe52c",
+              "title": "Implement aligning of text",
+              "checked": false
+            }
+          ],
+          "comments": []
+        },
+        {
+          "id": "2f9208ae-4c8a-44bf-8f6a-9e52443957b9",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a user I can highlight using my stylus, so I do not need paper anymore.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "f82b3580-d7bf-4dab-9c50-0d2b479b7d21",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a user without pen I can highlight text using my mouse, so I do not need a pen everywhere.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "76affefa-49f0-4d8e-baf2-ba9ba98ec6d4",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a user I can see a page with all my scratch pads (from local storage), so I can quickly jot down notes.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [
+            {
+              "id": "4773b9c4-dcef-4e2b-b7dc-b809d3c81c0b",
+              "title": "Create a page",
+              "checked": false
+            },
+            {
+              "id": "a9d3d4d6-9f96-44e0-958c-007142ebc58c",
+              "title": "Show a list of notes",
+              "checked": false
+            },
+            {
+              "id": "4eb53e4b-d30f-4450-9f54-fca13709f1f2",
+              "title": "Render mini preview for note",
+              "checked": false
+            },
+            {
+              "id": "f7c5f6a4-0ade-491f-91c7-fa435615c126",
+              "title": "A new button to create a new note",
+              "checked": false
+            }
+          ],
+          "comments": []
+        },
+        {
+          "id": "bfbd68b4-1e76-4b12-af15-5e24c84c765f",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a note taker, I can select stylus and textmarker as well as color, so I can highlight and write to structure my notes better.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "716c86c8-225e-4c2d-b247-bccda597eea1",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a graph drawer, I can move elements around, so that I can rearrange & make space to add things.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "36bd3415-5b60-4e93-9527-4ddb3a28c1be",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a researcher, I can annotate pdfs, so that I do not need to print them or use another app.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "14db00c8-7538-4792-aea4-a640f74e36e5",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a notetaker, I can insert empty pages (even in a pdf), to have space for my notes.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "fe21ccf1-d8d0-40dd-afd4-5f9f8f42dec5",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a user, I can export to pdf, so I can share notes offline or use them as bg of other notes.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "3869ac48-41fb-4d32-9f98-cdde0c3e4540",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a user, I can search for any text (even stylus) within notes, so I can find important passages.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "610aa126-f7bf-40a8-8961-7ca9ffc33695",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a project manager, I can add sticky notes / rectangles & move them, so I can have kanban.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "57486400-5422-45c5-bd63-5ff3ffa3b1f0",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a project manager, I want a kanban bg, so I do not need to draw a board myself every time.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "da8fa792-2077-43a9-8c35-b10c1cf32ba4",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a researcher, I can add links to other notes into a note, so that I can connect my research.",
+          "description": "",
+          "labels": [
+            {
+              "id": "82095c0f-a614-407f-a83b-b42693774296",
+              "title": "EXTERNAL",
+              "color": "#eb5a46"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "ee9ab51c-85fb-4a45-a4dc-bd47c5848e53",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a project manager I can share individual documents as read only, for my team to read them.",
+          "description": "",
+          "labels": [
+            {
+              "id": "82095c0f-a614-407f-a83b-b42693774296",
+              "title": "EXTERNAL",
+              "color": "#eb5a46"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "d07f55af-4b17-4f89-b546-fc862b20731f",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a project manager, I can share individual docs as read-write, so my team can colaborate on it.",
+          "description": "",
+          "labels": [
+            {
+              "id": "82095c0f-a614-407f-a83b-b42693774296",
+              "title": "EXTERNAL",
+              "color": "#eb5a46"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "a1a2dc84-01a8-4cc6-a31f-a3e43d30bf08",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a researcher, I can see incoming links (from other notes) to current, to understand connections.",
+          "description": "",
+          "labels": [
+            {
+              "id": "82095c0f-a614-407f-a83b-b42693774296",
+              "title": "EXTERNAL",
+              "color": "#eb5a46"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        }
+      ]
+    },
+    {
+      "id": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
+      "title": "To Do",
+      "cards": []
+    },
+    {
+      "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",
+      "title": "Doing",
+      "cards": []
+    },
+    {
+      "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
+      "title": "Done",
+      "cards": []
+    }
+  ],
+  "archive": {
+    "lists": [],
+    "cards": []
+  },
+  "settings": {
+    "labels": [
+      {
+        "id": "82095c0f-a614-407f-a83b-b42693774296",
+        "title": "EXTERNAL",
+        "color": "#eb5a46"
+      },
+      {
+        "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+        "title": "MVP",
+        "color": "#0079bf"
+      }
+    ]
+  }
+}
