@@ -1,0 +1,11 @@
+#page_preview {
+    position: absolute;
+    top: 2.5em;
+    left: 0;
+    bottom: 0;
+    width: 10em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: var(--accent-bg-color);
+    color: var(--accent-font-color);
+}

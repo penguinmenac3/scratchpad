@@ -1,4 +1,6 @@
-export function setupCounter(element: HTMLButtonElement) {
+import './toolbar.css'
+
+export function setupToolbar(element: HTMLDivElement) {
   let counter = 0
   const setCounter = (count: number) => {
     counter = count

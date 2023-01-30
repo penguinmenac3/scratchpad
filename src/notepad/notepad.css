@@ -1,0 +1,15 @@
+#notepad {
+    position: absolute;
+    top: 2.5em;
+    left: 10em;
+    bottom: 0;
+    right: 0;
+    overflow-x: hiden;
+    overflow-y: hiden;
+    background-color: var(--debug);
+    color: var(--accent-font-color);
+}
+
+canvas {
+    background-color: var(--bg-color);
+}

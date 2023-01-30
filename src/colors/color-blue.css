@@ -1,0 +1,25 @@
+:root {
+    --white: #ffffff;
+    --bg-color: #ffffff;
+    --canvas-bg-color: #ffffff;
+    --bg-color-hover: #d3d3d3;
+    --bg-color-2: #f4f4f4;
+    --font-color: #333333;
+    --font-color-hover: #444444;
+    --accent-bg-color: #162850;
+    --accent-bg-color-2: #4a5e85;
+    --accent-bg-color-hover: #2d4477;
+    --danger-bg-color: #862626;
+    --danger-bg-color-hover: #ff3333;
+    --accent-font-color: #f5f5f5;
+    --accent-font-color-hover: #ffffff;
+    --accent-font-color-highlight: #f8c24c;
+    --accent-font-color-highlight-hover: #ffd477;
+    --invisible: #ff00bb;
+    --debug: #e100ff;
+    --scrollbarBG: #162850;
+    --thumbBG: #4a5e85;
+    --radius: 0.3em;
+    --radius-large: 0.5em;
+    --radius-round: 9999em;
+}

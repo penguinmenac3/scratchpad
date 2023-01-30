@@ -5,52 +5,6 @@
       "title": "Backlog",
       "cards": [
         {
-          "id": "fca9ae1f-c1ee-4a2e-8f05-203ecfd35900",
-          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
-          "title": "As a user, I can select and configure tools in a toolbar, so I can quickly adapt the tools and see what tool is active.",
-          "description": "",
-          "labels": [
-            {
-              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
-              "title": "MVP",
-              "color": "#0079bf"
-            }
-          ],
-          "checkboxes": [
-            {
-              "id": "37e2f6d1-15b6-47ee-b6a6-6141f51274c8",
-              "title": "Create overall App Layout",
-              "checked": false
-            },
-            {
-              "id": "2a816368-afba-4361-a586-9168093c1990",
-              "title": "Create a toolbar container",
-              "checked": false
-            },
-            {
-              "id": "5e746421-51eb-47d0-a57f-4b2bfef44fa1",
-              "title": "Create a tool template (UI)",
-              "checked": false
-            },
-            {
-              "id": "b8e7cca3-25cc-4d9d-bb33-50f085050798",
-              "title": "Create a tool template (code)",
-              "checked": false
-            },
-            {
-              "id": "2c8a371b-d016-47ab-b491-c534a4e312e9",
-              "title": "Add pen, textmarker and move/zoom tool buttons",
-              "checked": false
-            },
-            {
-              "id": "0d87481e-2a2c-408b-acf1-bd8165c7c89e",
-              "title": "Switch/toggle tool when clicking on UI",
-              "checked": false
-            }
-          ],
-          "comments": []
-        },
-        {
           "id": "978046bd-b347-49a5-acb8-0941e6f8260a",
           "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
           "title": "As a user I can write text using my stylus, so I do not need paper anymore.",
@@ -330,7 +284,54 @@
     {
       "id": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
       "title": "To Do",
-      "cards": []
+      "cards": [
+        {
+          "id": "fca9ae1f-c1ee-4a2e-8f05-203ecfd35900",
+          "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
+          "title": "As a user, I can select and configure tools in a toolbar, so I can quickly adapt the tools and see what tool is active.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [
+            {
+              "id": "37e2f6d1-15b6-47ee-b6a6-6141f51274c8",
+              "title": "Create overall App Layout",
+              "checked": true
+            },
+            {
+              "id": "2a816368-afba-4361-a586-9168093c1990",
+              "title": "Create a toolbar container",
+              "checked": true
+            },
+            {
+              "id": "5e746421-51eb-47d0-a57f-4b2bfef44fa1",
+              "title": "Create a tool template (UI)",
+              "checked": false
+            },
+            {
+              "id": "b8e7cca3-25cc-4d9d-bb33-50f085050798",
+              "title": "Create a tool template (code)",
+              "checked": false
+            },
+            {
+              "id": "2c8a371b-d016-47ab-b491-c534a4e312e9",
+              "title": "Add pen, textmarker and move/zoom tool buttons",
+              "checked": false
+            },
+            {
+              "id": "0d87481e-2a2c-408b-acf1-bd8165c7c89e",
+              "title": "Switch/toggle tool when clicking on UI",
+              "checked": false
+            }
+          ],
+          "comments": []
+        }
+      ]
     },
     {
       "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",

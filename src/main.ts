@@ -1,23 +1,18 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import { setupCounter } from './counter'
+import './colors/color-blue.css'
+import './main.css'
+import { setupToolbar } from './toolbar/toolbar'
+import { setupPagePreview } from './page_preview/page_preview'
+import { setupNotepad } from './notepad/notepad'
+
+let SCRATCHPAD_LOGO = '<img src="/favicon.ico" class="logo" alt="ScratchPad logo" />'
+
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
+  <div id="toolbar"></div>
+  <div id="page_preview"></div>
+  <div id="notepad"></div>
 `
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+setupToolbar(document.querySelector<HTMLDivElement>('#toolbar')!)
+setupPagePreview(document.querySelector<HTMLDivElement>('#page_preview')!)
+setupNotepad(document.querySelector<HTMLDivElement>('#notepad')!)
