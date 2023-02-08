@@ -10,6 +10,11 @@
     color: var(--accent-font-color);
 }
 
+.full-width {
+    left: 0 !important;
+    right: 0 !important;
+}
+
 canvas {
     background-color: var(--bg-color);
 }

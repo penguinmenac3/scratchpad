@@ -9,3 +9,7 @@
     background-color: var(--accent-bg-color);
     color: var(--accent-font-color);
 }
+
+.no-width {
+    width: 0em !important;
+}
