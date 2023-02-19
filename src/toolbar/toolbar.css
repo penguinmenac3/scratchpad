@@ -1,9 +1,13 @@
-#toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 0.5em;
-    background-color: var(--accent-bg-color);
-    color: var(--accent-font-color);
+.tool {
+    display: inline-block;
+    border-radius: 0.2em;
+    width: 2.4em;
+    height: 2.4em;
+    overflow: hidden;
+    margin: 0.1em;
+    padding: 0.2em;
+}
+
+.tool:hover {
+    background-color: var(--accent-bg-color-hover);
 }
