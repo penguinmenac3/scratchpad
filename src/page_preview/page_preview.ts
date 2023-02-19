@@ -1,3 +1,4 @@
+import { Event, Eventbus } from "../eventbus"
 import "./page_preview.css"
 
 
@@ -10,14 +11,16 @@ export class PagePreview {
     }
     mainDiv.addEventListener('click', () => setCounter(counter + 1))
     setCounter(0)
+    Eventbus.register("toolbar/change", this.toggleVisibility.bind(this))
   }
 
-  public toggleVisibility() {
-    if (this.mainDiv.classList.contains("no-width")) {
-      this.mainDiv.classList.remove("no-width")
-    } else {
-      this.mainDiv.classList.add("no-width")
+  private toggleVisibility(topic: string, event: Event) {
+    if (event.type == "string" && event.data == "togglePreview") {
+      if (this.mainDiv.classList.contains("no-width")) {
+        this.mainDiv.classList.remove("no-width")
+      } else {
+        this.mainDiv.classList.add("no-width")
+      }
     }
   }
 }
-  
