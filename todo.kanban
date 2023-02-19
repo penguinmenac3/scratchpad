@@ -5,83 +5,6 @@
       "title": "Backlog",
       "cards": [
         {
-          "id": "978046bd-b347-49a5-acb8-0941e6f8260a",
-          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
-          "title": "As a user I can write text using my stylus, so I do not need paper anymore.",
-          "description": "",
-          "labels": [
-            {
-              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
-              "title": "MVP",
-              "color": "#0079bf"
-            }
-          ],
-          "checkboxes": [
-            {
-              "id": "10bc3b4c-71ef-4051-a0ef-20173fe9f8c9",
-              "title": "Add canvas to page",
-              "checked": false
-            },
-            {
-              "id": "f0c82fc9-c935-4d1f-9a9c-e3cdcb09535b",
-              "title": "Tile Rendering (movable and zoomable canvas)",
-              "checked": false
-            },
-            {
-              "id": "9c7b97d1-a465-4282-9851-8dd79e168fa3",
-              "title": "Add pen handler (drawing)",
-              "checked": false
-            },
-            {
-              "id": "23979b6c-e0c8-46dd-8f9f-c70cac2043d0",
-              "title": "Add touch handler (zoom and move)",
-              "checked": false
-            }
-          ],
-          "comments": []
-        },
-        {
-          "id": "9ce08fdb-a08f-4f7f-895f-e14a4e79a852",
-          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
-          "title": "As a user without pen I can write text using my keyboard, so I do not need a pen everywhere.",
-          "description": "",
-          "labels": [
-            {
-              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
-              "title": "MVP",
-              "color": "#0079bf"
-            }
-          ],
-          "checkboxes": [
-            {
-              "id": "e4bdedd0-20cf-482c-ba2c-ef91b93eb9a5",
-              "title": "Add a text tool button",
-              "checked": false
-            },
-            {
-              "id": "ec9e9a57-c0d4-4487-9c13-5a9532029a87",
-              "title": "Implement rendering of text",
-              "checked": false
-            },
-            {
-              "id": "d642ddd0-0337-4ea3-9290-4225f18d77a0",
-              "title": "Implement typing and editing of text",
-              "checked": false
-            },
-            {
-              "id": "644443b2-e10c-467f-ace6-8c299000716d",
-              "title": "Implement resizing of text",
-              "checked": false
-            },
-            {
-              "id": "69541cd5-84cf-4a62-ade5-18ad418fe52c",
-              "title": "Implement aligning of text",
-              "checked": false
-            }
-          ],
-          "comments": []
-        },
-        {
           "id": "2f9208ae-4c8a-44bf-8f6a-9e52443957b9",
           "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
           "title": "As a user I can highlight using my stylus, so I do not need paper anymore.",
@@ -286,8 +209,91 @@
       "title": "To Do",
       "cards": [
         {
-          "id": "fca9ae1f-c1ee-4a2e-8f05-203ecfd35900",
+          "id": "9ce08fdb-a08f-4f7f-895f-e14a4e79a852",
           "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
+          "title": "As a user without pen I can write text using my keyboard, so I do not need a pen everywhere.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [
+            {
+              "id": "e4bdedd0-20cf-482c-ba2c-ef91b93eb9a5",
+              "title": "Add a text tool button",
+              "checked": false
+            },
+            {
+              "id": "ec9e9a57-c0d4-4487-9c13-5a9532029a87",
+              "title": "Implement rendering of text",
+              "checked": false
+            },
+            {
+              "id": "d642ddd0-0337-4ea3-9290-4225f18d77a0",
+              "title": "Implement typing and editing of text",
+              "checked": false
+            },
+            {
+              "id": "644443b2-e10c-467f-ace6-8c299000716d",
+              "title": "Implement resizing of text",
+              "checked": false
+            },
+            {
+              "id": "69541cd5-84cf-4a62-ade5-18ad418fe52c",
+              "title": "Implement aligning of text",
+              "checked": false
+            }
+          ],
+          "comments": []
+        }
+      ]
+    },
+    {
+      "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",
+      "title": "Doing",
+      "cards": [
+        {
+          "id": "978046bd-b347-49a5-acb8-0941e6f8260a",
+          "listId": "5fd4a638-7227-47f4-8e74-9147c045d30f",
+          "title": "As a user I can write text using my stylus, so I do not need paper anymore.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [
+            {
+              "id": "10bc3b4c-71ef-4051-a0ef-20173fe9f8c9",
+              "title": "Add canvas to page",
+              "checked": true
+            },
+            {
+              "id": "f0c82fc9-c935-4d1f-9a9c-e3cdcb09535b",
+              "title": "Tile Rendering (movable and zoomable canvas)",
+              "checked": false
+            },
+            {
+              "id": "9c7b97d1-a465-4282-9851-8dd79e168fa3",
+              "title": "Add pen handler (drawing)",
+              "checked": true
+            },
+            {
+              "id": "23979b6c-e0c8-46dd-8f9f-c70cac2043d0",
+              "title": "Add touch handler (zoom and move)",
+              "checked": false
+            }
+          ],
+          "comments": []
+        },
+        {
+          "id": "fca9ae1f-c1ee-4a2e-8f05-203ecfd35900",
+          "listId": "5fd4a638-7227-47f4-8e74-9147c045d30f",
           "title": "As a user, I can select and configure tools in a toolbar, so I can quickly adapt the tools and see what tool is active.",
           "description": "",
           "labels": [
@@ -311,12 +317,12 @@
             {
               "id": "5e746421-51eb-47d0-a57f-4b2bfef44fa1",
               "title": "Create a tool template (UI)",
-              "checked": false
+              "checked": true
             },
             {
               "id": "b8e7cca3-25cc-4d9d-bb33-50f085050798",
               "title": "Create a tool template (code)",
-              "checked": false
+              "checked": true
             },
             {
               "id": "2c8a371b-d016-47ab-b491-c534a4e312e9",
@@ -332,11 +338,6 @@
           "comments": []
         }
       ]
-    },
-    {
-      "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",
-      "title": "Doing",
-      "cards": []
     },
     {
       "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
