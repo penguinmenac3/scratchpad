@@ -9,13 +9,17 @@ export class Stroke implements Renderable {
     render(element: RenderableData): Sprite {
         let width = element.bbox_xyxy[2] - element.bbox_xyxy[0]
         let height = element.bbox_xyxy[3] - element.bbox_xyxy[1]
-        let canvas = new OffscreenCanvas(width, height)
+        //let canvas = new OffscreenCanvas(width, height)
+        let canvas = document.createElement("canvas")
+        canvas.width = width
+        canvas.height = height
         let ctx = canvas.getContext("2d")!
+        ctx.clearRect(0,0, width, height)
         ctx.beginPath()
         let first: boolean = true
         for (let pt of element.data) {
-            let x = pt[0] - element.bbox_xyxy[0]
-            let y = pt[1] - element.bbox_xyxy[0]
+            let x = pt[0]
+            let y = pt[1]
             if (first) {
                 ctx.moveTo(x, y)
                 first = false
@@ -26,24 +30,23 @@ export class Stroke implements Renderable {
         }
         ctx.stroke()
         ctx.closePath()
-        throw new Error("Method not implemented.");
-        // TODO figure out how to render in a texture that is reusable later.
-        return canvas.transferToImageBitmap()
+        return canvas
+        //return ctx.getImageData(0,0,canvas.width, canvas.height)
     }
 
-    onStart(liveCanvas: Sprite, x: number, y: number): void {
+    onStart(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
         liveCanvas.beginPath()
         liveCanvas.moveTo(x,y)
         this.points = [[x, y]]
     }
 
-    onMove(liveCanvas: Sprite, x: number, y: number): void {
+    onMove(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
         liveCanvas.lineTo(x, y)
         liveCanvas.stroke()
         this.points.push([x, y])
     }
 
-    onEnd(liveCanvas: Sprite, x: number, y: number): void {
+    onEnd(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
         liveCanvas.lineTo(x, y)
         liveCanvas.stroke()
         liveCanvas.closePath()
@@ -55,6 +58,10 @@ export class Stroke implements Renderable {
             maxx = Math.max(maxx, pt[0])
             maxy = Math.max(maxy, pt[1])
         }
+        minx -= 5
+        miny -= 5
+        maxx += 5
+        maxy += 5
         let normalizedPoints = []
         for (let pt of this.points) {
             normalizedPoints.push([pt[0]-minx, pt[1]-miny])
@@ -62,6 +69,7 @@ export class Stroke implements Renderable {
         let element: RenderableData = {
             uuid: uuidv4(),
             type: "Stroke",
+            layer: "10",
             bbox_xyxy: [minx, miny, maxx, maxy],
             data: normalizedPoints
         }
