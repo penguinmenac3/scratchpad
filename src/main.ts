@@ -7,23 +7,22 @@ import { Notepad } from './notepad/notepad'
 let SCRATCHPAD_LOGO = '<img src="/favicon.ico" class="logo" alt="ScratchPad logo" />'
 
 
+function createElement(type: string, attribute: any) {
+  let element = document.createElement("div")
+  for (var key in attribute) {
+    element.setAttribute(key, attribute[key]);
+  }
+  return element
+}
+
 function main() {
-  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div id="toolbar"></div>
-  <div id="page_preview"></div>
-  <div id="notepad"></div>
-`
-  let pagePreview = new PagePreview(
-    document.querySelector<HTMLDivElement>('#page_preview')!
-  )
-
-  let notepad = new Notepad(
-    document.querySelector<HTMLDivElement>('#notepad')!
-  )
-
-  let toolbar = new Toolbar(
-    document.querySelector<HTMLDivElement>('#toolbar')!
-  )
+  let app = document.querySelector<HTMLDivElement>('#app')!
+  let pagePreview = new PagePreview(createElement("div", {"id": "page_preview"}))
+  let notepad = new Notepad(createElement("div", {"id": "notepad"}))
+  let toolbar = new Toolbar(createElement("div", {"id": "toolbar"}))
+  app.appendChild(toolbar.mainDiv)
+  app.appendChild(pagePreview.mainDiv)
+  app.appendChild(notepad.mainDiv)
 }
 
 main()

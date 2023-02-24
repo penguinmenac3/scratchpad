@@ -19,9 +19,9 @@ export class Notepad {
     private offset = [0.0, 0.0]
 
     constructor(
-            private mainDiv: HTMLDivElement) {
-        this.mainDiv.innerHTML = `<canvas id="canvas" />`
-        this.canvas = document.querySelector<HTMLCanvasElement>('#canvas')!
+            public mainDiv: HTMLDivElement) {
+        this.canvas = document.createElement("canvas")
+        this.mainDiv.appendChild(this.canvas)
         this.context = this.canvas.getContext("2d")!
         
         window.onresize = this.resizeHandler.bind(this)

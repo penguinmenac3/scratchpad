@@ -3,7 +3,7 @@ import "./page_preview.css"
 
 
 export class PagePreview {
-  constructor(private mainDiv: HTMLDivElement) {
+  constructor(public mainDiv: HTMLDivElement) {
     let counter = 0
     const setCounter = (count: number) => {
       counter = count
