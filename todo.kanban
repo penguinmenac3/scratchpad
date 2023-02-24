@@ -254,46 +254,15 @@
     {
       "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",
       "title": "Doing",
+      "cards": []
+    },
+    {
+      "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
+      "title": "Done",
       "cards": [
         {
-          "id": "978046bd-b347-49a5-acb8-0941e6f8260a",
-          "listId": "5fd4a638-7227-47f4-8e74-9147c045d30f",
-          "title": "As a user I can write text using my stylus, so I do not need paper anymore.",
-          "description": "",
-          "labels": [
-            {
-              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
-              "title": "MVP",
-              "color": "#0079bf"
-            }
-          ],
-          "checkboxes": [
-            {
-              "id": "10bc3b4c-71ef-4051-a0ef-20173fe9f8c9",
-              "title": "Add canvas to page",
-              "checked": true
-            },
-            {
-              "id": "f0c82fc9-c935-4d1f-9a9c-e3cdcb09535b",
-              "title": "Tile Rendering (movable and zoomable canvas)",
-              "checked": false
-            },
-            {
-              "id": "9c7b97d1-a465-4282-9851-8dd79e168fa3",
-              "title": "Add pen handler (drawing)",
-              "checked": true
-            },
-            {
-              "id": "23979b6c-e0c8-46dd-8f9f-c70cac2043d0",
-              "title": "Add touch handler (zoom and move)",
-              "checked": false
-            }
-          ],
-          "comments": []
-        },
-        {
           "id": "fca9ae1f-c1ee-4a2e-8f05-203ecfd35900",
-          "listId": "5fd4a638-7227-47f4-8e74-9147c045d30f",
+          "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
           "title": "As a user, I can select and configure tools in a toolbar, so I can quickly adapt the tools and see what tool is active.",
           "description": "",
           "labels": [
@@ -327,22 +296,43 @@
             {
               "id": "2c8a371b-d016-47ab-b491-c534a4e312e9",
               "title": "Add pen, textmarker and move/zoom tool buttons",
-              "checked": false
+              "checked": true
             },
             {
               "id": "0d87481e-2a2c-408b-acf1-bd8165c7c89e",
               "title": "Switch/toggle tool when clicking on UI",
-              "checked": false
+              "checked": true
+            }
+          ],
+          "comments": []
+        },
+        {
+          "id": "978046bd-b347-49a5-acb8-0941e6f8260a",
+          "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
+          "title": "As a user I can write text using my stylus, so I do not need paper anymore.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [
+            {
+              "id": "10bc3b4c-71ef-4051-a0ef-20173fe9f8c9",
+              "title": "Add canvas to page",
+              "checked": true
+            },
+            {
+              "id": "9c7b97d1-a465-4282-9851-8dd79e168fa3",
+              "title": "Add pen handler (drawing)",
+              "checked": true
             }
           ],
           "comments": []
         }
       ]
-    },
-    {
-      "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
-      "title": "Done",
-      "cards": []
     }
   ],
   "archive": {
