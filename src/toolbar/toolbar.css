@@ -5,15 +5,22 @@
     width: 1em;
     height: 1em;
     overflow: hidden;
-    margin: 0.1em;
+    float: left;
+    margin: 0.05em;
     padding: 0.15em;
+    border: 2px solid var(--accent-bg-color);
 }
 
 .tool:hover {
+    border: 2px solid var(--accent-bg-color-hover);
+}
+
+.selected-tool {
     background-color: var(--accent-bg-color-hover);
 }
 
 .spacer {
+    float: left;
     color: var(--accent-bg-color-hover);
     display: inline-block;
     border-radius: 0.2em;
