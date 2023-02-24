@@ -16,6 +16,7 @@ export class Notepad {
     private canvas: HTMLCanvasElement
     private context: CanvasRenderingContext2D
     private activeTool: string = "Stroke"
+    private isDown: boolean = false
     private offset = [0.0, 0.0]
 
     constructor(
@@ -25,7 +26,6 @@ export class Notepad {
         this.context = this.canvas.getContext("2d")!
         
         window.onresize = this.resizeHandler.bind(this)
-        this.resizeHandler()
         window.setTimeout(this.resizeHandler.bind(this), 100)
 
         Eventbus.register("toolbar/change", this.onToolbarChange.bind(this))
@@ -34,33 +34,28 @@ export class Notepad {
         Eventbus.register("render/redraw", this.redraw.bind(this))
 
         this.canvas.addEventListener('touchstart', function(ev: TouchEvent) {ev.preventDefault();}, false);
-        this.canvas.addEventListener('pointerdown', this.pointerdown.bind(this), false);
+        this.canvas.addEventListener('pointerdown', this.pointermove.bind(this), false);
         this.canvas.addEventListener('pointermove', this.pointermove.bind(this), false);
-        this.canvas.addEventListener('pointerup',   this.pointerup.bind(this), false);
+        this.canvas.addEventListener('pointerup',   this.pointermove.bind(this), false);
     }
 
-    private pointerdown(ev: PointerEvent) {
-        if (ev.pointerType == "mouse" || ev.pointerType == "pen") {
-            let rect = this.canvas.getBoundingClientRect()
-            let x = ev.x + this.offset[0] - rect.left
-            let y = ev.y + this.offset[1] - rect.top
-            Notepad.renderers.get(this.activeTool)?.onStart(this.context, x, y)
-        }
-    }
     private pointermove(ev: PointerEvent) {
-        if (ev.pressure > 0.0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
-            let rect = this.canvas.getBoundingClientRect()
-            let x = ev.x + this.offset[0] - rect.left
-            let y = ev.y + this.offset[1] - rect.top
-            Notepad.renderers.get(this.activeTool)?.onMove(this.context, x, y)
+        let rect = this.canvas.getBoundingClientRect()
+        let x = ev.x + this.offset[0] - rect.left
+        let y = ev.y + this.offset[1] - rect.top
+        if (ev.pressure > 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
+            if (!this.isDown) {
+                Notepad.renderers.get(this.activeTool)?.onStart(this.context, x, y)
+                this.isDown = true
+            } else {
+                Notepad.renderers.get(this.activeTool)?.onMove(this.context, x, y)
+            }
         }
-    }
-    private pointerup(ev: PointerEvent) {
-        if (ev.pointerType == "mouse" || ev.pointerType == "pen") {
-            let rect = this.canvas.getBoundingClientRect()
-            let x = ev.x + this.offset[0] - rect.left
-            let y = ev.y + this.offset[1] - rect.top
-            Notepad.renderers.get(this.activeTool)?.onEnd(this.context, x, y)
+        if(ev.pressure <= 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
+            if (this.isDown) {
+                Notepad.renderers.get(this.activeTool)?.onEnd(this.context, x, y)
+                this.isDown = false
+            }
         }
     }
 

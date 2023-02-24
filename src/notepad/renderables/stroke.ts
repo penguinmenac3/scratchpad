@@ -37,7 +37,7 @@ export class Stroke implements Renderable {
     onStart(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
         liveCanvas.beginPath()
         liveCanvas.moveTo(x,y)
-        this.points = [[x, y]]
+        this.points.push([x, y])
     }
 
     onMove(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
@@ -66,6 +66,7 @@ export class Stroke implements Renderable {
         for (let pt of this.points) {
             normalizedPoints.push([pt[0]-minx, pt[1]-miny])
         }
+        this.points = []
         let element: RenderableData = {
             uuid: uuidv4(),
             type: "Stroke",
