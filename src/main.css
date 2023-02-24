@@ -33,14 +33,14 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3em;
+  height: 2.7em;
   background-color: var(--accent-bg-color);
   color: var(--accent-font-color);
 }
 
 #page_preview {
   position: absolute;
-  top: 3em;
+  top: 2.7em;
   left: 0;
   bottom: 0;
   width: 10em;
@@ -52,7 +52,7 @@ body {
 
 #notepad {
   position: absolute;
-  top: 3em;
+  top: 2.7em;
   left: 10em;
   bottom: 0;
   right: 0;

@@ -1,13 +1,26 @@
 .tool {
     display: inline-block;
     border-radius: 0.2em;
-    width: 2.4em;
-    height: 2.4em;
+    font-size: 1.8em;
+    width: 1em;
+    height: 1em;
     overflow: hidden;
     margin: 0.1em;
-    padding: 0.2em;
+    padding: 0.15em;
 }
 
 .tool:hover {
     background-color: var(--accent-bg-color-hover);
+}
+
+.spacer {
+    color: var(--accent-bg-color-hover);
+    display: inline-block;
+    border-radius: 0.2em;
+    font-size: 1.8em;
+    width: 0.2em;
+    height: 1em;
+    overflow: hidden;
+    margin: 0.1em;
+    padding: 0.15em;
 }
