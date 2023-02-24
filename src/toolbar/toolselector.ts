@@ -3,18 +3,23 @@ import { Eventbus } from "../eventbus"
 export class ToolSelector {
     protected element: HTMLDivElement
     
-    public constructor(protected toolbar: HTMLDivElement,  protected id: string)
+    public constructor(protected toolbar: HTMLDivElement,  protected id: string, innerHTML: string = "")
     {
-        toolbar.innerHTML += `<div class="tool" id="${id}"></div>`
-        this.element = document.querySelector<HTMLDivElement>(`#${id}`)!
-        this.setContent(`id_${id}`)
+        this.element = document.createElement("div")
+        toolbar.appendChild(this.element)
+        this.element.classList.add("tool")
+        if (innerHTML == "") {
+            innerHTML = `id_${id}`
+        }
+        this.setContent(innerHTML)
+        this.element.onclick = this.onClick.bind(this)
+    }
 
-        this.element.addEventListener('click', (e) => {
-            Eventbus.send("toolbar/change", {
-                "type": "string", "data": id, "allowNetwork": false
-            })
-            return true
+    protected onClick(event: MouseEvent) {
+        Eventbus.send("toolbar/change", {
+            "type": "string", "data": this.id, "allowNetwork": false
         })
+        return true
     }
 
     protected setContent(html: string) {
