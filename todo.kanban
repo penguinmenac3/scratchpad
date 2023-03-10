@@ -5,36 +5,6 @@
       "title": "Backlog",
       "cards": [
         {
-          "id": "2f9208ae-4c8a-44bf-8f6a-9e52443957b9",
-          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
-          "title": "As a user I can highlight using my stylus, so I do not need paper anymore.",
-          "description": "",
-          "labels": [
-            {
-              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
-              "title": "MVP",
-              "color": "#0079bf"
-            }
-          ],
-          "checkboxes": [],
-          "comments": []
-        },
-        {
-          "id": "f82b3580-d7bf-4dab-9c50-0d2b479b7d21",
-          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
-          "title": "As a user without pen I can highlight text using my mouse, so I do not need a pen everywhere.",
-          "description": "",
-          "labels": [
-            {
-              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
-              "title": "MVP",
-              "color": "#0079bf"
-            }
-          ],
-          "checkboxes": [],
-          "comments": []
-        },
-        {
           "id": "76affefa-49f0-4d8e-baf2-ba9ba98ec6d4",
           "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
           "title": "As a user I can see a page with all my scratch pads (from local storage), so I can quickly jot down notes.",
@@ -65,6 +35,36 @@
             {
               "id": "f7c5f6a4-0ade-491f-91c7-fa435615c126",
               "title": "A new button to create a new note",
+              "checked": false
+            }
+          ],
+          "comments": []
+        },
+        {
+          "id": "da3fd5ca-2baa-47b0-97da-75aec2d68c1d",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a reader, I can scroll along pages using the preview and zoom in on details I want to see more precise.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [
+            {
+              "id": "c7959c45-f82b-4b80-980b-b1c4ebb8e54b",
+              "title": "Click on page preview centers view on selected point.",
+              "checked": false
+            },
+            {
+              "id": "9b7ab43b-180e-4cd3-9a91-b24f993c520b",
+              "title": "Scrollwheel scrolls along page.",
+              "checked": false
+            },
+            {
+              "id": "8371bfaf-647e-48df-8521-60ecd04a64d4",
+              "title": "CTRL+Scrollwheel zooms in/out on mousecursor/last touchpoint",
+              "checked": false
+            },
+            {
+              "id": "6ac335c0-45cc-49d3-8935-7d11170bbf76",
+              "title": "A button +, [], - in the page overview menu allow to zoom in, fit width and zoom out.",
               "checked": false
             }
           ],
@@ -137,6 +137,24 @@
           "id": "57486400-5422-45c5-bd63-5ff3ffa3b1f0",
           "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
           "title": "As a project manager, I want a kanban bg, so I do not need to draw a board myself every time.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "90d9c22a-8f6f-4eb5-88ec-a0d498af0fef",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a researcher and teacher, I can write latex (formulas) and links (markdown style) in my text.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "6e534747-bd16-42f6-adc7-178925cb8d59",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "As a teacher and coder, I can write code like in a jupyter notebook and annotate it with my pen.",
           "description": "",
           "labels": [],
           "checkboxes": [],
@@ -260,6 +278,36 @@
       "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
       "title": "Done",
       "cards": [
+        {
+          "id": "f82b3580-d7bf-4dab-9c50-0d2b479b7d21",
+          "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
+          "title": "As a user without pen I can highlight text using my mouse, so I do not need a pen everywhere.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "2f9208ae-4c8a-44bf-8f6a-9e52443957b9",
+          "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
+          "title": "As a user I can highlight using my stylus, so I do not need paper anymore.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
         {
           "id": "fca9ae1f-c1ee-4a2e-8f05-203ecfd35900",
           "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
