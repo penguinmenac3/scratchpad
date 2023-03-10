@@ -1,13 +1,15 @@
 import { Event, Eventbus } from "../eventbus"
 import { RenderableData, Renderable, Sprite } from "./interfaces"
-import { Stroke } from "./renderables/stroke"
+import { Pen } from "./renderables/pen"
+import { Text } from "./renderables/text"
 import "./notepad.css"
 
 
 export class Notepad {
     private static renderers = new Map<string, Renderable>()
     static {
-        Notepad.register("Stroke", new Stroke())
+        Notepad.register("pen", new Pen("#000000FF", 1))
+        Notepad.register("marker", new Pen("#FFED1777", 20))
     }
     
     private layers = new Map<string, string[]>()  // layerid -> element.uuids
@@ -15,7 +17,7 @@ export class Notepad {
     private renderables = new Map<string, RenderableData>()
     private canvas: HTMLCanvasElement
     private context: CanvasRenderingContext2D
-    private activeTool: string = "Stroke"
+    private activeTool: string = "pen"
     private isDown: boolean = false
     private offset = [0.0, 0.0]
 
@@ -112,7 +114,7 @@ export class Notepad {
                 let renderable = this.renderables.get(uuid)!
                 let sprite = this.textures.get(uuid)!
                 let [x1,y1,x2,y2] = renderable.bbox_xyxy
-                this.context.drawImage(sprite, x1, y1)
+                this.context.drawImage(sprite, x1, y1, x2-x1, y2-y1)
             }
         }
     }
