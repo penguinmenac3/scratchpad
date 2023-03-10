@@ -126,6 +126,14 @@ export class Notepad {
             }
             this.resizeHandler()
             window.setTimeout(this.resizeHandler.bind(this), 100)
+        } else if (event.type == "string" && event.data.indexOf("tool_") == 0) {
+            let oldTool = this.activeTool
+            this.activeTool = event.data.substring(5)
+            if (oldTool != this.activeTool) {
+                Notepad.renderers.get(oldTool)?.deactivate()
+                Notepad.renderers.get(this.activeTool)?.activate()
+                console.log("Switched tool to: " + this.activeTool)
+            }
         }
     }
 

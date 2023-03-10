@@ -13,4 +13,6 @@ export interface Renderable {
     onStart(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
     onMove(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
     onEnd(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
+    activate(): void
+    deactivate(): void
 }
