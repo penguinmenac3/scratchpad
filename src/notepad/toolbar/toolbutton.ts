@@ -1,4 +1,4 @@
-import { Event, Eventbus } from "../eventbus"
+import { Event, Eventbus } from "../../eventbus"
 
 export class ToolButton {
     private static selectableTools: string[] = []

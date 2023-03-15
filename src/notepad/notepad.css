@@ -1,3 +1,46 @@
+#toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2.7em;
+    background-color: var(--accent-bg-color);
+    color: var(--accent-font-color);
+}
+
+#page_preview {
+    position: absolute;
+    top: 2.7em;
+    left: 0;
+    bottom: 0;
+    width: 10em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: var(--accent-bg-color);
+    color: var(--accent-font-color);
+}
+
+#notepad {
+    position: absolute;
+    top: 2.7em;
+    left: 10em;
+    bottom: 0;
+    right: 0;
+    overflow-x: hiden;
+    overflow-y: hiden;
+    background-color: var(--debug);
+    color: var(--accent-font-color);
+}
+
+.full-width {
+    left: 0 !important;
+    right: 0 !important;
+}
+
+.no-width {
+    width: 0em !important;
+}
+
 canvas {
-    background-color: rgba(255,255,255);
+    background-color: rgba(255, 255, 255);
 }

@@ -1,4 +1,4 @@
-import { Eventbus } from "../eventbus"
+import { Eventbus } from "../../eventbus"
 
 export class Spacer {
     protected element: HTMLDivElement

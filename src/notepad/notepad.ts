@@ -3,15 +3,20 @@ import { RenderableData, Renderable, Sprite } from "./interfaces"
 import { Pen } from "./renderables/pen"
 import { Text } from "./renderables/text"
 import "./notepad.css"
+import { Containered, createElement } from '../helpers'
+import { Toolbar } from './toolbar/toolbar'
+import { PagePreview } from './page_preview/page_preview'
 
 
-export class Notepad {
+export class Notepad extends Containered {
     private static renderers = new Map<string, Renderable>()
     static {
         Notepad.register("pen", new Pen("#000000FF", 1))
+        Notepad.register("text", new Text())
         Notepad.register("marker", new Pen("#FFED1777", 20))
     }
-    
+
+    private mainDiv: HTMLDivElement
     private layers = new Map<string, string[]>()  // layerid -> element.uuids
     private textures = new Map<string, Sprite>()
     private renderables = new Map<string, RenderableData>()
@@ -21,14 +26,18 @@ export class Notepad {
     private isDown: boolean = false
     private offset = [0.0, 0.0]
 
-    constructor(
-            public mainDiv: HTMLDivElement) {
+    constructor(parent: HTMLDivElement, isVisible: boolean = true) {
+        super(parent)
+        
+        new PagePreview(this.container)
+        new Toolbar(this.container)
+        this.mainDiv = createElement("div", {"id": "notepad"})
+        this.container.appendChild(this.mainDiv)
         this.canvas = document.createElement("canvas")
         this.mainDiv.appendChild(this.canvas)
         this.context = this.canvas.getContext("2d")!
         
         window.onresize = this.resizeHandler.bind(this)
-        window.setTimeout(this.resizeHandler.bind(this), 100)
 
         Eventbus.register("toolbar/change", this.onToolbarChange.bind(this))
         Eventbus.register("render/updateElement", this.onUpdateRenderElement.bind(this))
@@ -39,6 +48,8 @@ export class Notepad {
         this.canvas.addEventListener('pointerdown', this.pointermove.bind(this), false);
         this.canvas.addEventListener('pointermove', this.pointermove.bind(this), false);
         this.canvas.addEventListener('pointerup',   this.pointermove.bind(this), false);
+
+        this.setVisibility(isVisible)
     }
 
     private pointermove(ev: PointerEvent) {
@@ -139,7 +150,7 @@ export class Notepad {
         }
     }
 
-    private resizeHandler() {
+    protected resizeHandler() {
         this.canvas.width = this.mainDiv.clientWidth
         this.canvas.height = this.mainDiv.clientHeight
         this.redraw()
