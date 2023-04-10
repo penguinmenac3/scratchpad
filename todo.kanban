@@ -5,9 +5,9 @@
       "title": "Backlog",
       "cards": [
         {
-          "id": "76affefa-49f0-4d8e-baf2-ba9ba98ec6d4",
+          "id": "9ce08fdb-a08f-4f7f-895f-e14a4e79a852",
           "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
-          "title": "As a user I can see a page with all my scratch pads (from local storage), so I can quickly jot down notes.",
+          "title": "As a user without pen I can write text using my keyboard, so I do not need a pen everywhere.",
           "description": "",
           "labels": [
             {
@@ -18,62 +18,42 @@
           ],
           "checkboxes": [
             {
-              "id": "4773b9c4-dcef-4e2b-b7dc-b809d3c81c0b",
-              "title": "Create a page",
+              "id": "e4bdedd0-20cf-482c-ba2c-ef91b93eb9a5",
+              "title": "Add a text tool button",
               "checked": false
             },
             {
-              "id": "a9d3d4d6-9f96-44e0-958c-007142ebc58c",
-              "title": "Show a list of notes",
+              "id": "ec9e9a57-c0d4-4487-9c13-5a9532029a87",
+              "title": "Implement rendering of text",
               "checked": false
             },
             {
-              "id": "4eb53e4b-d30f-4450-9f54-fca13709f1f2",
-              "title": "Render mini preview for note",
+              "id": "d642ddd0-0337-4ea3-9290-4225f18d77a0",
+              "title": "Implement typing and editing of text",
               "checked": false
             },
             {
-              "id": "f7c5f6a4-0ade-491f-91c7-fa435615c126",
-              "title": "A new button to create a new note",
+              "id": "644443b2-e10c-467f-ace6-8c299000716d",
+              "title": "Implement resizing of text",
+              "checked": false
+            },
+            {
+              "id": "69541cd5-84cf-4a62-ade5-18ad418fe52c",
+              "title": "Implement aligning of text",
               "checked": false
             }
           ],
-          "comments": []
-        },
-        {
-          "id": "da3fd5ca-2baa-47b0-97da-75aec2d68c1d",
-          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
-          "title": "As a reader, I can scroll along pages using the preview and zoom in on details I want to see more precise.",
-          "description": "",
-          "labels": [],
-          "checkboxes": [
+          "comments": [
             {
-              "id": "c7959c45-f82b-4b80-980b-b1c4ebb8e54b",
-              "title": "Click on page preview centers view on selected point.",
-              "checked": false
-            },
-            {
-              "id": "9b7ab43b-180e-4cd3-9a91-b24f993c520b",
-              "title": "Scrollwheel scrolls along page.",
-              "checked": false
-            },
-            {
-              "id": "8371bfaf-647e-48df-8521-60ecd04a64d4",
-              "title": "CTRL+Scrollwheel zooms in/out on mousecursor/last touchpoint",
-              "checked": false
-            },
-            {
-              "id": "6ac335c0-45cc-49d3-8935-7d11170bbf76",
-              "title": "A button +, [], - in the page overview menu allow to zoom in, fit width and zoom out.",
-              "checked": false
+              "id": "18eb9c95-ee92-4e3f-956f-1d2ce0f359c8",
+              "comment": "Maybe use an input element to achieve this? It handles the cursor and all kinds of edits. Question is how to synchronize it with the view though."
             }
-          ],
-          "comments": []
+          ]
         },
         {
-          "id": "bfbd68b4-1e76-4b12-af15-5e24c84c765f",
+          "id": "73b4cd26-5837-434d-be98-50d2a592afd6",
           "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
-          "title": "As a note taker, I can select stylus and textmarker as well as color, so I can highlight and write to structure my notes better.",
+          "title": "As a notetaker I can switch and select a background (grid, dot, blank), so I can write straight.",
           "description": "",
           "labels": [],
           "checkboxes": [],
@@ -95,7 +75,12 @@
           "description": "",
           "labels": [],
           "checkboxes": [],
-          "comments": []
+          "comments": [
+            {
+              "id": "d49e9f6b-7015-4237-8e94-c060a45ed52d",
+              "comment": "The scratchpad data should be stored as an appendix to the PDF in this case and the annotations should be drawn also ontop of the PDF so they can be viewed without scratchpad. Worst-case though, they are an appendix that is just viewable with scratchpad."
+            }
+          ]
         },
         {
           "id": "14db00c8-7538-4792-aea4-a640f74e36e5",
@@ -227,9 +212,33 @@
       "title": "To Do",
       "cards": [
         {
-          "id": "9ce08fdb-a08f-4f7f-895f-e14a4e79a852",
+          "id": "bfbd68b4-1e76-4b12-af15-5e24c84c765f",
           "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
-          "title": "As a user without pen I can write text using my keyboard, so I do not need a pen everywhere.",
+          "title": "As a note taker, I can select stylus and textmarker as well as color, so I can highlight and write to structure my notes better.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "9f5643db-d9ca-42b8-a11f-eb2cc44c8c38",
+          "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
+          "title": "As a user my notes are saved between sessions, so I can continue where I left of.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
+          "id": "76affefa-49f0-4d8e-baf2-ba9ba98ec6d4",
+          "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
+          "title": "As a user I can see a page with all my scratch pads (from local storage), so I can quickly jot down notes.",
           "description": "",
           "labels": [
             {
@@ -240,28 +249,53 @@
           ],
           "checkboxes": [
             {
-              "id": "e4bdedd0-20cf-482c-ba2c-ef91b93eb9a5",
-              "title": "Add a text tool button",
+              "id": "4773b9c4-dcef-4e2b-b7dc-b809d3c81c0b",
+              "title": "Create a page",
               "checked": false
             },
             {
-              "id": "ec9e9a57-c0d4-4487-9c13-5a9532029a87",
-              "title": "Implement rendering of text",
+              "id": "a9d3d4d6-9f96-44e0-958c-007142ebc58c",
+              "title": "Show a list of notes",
               "checked": false
             },
             {
-              "id": "d642ddd0-0337-4ea3-9290-4225f18d77a0",
-              "title": "Implement typing and editing of text",
+              "id": "4eb53e4b-d30f-4450-9f54-fca13709f1f2",
+              "title": "Render mini preview for note",
               "checked": false
             },
             {
-              "id": "644443b2-e10c-467f-ace6-8c299000716d",
-              "title": "Implement resizing of text",
+              "id": "f7c5f6a4-0ade-491f-91c7-fa435615c126",
+              "title": "A new button to create a new note",
+              "checked": false
+            }
+          ],
+          "comments": []
+        },
+        {
+          "id": "da3fd5ca-2baa-47b0-97da-75aec2d68c1d",
+          "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
+          "title": "As a reader, I can scroll along pages using the preview and zoom in on details I want to see more precise.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [
+            {
+              "id": "c7959c45-f82b-4b80-980b-b1c4ebb8e54b",
+              "title": "Click on page preview centers view on selected point.",
               "checked": false
             },
             {
-              "id": "69541cd5-84cf-4a62-ade5-18ad418fe52c",
-              "title": "Implement aligning of text",
+              "id": "9b7ab43b-180e-4cd3-9a91-b24f993c520b",
+              "title": "Scrollwheel scrolls along page.",
+              "checked": false
+            },
+            {
+              "id": "8371bfaf-647e-48df-8521-60ecd04a64d4",
+              "title": "CTRL+Scrollwheel zooms in/out on mousecursor/last touchpoint",
+              "checked": false
+            },
+            {
+              "id": "6ac335c0-45cc-49d3-8935-7d11170bbf76",
+              "title": "A button +, [], - in the page overview menu allow to zoom in, fit width and zoom out.",
               "checked": false
             }
           ],
