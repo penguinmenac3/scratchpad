@@ -15,7 +15,7 @@
     bottom: 0;
     width: 10em;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
     background-color: var(--accent-bg-color);
     color: var(--accent-font-color);
 }

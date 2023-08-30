@@ -1,13 +1,12 @@
 .tool {
     display: inline-block;
     border-radius: 0.2em;
-    font-size: 1.8em;
+    font-size: 1.5em;
+    float: left;
     width: 1em;
     height: 1em;
-    overflow: hidden;
-    float: left;
     margin: 0.05em;
-    padding: 0.15em;
+    padding: 0.25em;
     border: 2px solid var(--accent-bg-color);
 }
 
@@ -30,4 +29,30 @@
     overflow: hidden;
     margin: 0.1em;
     padding: 0.15em;
+}
+
+.toolPopup {
+    display: block;
+    position: absolute;
+    margin-top: 1.5em;
+    margin-left: -0.3em;
+    width: 10em;
+    height: 5em;
+    overflow: visible;
+    border-radius: var(--radius);
+    background-color: var(--bg-color);
+    z-index: 2;
+}
+
+.toolPopupGrayout {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--blackout);
+    z-index: 1;
 }
