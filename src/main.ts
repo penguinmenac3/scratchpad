@@ -1,13 +1,18 @@
 import './colors/color-blue.css'
 import './main.css'
-import { Notepad } from "./notepad/notepad"
+import { PageManager } from './webui/pagemanager'
+import { STRINGS, setupLanguage } from './language/default'
+import { Notepad } from './notepad/notepad'
 
-//let SCRATCHPAD_LOGO = '<img src="/favicon.ico" class="logo" alt="ScratchPad logo" />'
-
-function main() {
-  let app = document.querySelector<HTMLDivElement>('#app')!
-  let notepad = new Notepad(app, false)
-  notepad.setVisibility(true)
+async function main() {
+  setupLanguage()
+  document.getElementsByTagName("title")[0].innerHTML = STRINGS.APPNAME
+  new PageManager(
+    "notepad",
+    {
+      notepad: new Notepad(),
+    }
+  )
 }
 
 main()

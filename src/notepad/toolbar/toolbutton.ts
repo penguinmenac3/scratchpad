@@ -1,31 +1,27 @@
-import { Event, Eventbus } from "../../eventbus"
+import { Event, Eventbus } from "../../webui/eventbus"
+import { Module } from "../../webui/module"
 
-export class ToolButton {
+export class ToolButton extends Module<HTMLDivElement> {
     private static selectableTools: string[] = []
-    protected element: HTMLDivElement
     protected popup: ToolPopup | null = null
     
-    public constructor(protected toolbar: HTMLDivElement,  protected id: string, selectable: boolean, innerHTML: string = "", right: boolean = false)
+    public constructor(protected id: string, selectable: boolean, innerHTML: string = "", right: boolean = false)
     {
-        this.element = document.createElement("div")
-        toolbar.appendChild(this.element)
-        this.element.classList.add("tool")
+        super("div", innerHTML, "tool")
         if (right) {
-            this.element.style.float = "right"
+            this.htmlElement.style.float = "right"
         }
         if (selectable) {
             ToolButton.selectableTools.push(this.id)
         }
-        if (innerHTML == "") {
-            innerHTML = `id_${id}`
+        this.htmlElement.onclick = (_ev: MouseEvent) => {
+            this.onClick()
         }
-        this.setContent(innerHTML)
-        this.element.onclick = this.onClick.bind(this)
         Eventbus.register("toolbar/change", this.onSelectionChanged.bind(this))
     }
 
-    public onClick(_: MouseEvent | null = null) {
-        if (!this.element.classList.contains("selected-tool")){
+    public onClick() {
+        if (!this.hasClass("selected-tool")){
             Eventbus.send("toolbar/change", {
                 "type": "string", "data": this.id, "allowNetwork": false
             })
@@ -39,13 +35,9 @@ export class ToolButton {
         if (topic == "toolbar/change" && event.type == "string"){
             if (ToolButton.selectableTools.indexOf(event.data) == -1) return
             if (event.data == this.id) {
-                if (!this.element.classList.contains("selected-tool")){
-                    this.element.classList.add("selected-tool")
-                }
+                this.setClass("selected-tool")
             } else {
-                if (this.element.classList.contains("selected-tool")){
-                    this.element.classList.remove("selected-tool")
-                }
+                this.unsetClass("selected-tool")
             }
         }
         return
@@ -55,41 +47,31 @@ export class ToolButton {
         if (this.popup != null) {
             alert("CODING ERROR! Tool already has a popup attached!")
         }
-        this.element.appendChild(popup.element)
+        this.add(popup)
         this.popup = popup
-    }
-
-    protected setContent(html: string) {
-        this.element.innerHTML = html
     }
 }
 
 
-export class ToolPopup {
-    public element: HTMLDivElement
+export class ToolPopup extends Module<HTMLDivElement> {
     private grayOut: HTMLDivElement
-    private displayCache: string = ""
 
     public constructor() {
-        this.element = document.createElement("div")
-        this.element.classList.add("toolPopup")
+        super("div", "", "toolPopup")
         this.grayOut = document.createElement("div")
         this.grayOut.classList.add("toolPopupGrayout")
-        this.grayOut.onclick = () => {
-            this.hide()
-        }
+        this.grayOut.onclick = this.hide.bind(this)
         document.getElementById("global")!.appendChild(this.grayOut)
         this.hide()
     }
 
     public show() {
-        this.element.style.display = this.displayCache
+        super.show()
         this.grayOut.style.display = "block"
     }
 
     public hide() {
-        this.displayCache = this.element.style.display
-        this.element.style.display = "none"
+        super.hide()
         this.grayOut.style.display = "none"
     }
 }

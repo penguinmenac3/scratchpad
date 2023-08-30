@@ -1,29 +1,27 @@
-import { Event, Eventbus } from "../../eventbus"
 import "./page_preview.css"
-import { createElement } from '../../helpers'
+import { Event, Eventbus } from "../../webui/eventbus"
+import { Module } from "../../webui/module"
 
 
-export class PagePreview {
-  private mainDiv: HTMLDivElement
-  constructor(parent: HTMLDivElement) {
-    this.mainDiv = createElement("div", {"id": "page_preview"})
-    parent.appendChild(this.mainDiv)
+export class PagePreview extends Module<HTMLDivElement>{
+  constructor() {
+    super("div", "", "notepad-pagePreview")
     let counter = 0
     const setCounter = (count: number) => {
       counter = count
-      this.mainDiv.innerHTML = `count is ${counter}`
+      this.htmlElement.innerHTML = `count is ${counter}`
     }
-    this.mainDiv.addEventListener('click', () => setCounter(counter + 1))
+    this.htmlElement.onclick = (_ev: MouseEvent) => setCounter(counter + 1)
     setCounter(0)
     Eventbus.register("toolbar/change", this.toggleVisibility.bind(this))
   }
 
   private toggleVisibility(_topic: string, event: Event) {
     if (event.type == "string" && event.data == "togglePreview") {
-      if (this.mainDiv.classList.contains("no-width")) {
-        this.mainDiv.classList.remove("no-width")
+      if (this.isVisible()) {
+        this.hide()
       } else {
-        this.mainDiv.classList.add("no-width")
+        this.show()
       }
     }
   }

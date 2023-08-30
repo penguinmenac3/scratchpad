@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import { Eventbus } from "../../eventbus";
+import { Eventbus } from "../../webui/eventbus";
 import { RenderableData, Renderable, Sprite } from "../interfaces";
 
 

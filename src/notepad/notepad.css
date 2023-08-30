@@ -1,4 +1,4 @@
-#toolbar {
+.toolbar {
     position: absolute;
     top: 0;
     left: 0;
@@ -8,7 +8,7 @@
     color: var(--accent-font-color);
 }
 
-#page_preview {
+.notepad-pagePreview {
     position: absolute;
     top: 3.2em;
     left: 0;
@@ -20,7 +20,7 @@
     color: var(--accent-font-color);
 }
 
-#notepad {
+.notepad-canvasContainer {
     position: absolute;
     top: 3.2em;
     left: 10em;
@@ -32,15 +32,11 @@
     color: var(--accent-font-color);
 }
 
-.full-width {
+.notepad-canvasContainer-maximized {
     left: 0 !important;
     right: 0 !important;
 }
 
-.no-width {
-    width: 0em !important;
-}
-
-canvas {
+.notepad-canvasContainer canvas {
     background-color: rgba(255, 255, 255);
 }

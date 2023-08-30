@@ -1,8 +1,8 @@
-import { Containered } from '../helpers'
+import { Module } from '../webui/module'
 
 
-export class Overview extends Containered {
-    constructor(parent: HTMLDivElement) {
-        super(parent)
+export class Overview extends Module<HTMLDivElement> {
+    constructor() {
+        super("div")
     }
 }

@@ -1,14 +1,14 @@
-import { Event, Eventbus } from "../eventbus"
+import "./notepad.css"
+import { KWARGS, Module } from "../webui/module"
+import { Event, Eventbus } from "../webui/eventbus"
 import { RenderableData, Renderable, Sprite } from "./interfaces"
 import { Pen } from "./renderables/pen"
 import { Text } from "./renderables/text"
-import "./notepad.css"
-import { Containered, createElement } from '../helpers'
 import { Toolbar } from './toolbar/toolbar'
 import { PagePreview } from './page_preview/page_preview'
 
 
-export class Notepad extends Containered {
+export class Notepad extends Module<HTMLDivElement> {
     private static renderers = new Map<string, Renderable>()
     static {
         Notepad.register("pen", new Pen("#000000FF", 1))
@@ -16,7 +16,7 @@ export class Notepad extends Containered {
         Notepad.register("marker", new Pen("#FFED1777", 20))
     }
 
-    private mainDiv: HTMLDivElement
+    private canvasContainer: Module<HTMLDivElement>
     private layers = new Map<string, string[]>()  // layerid -> element.uuids
     private textures = new Map<string, Sprite>()
     private renderables = new Map<string, RenderableData>()
@@ -26,15 +26,14 @@ export class Notepad extends Containered {
     private isDown: boolean = false
     private offset = [0.0, 0.0]
 
-    constructor(parent: HTMLDivElement, isVisible: boolean = true) {
-        super(parent)
-        
-        new PagePreview(this.container)
-        new Toolbar(this.container)
-        this.mainDiv = createElement("div", {"id": "notepad"})
-        this.container.appendChild(this.mainDiv)
+    constructor() {
+        super("div")
+        this.add(new PagePreview())
+        this.add(new Toolbar())
+        this.canvasContainer = new Module<HTMLDivElement>("div", "", "notepad-canvasContainer")
+        this.add(this.canvasContainer)
         this.canvas = document.createElement("canvas")
-        this.mainDiv.appendChild(this.canvas)
+        this.canvasContainer.htmlElement.appendChild(this.canvas)
         this.context = this.canvas.getContext("2d")!
         
         window.onresize = this.resizeHandler.bind(this)
@@ -48,8 +47,10 @@ export class Notepad extends Containered {
         this.canvas.addEventListener('pointerdown', this.pointermove.bind(this), false);
         this.canvas.addEventListener('pointermove', this.pointermove.bind(this), false);
         this.canvas.addEventListener('pointerup',   this.pointermove.bind(this), false);
+    }
 
-        this.setVisibility(isVisible)
+    public update(_kwargs: KWARGS, _changedPage: boolean) {
+        window.setTimeout(this.resizeHandler.bind(this), 100)
     }
 
     private pointermove(ev: PointerEvent) {
@@ -132,10 +133,10 @@ export class Notepad extends Containered {
 
     private onToolbarChange(_topic: string, event: Event) {
         if (event.type == "string" && event.data == "togglePreview") {
-            if (this.mainDiv.classList.contains("full-width")) {
-                this.mainDiv.classList.remove("full-width")
+            if (this.canvasContainer.hasClass("notepad-canvasContainer-maximized")) {
+                this.canvasContainer.unsetClass("notepad-canvasContainer-maximized")
             } else {
-                this.mainDiv.classList.add("full-width")
+                this.canvasContainer.setClass("notepad-canvasContainer-maximized")
             }
             this.resizeHandler()
             window.setTimeout(this.resizeHandler.bind(this), 100)
@@ -151,8 +152,9 @@ export class Notepad extends Containered {
     }
 
     protected resizeHandler() {
-        this.canvas.width = this.mainDiv.clientWidth
-        this.canvas.height = this.mainDiv.clientHeight
+        this.canvas.width = this.canvasContainer.htmlElement.clientWidth
+        this.canvas.height = this.canvasContainer.htmlElement.clientHeight
         this.redraw()
+        console.log("resized")
     }
 }

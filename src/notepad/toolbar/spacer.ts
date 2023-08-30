@@ -1,17 +1,11 @@
-export class Spacer {
-    protected element: HTMLDivElement
-    
-    public constructor(protected toolbar: HTMLDivElement,  right: boolean = false)
-    {
-        this.element = document.createElement("div")
-        toolbar.appendChild(this.element)
-        this.element.classList.add("spacer")
-        if (right) {
-            this.element.style.float = "right"
-        }
-    }
+import { Module } from "../../webui/module"
 
-    protected setContent(html: string) {
-        this.element.innerHTML = html
+export class Spacer extends Module<HTMLDivElement> { 
+    public constructor(right: boolean = false)
+    {
+        super("div", "", "spacer")
+        if (right) {
+            this.htmlElement.style.float = "right"
+        }
     }
 }
