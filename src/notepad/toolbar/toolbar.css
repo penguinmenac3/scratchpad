@@ -5,7 +5,9 @@
     float: left;
     margin: 0.05em;
     padding: 0.4em;
+    padding-bottom: 0.3em;
     border: 2px solid var(--accent-bg-color);
+    fill: var(--bg-color);
 }
 
 .tool:hover {
