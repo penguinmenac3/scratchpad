@@ -4,8 +4,9 @@
     left: 0;
     right: 0;
     height: 3.2em;
-    background-color: var(--accent-bg-color);
-    color: var(--accent-font-color);
+    background-color: var(--accent-1-bg);
+    color: var(--accent-1-fg);
+    fill: var(--accent-1-fg);
 }
 
 .notepad-pagePreview {
@@ -16,8 +17,9 @@
     width: 10em;
     overflow-x: hidden;
     overflow-y: hidden;
-    background-color: var(--accent-bg-color);
-    color: var(--accent-font-color);
+    background-color: var(--accent-1-bg);
+    color: var(--accent-1-fg);
+    fill: var(--accent-1-fg);
 }
 
 .notepad-canvasContainer {
@@ -28,8 +30,8 @@
     right: 0;
     overflow-x: hiden;
     overflow-y: hiden;
-    background-color: var(--debug);
-    color: var(--accent-font-color);
+    background-color: var(--bg-color-hover);
+    color: var(--font-color);
 }
 
 .notepad-canvasContainer-maximized {
@@ -38,5 +40,5 @@
 }
 
 .notepad-canvasContainer canvas {
-    background-color: rgba(255, 255, 255);
+    background-color: var(--bg-color);
 }

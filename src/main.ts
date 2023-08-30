@@ -1,4 +1,4 @@
-import './colors/color-blue.css'
+import './webui/colors.css'
 import './main.css'
 import { PageManager } from './webui/pagemanager'
 import { STRINGS, setupLanguage } from './language/default'

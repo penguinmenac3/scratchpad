@@ -6,21 +6,20 @@
     margin: 0.05em;
     padding: 0.4em;
     padding-bottom: 0.3em;
-    border: 2px solid var(--accent-bg-color);
-    fill: var(--bg-color);
+    border: 2px solid var(--accent-1-bg);
 }
 
 .tool:hover {
-    border: 2px solid var(--accent-bg-color-hover);
+    border: 2px solid var(--accent-1-bg-hover);
 }
 
 .selected-tool {
-    background-color: var(--accent-bg-color-hover);
+    background-color: var(--accent-1-bg-hover);
 }
 
 .spacer {
     float: left;
-    background-color: var(--accent-bg-color-hover);
+    background-color: var(--accent-1-bg-hover);
     display: inline-block;
     border-radius: var(--radius);
     width: 0.1em;
