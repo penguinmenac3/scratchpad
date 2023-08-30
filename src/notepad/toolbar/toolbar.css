@@ -1,12 +1,10 @@
 .tool {
     display: inline-block;
-    border-radius: 0.2em;
+    border-radius: var(--radius);
     font-size: 1.5em;
     float: left;
-    width: 1em;
-    height: 1em;
     margin: 0.05em;
-    padding: 0.25em;
+    padding: 0.4em;
     border: 2px solid var(--accent-bg-color);
 }
 
@@ -20,22 +18,22 @@
 
 .spacer {
     float: left;
-    color: var(--accent-bg-color-hover);
+    background-color: var(--accent-bg-color-hover);
     display: inline-block;
-    border-radius: 0.2em;
-    font-size: 1.8em;
-    width: 0.2em;
-    height: 1em;
+    border-radius: var(--radius);
+    width: 0.1em;
+    height: 2.7em;
     overflow: hidden;
-    margin: 0.1em;
-    padding: 0.15em;
+    margin: 0.05em;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
 }
 
 .toolPopup {
     display: block;
     position: absolute;
-    margin-top: 1.5em;
-    margin-left: -0.3em;
+    margin-top: 0.7em;
+    margin-left: -0.4em;
     width: 10em;
     height: 5em;
     overflow: visible;

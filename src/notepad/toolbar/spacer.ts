@@ -6,7 +6,6 @@ export class Spacer {
         this.element = document.createElement("div")
         toolbar.appendChild(this.element)
         this.element.classList.add("spacer")
-        this.setContent("|")
         if (right) {
             this.element.style.float = "right"
         }
