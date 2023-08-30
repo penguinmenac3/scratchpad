@@ -212,15 +212,6 @@
       "title": "To Do",
       "cards": [
         {
-          "id": "bfbd68b4-1e76-4b12-af15-5e24c84c765f",
-          "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
-          "title": "As a note taker, I can select stylus and textmarker as well as color, so I can highlight and write to structure my notes better.",
-          "description": "",
-          "labels": [],
-          "checkboxes": [],
-          "comments": []
-        },
-        {
           "id": "9f5643db-d9ca-42b8-a11f-eb2cc44c8c38",
           "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
           "title": "As a user my notes are saved between sessions, so I can continue where I left of.",
@@ -306,7 +297,17 @@
     {
       "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",
       "title": "Doing",
-      "cards": []
+      "cards": [
+        {
+          "id": "bfbd68b4-1e76-4b12-af15-5e24c84c765f",
+          "listId": "5fd4a638-7227-47f4-8e74-9147c045d30f",
+          "title": "As a note taker, I can select stylus and textmarker as well as color, so I can highlight and write to structure my notes better.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        }
+      ]
     },
     {
       "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
