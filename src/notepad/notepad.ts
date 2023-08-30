@@ -76,7 +76,7 @@ export class Notepad extends Containered {
         this.renderers.set(elementType, renderer)
     }
 
-    private onUpdateRenderElement(topic: string, event: Event) {
+    private onUpdateRenderElement(_topic: string, event: Event) {
         if (event.type == "RenderElement") {
             let renderElement: RenderableData = event.data
             let rendererName = renderElement.type
@@ -99,7 +99,7 @@ export class Notepad extends Containered {
         }
     }
 
-    private onDeleteRenderElement(topic: string, event: Event) {
+    private onDeleteRenderElement(_topic: string, event: Event) {
         if (event.type == "RenderElement") {
             let renderElement: RenderableData = event.data
             let rendererName = renderElement.type
@@ -118,9 +118,9 @@ export class Notepad extends Containered {
         }
     }
 
-    private redraw(topic: string = "", event: Event | null = null) {
+    private redraw(_topic: string = "", _event: Event | null = null) {
         this.context.clearRect(0,0,this.canvas.width, this.canvas.height)
-        for (let [layer, uuids] of this.layers) {
+        for (let [_layer, uuids] of this.layers) {
             for (let uuid of uuids) {
                 let renderable = this.renderables.get(uuid)!
                 let sprite = this.textures.get(uuid)!
@@ -130,7 +130,7 @@ export class Notepad extends Containered {
         }
     }
 
-    private onToolbarChange(topic: string, event: Event) {
+    private onToolbarChange(_topic: string, event: Event) {
         if (event.type == "string" && event.data == "togglePreview") {
             if (this.mainDiv.classList.contains("full-width")) {
                 this.mainDiv.classList.remove("full-width")

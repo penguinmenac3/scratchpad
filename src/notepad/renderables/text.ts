@@ -21,16 +21,16 @@ export class Text implements Renderable {
         return canvas
     }
 
-    onStart(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
+    onStart(_liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {
         // TODO Find if we clicked on existing text. If so go into select mode.
 
         // TODO register keyboard listeners or how to
         // actually handle input and the cursor and marking of text?
     }
 
-    onMove(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {}
+    onMove(_liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {}
 
-    onEnd(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
+    onEnd(_liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
         if (this.uuid == "") {
             this.uuid = uuidv4()
             this.position = [x, y]
@@ -40,6 +40,7 @@ export class Text implements Renderable {
     write(): void {
         if (this.text == "") return
         let [minx, miny] = this.position
+        let [maxx, maxy] = this.position // TODO compute
         let element: RenderableData = {
             uuid: this.uuid,
             type: "text",

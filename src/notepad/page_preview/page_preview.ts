@@ -18,7 +18,7 @@ export class PagePreview {
     Eventbus.register("toolbar/change", this.toggleVisibility.bind(this))
   }
 
-  private toggleVisibility(topic: string, event: Event) {
+  private toggleVisibility(_topic: string, event: Event) {
     if (event.type == "string" && event.data == "togglePreview") {
       if (this.mainDiv.classList.contains("no-width")) {
         this.mainDiv.classList.remove("no-width")
