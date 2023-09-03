@@ -11,9 +11,9 @@ import { PagePreview } from './page_preview/page_preview'
 export class Notepad extends Module<HTMLDivElement> {
     private static renderers = new Map<string, Renderable>()
     static {
-        Notepad.register("pen", new Pen("#000000FF", 1))
+        Notepad.register("pen", new Pen("base", 1, "FF"))
         Notepad.register("text", new Text())
-        Notepad.register("marker", new Pen("#FFED1777", 20))
+        Notepad.register("marker", new Pen("accent", 20, "77"))
     }
 
     private canvasContainer: Module<HTMLDivElement>
@@ -74,6 +74,7 @@ export class Notepad extends Module<HTMLDivElement> {
     }
 
     public static register(elementType: string, renderer: Renderable) {
+        renderer.setId(elementType)
         this.renderers.set(elementType, renderer)
     }
 

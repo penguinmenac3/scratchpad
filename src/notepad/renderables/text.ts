@@ -7,6 +7,7 @@ export class Text implements Renderable {
     private uuid: string = ""
     private text: string = ""
     private position: number[] = [0.0, 0.0]
+    private id: string = ""
 
     render(element: RenderableData): Sprite {
         let width = element.bbox_xyxy[2] - element.bbox_xyxy[0]
@@ -19,6 +20,10 @@ export class Text implements Renderable {
         ctx.clearRect(0,0, width, height)
         
         return canvas
+    }
+
+    public setId(id: string) {
+        this.id = id
     }
 
     onStart(_liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {

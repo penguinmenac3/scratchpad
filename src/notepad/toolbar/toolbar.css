@@ -30,12 +30,16 @@
 }
 
 .toolPopup {
-    display: block;
+    display: flex;
     position: absolute;
     margin-top: 0.7em;
     margin-left: -0.4em;
-    width: 10em;
-    height: 5em;
+    font-size: 0.667em;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 15em;
+    height: 8em;
     overflow: visible;
     border-radius: var(--radius);
     background-color: var(--color-base);

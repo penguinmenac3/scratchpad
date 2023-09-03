@@ -1,12 +1,33 @@
 import {v4 as uuidv4} from 'uuid';
-import { Eventbus } from "../../webui/eventbus";
+import { Event, Eventbus } from "../../webui/eventbus";
 import { RenderableData, Renderable, Sprite } from "../interfaces";
 
 
 export class Pen implements Renderable {
     private points: number[][] = []
+    private id: string = ""
 
-    constructor(private color: string, private lineWidth: number) {}
+    constructor(private color: string, private lineWidth: number, private transparency: string = "") {
+        Eventbus.register("toolbar/setting", this.onSettingChanged.bind(this))
+    }
+
+    public setId(id: string) {
+        this.id = id
+    }
+    
+    protected onSettingChanged(topic: string, event: Event): void {
+        if (topic == "toolbar/setting" && event.type == "setting"){
+            if (event.data.id == "tool_" + this.id) {
+                if (event.data.color) {
+                    this.color = event.data.color
+                }
+                if (event.data.size) {
+                    this.lineWidth = event.data.size
+                }
+            }
+        }
+        return
+    }
 
     render(element: RenderableData): Sprite {
         let width = element.bbox_xyxy[2] - element.bbox_xyxy[0]
@@ -17,7 +38,8 @@ export class Pen implements Renderable {
         canvas.height = height
         let ctx = canvas.getContext("2d")!
         ctx.clearRect(0,0, width, height)
-        ctx.strokeStyle = element.data[0]
+        let color = getComputedStyle(document.body).getPropertyValue('--color-' + element.data[0] + '-font');
+        ctx.strokeStyle = color + this.transparency
         ctx.lineWidth = element.data[1]
         ctx.beginPath()
         let first: boolean = true
@@ -39,7 +61,8 @@ export class Pen implements Renderable {
     }
 
     onStart(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
-        liveCanvas.strokeStyle = this.color
+        let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
+        liveCanvas.strokeStyle = color + this.transparency
         liveCanvas.lineWidth = this.lineWidth
         liveCanvas.beginPath()
         liveCanvas.moveTo(x,y)
@@ -48,7 +71,8 @@ export class Pen implements Renderable {
 
     onMove(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
         liveCanvas.lineTo(x, y)
-        liveCanvas.strokeStyle = this.color
+        let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
+        liveCanvas.strokeStyle = color + this.transparency
         liveCanvas.lineWidth = this.lineWidth
         liveCanvas.stroke()
         this.points.push([x, y])
@@ -56,7 +80,8 @@ export class Pen implements Renderable {
 
     onEnd(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
         liveCanvas.lineTo(x, y)
-        liveCanvas.strokeStyle = this.color
+        let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
+        liveCanvas.strokeStyle = color + this.transparency
         liveCanvas.lineWidth = this.lineWidth
         liveCanvas.stroke()
         liveCanvas.closePath()
@@ -79,7 +104,7 @@ export class Pen implements Renderable {
         this.points = []
         let element: RenderableData = {
             uuid: uuidv4(),
-            type: "pen",
+            type: this.id,
             layer: "10",
             bbox_xyxy: [minx, miny, maxx, maxy],
             data: [this.color, this.lineWidth, normalizedPoints]

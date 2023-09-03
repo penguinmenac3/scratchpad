@@ -8,7 +8,8 @@ export interface RenderableData {
 
 export type Sprite = CanvasImageSource  // TODO find what the type actualy is for a sprite. Renderers create sprites and the notepad desides when rerender must be done.
 
-export interface Renderable {    
+export interface Renderable {
+    setId(id: string): void
     render(element: RenderableData): Sprite
     onStart(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
     onMove(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
