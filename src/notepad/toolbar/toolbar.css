@@ -6,20 +6,19 @@
     margin: 0.05em;
     padding: 0.4em;
     padding-bottom: 0.3em;
-    border: 2px solid var(--accent-1-bg);
 }
 
 .tool:hover {
-    border: 2px solid var(--accent-1-bg-hover);
+    background-color: var(--color-brand-hover);
 }
 
 .selected-tool {
-    background-color: var(--accent-1-bg-hover);
+    background-color: var(--color-brand-selected);
 }
 
 .spacer {
     float: left;
-    background-color: var(--accent-1-bg-hover);
+    background-color: var(--color-brand-selected);
     display: inline-block;
     border-radius: var(--radius);
     width: 0.1em;
@@ -39,7 +38,7 @@
     height: 5em;
     overflow: visible;
     border-radius: var(--radius);
-    background-color: var(--bg-color);
+    background-color: var(--color-base);
     z-index: 2;
 }
 
@@ -52,6 +51,6 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--blackout);
+    background-color: var(--color-base-transparent-2);
     z-index: 1;
 }
