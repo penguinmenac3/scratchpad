@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import { Eventbus } from "../../webui/eventbus";
+import { Event, Eventbus } from "../../webui/eventbus";
 import { RenderableData, Renderable, Sprite } from "../interfaces";
 
 
@@ -8,6 +8,29 @@ export class Text implements Renderable {
     private text: string = ""
     private position: number[] = [0.0, 0.0]
     private id: string = ""
+
+    constructor(private color: string, private size: number) {
+        Eventbus.register("toolbar/setting", this.onSettingChanged.bind(this))
+    }
+
+    public setId(id: string) {
+        this.id = id
+    }
+    
+    protected onSettingChanged(topic: string, event: Event): void {
+        if (topic == "toolbar/setting" && event.type == "setting"){
+            if (event.data.id == "tool_" + this.id) {
+                if (event.data.color) {
+                    this.color = event.data.color
+                }
+                if (event.data.size) {
+                    this.size = event.data.size
+                }
+            }
+        }
+        return
+    }
+
 
     render(element: RenderableData): Sprite {
         let width = element.bbox_xyxy[2] - element.bbox_xyxy[0]
@@ -20,10 +43,6 @@ export class Text implements Renderable {
         ctx.clearRect(0,0, width, height)
         
         return canvas
-    }
-
-    public setId(id: string) {
-        this.id = id
     }
 
     onStart(_liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {
@@ -51,7 +70,8 @@ export class Text implements Renderable {
             type: "text",
             layer: "10",
             bbox_xyxy: [minx, miny, maxx, maxy],
-            data: this.text
+            data: [this.text, this.color, this.size],
+
         }
         Eventbus.send("render/updateElement", {
             "type": "RenderElement", "data": element, "allowNetwork": false

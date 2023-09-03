@@ -1,5 +1,5 @@
 import './toolbar.css'
-import { ToolButton, ToolColorSetting, ToolPopup, ToolSetting, ToolSizeSetting } from './toolbutton'
+import { ToolButton, ToolColorSetting, ToolPopup, ToolSizeSetting } from './toolbutton'
 import { Spacer } from './spacer'
 import { Module } from '../../webui/module'
 import { iconArrowLeft, iconErasor, iconMarker, iconPen, iconRectangle, iconRedo, iconSave, iconSelect, iconSplit, iconText, iconUndo } from './icons'

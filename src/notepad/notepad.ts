@@ -12,7 +12,7 @@ export class Notepad extends Module<HTMLDivElement> {
     private static renderers = new Map<string, Renderable>()
     static {
         Notepad.register("pen", new Pen("base", 1, "FF"))
-        Notepad.register("text", new Text())
+        Notepad.register("text", new Text("base", 12))
         Notepad.register("marker", new Pen("accent", 20, "77"))
     }
 
