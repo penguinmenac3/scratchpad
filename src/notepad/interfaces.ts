@@ -1,4 +1,8 @@
 // Specifications around a document
+export let LAYER_BG = "0"
+export let LAYER_IMAGE = "1"
+export let LAYER_MARKER = "2"
+export let LAYER_FG = "3"
 export interface PageElement {
     uuid: string
     type: string

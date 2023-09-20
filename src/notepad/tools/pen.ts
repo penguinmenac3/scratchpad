@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import { PageElement, Sprite, DocumentAPI } from "../interfaces";
+import { PageElement, Sprite, DocumentAPI, LAYER_FG } from "../interfaces";
 import { Module } from '../../webui/module';
 import { iconPen } from './toolbar/icons';
 import { ColorizableResizableTool } from './abstractTools';
@@ -88,7 +88,7 @@ export class Pen extends ColorizableResizableTool {
         documentAPI.addElements([{
             uuid: uuidv4(),
             type: this.id,
-            layer: "10",
+            layer: LAYER_FG,
             bbox_xyxy: [minx, miny, maxx, maxy],
             data: [this.color, this.lineWidth, normalizedPoints]
         }])

@@ -1,7 +1,7 @@
 import "./notepad.css"
 import { KWARGS, Module } from "../webui/module"
 import { Event, Eventbus } from "../webui/eventbus"
-import { PageElement, Tool, Sprite, DocumentAPI, Document } from "./interfaces"
+import { PageElement, Tool, Sprite, DocumentAPI, Document, LAYER_BG } from "./interfaces"
 import { Toolbar } from './tools/toolbar/toolbar'
 
 
@@ -107,7 +107,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
 
     private redraw() {
         this.context.clearRect(0,0,this.canvas.width, this.canvas.height)
-        for (let [_layer, uuids] of this.layers) {
+        let layers = Array.from( this.layers.keys())
+        layers = layers.sort()
+        for (let layer of layers) {
+            let uuids = this.layers.get(layer)!
             for (let uuid of uuids) {
                 let renderable = this.pageElements.get(uuid)!
                 let sprite = this.textures.get(uuid)!
