@@ -2,10 +2,9 @@ import "./notepad.css"
 import { KWARGS, Module } from "../webui/module"
 import { Event, Eventbus } from "../webui/eventbus"
 import { RenderableData, Renderable, Sprite } from "./interfaces"
-import { Pen } from "./renderables/pen"
-import { Text } from "./renderables/text"
+import { Pen } from "./tools/pen"
+import { Text } from "./tools/text"
 import { Toolbar } from './toolbar/toolbar'
-import { PagePreview } from './page_preview/page_preview'
 
 
 export class Notepad extends Module<HTMLDivElement> {
