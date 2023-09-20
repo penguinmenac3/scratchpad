@@ -9,34 +9,16 @@
     fill: var(--color-brand-c);
 }
 
-.notepad-pagePreview {
-    position: absolute;
-    top: 3.2em;
-    left: 0;
-    bottom: 0;
-    width: 10em;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    background-color: var(--color-brand);
-    color: var(--color-brand-c);
-    fill: var(--color-brand-c);
-}
-
 .notepad-canvasContainer {
     position: absolute;
     top: 3.2em;
-    left: 10em;
+    left: 0;
     bottom: 0;
     right: 0;
     overflow-x: hiden;
     overflow-y: hiden;
     background-color: var(--color-base-hover);
     color: var(--color-base-c);
-}
-
-.notepad-canvasContainer-maximized {
-    left: 0 !important;
-    right: 0 !important;
 }
 
 .notepad-canvasContainer canvas {

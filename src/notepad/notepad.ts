@@ -28,7 +28,6 @@ export class Notepad extends Module<HTMLDivElement> {
 
     constructor() {
         super("div")
-        this.add(new PagePreview())
         this.add(new Toolbar())
         this.canvasContainer = new Module<HTMLDivElement>("div", "", "notepad-canvasContainer")
         this.add(this.canvasContainer)
@@ -133,15 +132,7 @@ export class Notepad extends Module<HTMLDivElement> {
     }
 
     private onToolbarChange(_topic: string, event: Event) {
-        if (event.type == "string" && event.data == "togglePreview") {
-            if (this.canvasContainer.hasClass("notepad-canvasContainer-maximized")) {
-                this.canvasContainer.unsetClass("notepad-canvasContainer-maximized")
-            } else {
-                this.canvasContainer.setClass("notepad-canvasContainer-maximized")
-            }
-            this.resizeHandler()
-            window.setTimeout(this.resizeHandler.bind(this), 100)
-        } else if (event.type == "string" && event.data.indexOf("tool_") == 0) {
+        if (event.type == "string" && event.data.indexOf("tool_") == 0) {
             let oldTool = this.activeTool
             this.activeTool = event.data.substring(5)
             if (oldTool != this.activeTool) {

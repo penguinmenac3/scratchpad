@@ -10,8 +10,6 @@ export class Toolbar extends Module<HTMLDivElement> {
   public constructor() {
     super("div", "", "toolbar")
     this.add(new ToolButton("back", false, iconArrowLeft))
-    this.add(new ToolButton("togglePreview", false, iconSplit))
-    this.add(new ToolButton("save", false, iconSave))
     this.add(new Spacer())
     let pen = new ToolButton("tool_pen", true, iconPen)
     pen.onClick()
