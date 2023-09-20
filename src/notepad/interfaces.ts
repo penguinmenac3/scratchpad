@@ -1,5 +1,3 @@
-import { Module } from "../webui/module"
-
 // Specifications around a document
 export interface PageElement {
     uuid: string
@@ -13,7 +11,7 @@ export interface DocumentAPI {
     // Modify content of document
     addElements(element: PageElement[]): void
     modifyElements(element: PageElement[]): void
-    deleteElements(uuid: PageElement[]): void
+    deleteElements(element: PageElement[]): void
     // Get the documents to browse them (despite being modifiable do not modify direclty!)
     getDocument(): Document
 }

@@ -2,7 +2,6 @@ import { Event, Eventbus } from "../../webui/eventbus";
 import { DocumentAPI, PageElement, Sprite, Tool, } from "../interfaces";
 import { Module } from '../../webui/module';
 import { ToolButton, ToolColorSetting, ToolPopup, ToolSizeSetting } from './toolbar/toolbutton';
-import { iconPen } from './toolbar/icons';
 
 
 export abstract class StaticTool implements Tool {
