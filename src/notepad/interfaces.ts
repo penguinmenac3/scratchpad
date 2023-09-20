@@ -27,9 +27,9 @@ export interface Tool {
     // Render a page element into a sprite
     render(element: PageElement): Sprite
     // Handle user interaction with the canvas.
-    onStart(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
-    onMove(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
-    onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
+    onStart(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void
+    onMove(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void
+    onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void
     // When a tool is selected or deselected you might need to do some preparation.
     activate(): void
     deactivate(): void

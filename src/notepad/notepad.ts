@@ -14,8 +14,12 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
     private canvas: HTMLCanvasElement
     private context: CanvasRenderingContext2D
     private activeTool: string = "pen"
-    private isDown: boolean = false
+    private isMainDown: boolean = false
+    private isMoveDown: boolean = false
+    private isTouchAllowed: boolean = false
     private offset = [0.0, 0.0]
+    private scale = 1.0
+    private lastPos = [0.0, 0.0]
 
     constructor() {
         super("div")
@@ -43,20 +47,34 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
 
     private pointermove(ev: PointerEvent) {
         let rect = this.canvas.getBoundingClientRect()
-        let x = ev.x + this.offset[0] - rect.left
-        let y = ev.y + this.offset[1] - rect.top
-        if (ev.pressure > 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
-            if (!this.isDown) {
-                this.tools.get(this.activeTool)?.onStart(this, this.context, x, y)
-                this.isDown = true
+        let x = ev.x - rect.left - this.offset[0]
+        let y = ev.y - rect.top - this.offset[1]
+        if (!this.isMoveDown && ev.pressure > 0 && ((ev.pointerType == "mouse" && (ev.button == 0 || this.isMainDown)) || ev.pointerType == "pen")) {
+            if (!this.isMainDown) {
+                this.tools.get(this.activeTool)?.onStart(this, this.context, x, y, this.offset[0], this.offset[1], this.scale)
+                this.isMainDown = true
             } else {
-                this.tools.get(this.activeTool)?.onMove(this, this.context, x, y)
+                this.tools.get(this.activeTool)?.onMove(this, this.context, x, y, this.offset[0], this.offset[1], this.scale)
             }
         }
-        if(ev.pressure <= 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
-            if (this.isDown) {
-                this.tools.get(this.activeTool)?.onEnd(this, this.context, x, y)
-                this.isDown = false
+        if (!this.isMainDown && ev.pressure > 0 && ((ev.pointerType == "mouse" && (ev.button == 1 || this.isMoveDown)) || (ev.pointerType == "touch" && this.isTouchAllowed))) {
+            if (!this.isMoveDown) {
+                this.lastPos = [x, y]
+                this.isMoveDown = true
+            } else {
+                this.offset[0] += x - this.lastPos[0]
+                this.offset[1] += y - this.lastPos[1]
+                this.redraw()
+            }
+        }
+        else if (ev.pressure <= 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
+            if (this.isMainDown) {
+                this.tools.get(this.activeTool)?.onEnd(this, this.context, x, y, this.offset[0], this.offset[1], this.scale)
+                this.isMainDown = false
+            }
+            if (this.isMoveDown) {
+                // Do nothing
+                this.isMoveDown = false
             }
         }
     }
@@ -115,6 +133,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
                 let renderable = this.pageElements.get(uuid)!
                 let sprite = this.textures.get(uuid)!
                 let [x1,y1,x2,y2] = renderable.bbox_xyxy
+                x1 += this.offset[0]
+                y1 += this.offset[1]
+                x2 += this.offset[0]
+                y2 += this.offset[1]
                 this.context.drawImage(sprite, x1, y1, x2-x1, y2-y1)
             }
         }

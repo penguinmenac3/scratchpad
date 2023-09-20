@@ -43,17 +43,17 @@ export class Marker extends ColorizableResizableTool {
         //return ctx.getImageData(0,0,canvas.width, canvas.height)
     }
 
-    onStart(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
+    onStart(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
         liveCanvas.strokeStyle = color + this.transparency
         liveCanvas.lineWidth = this.lineWidth
         liveCanvas.beginPath()
-        liveCanvas.moveTo(x,y)
+        liveCanvas.moveTo(x + offsetX, y + offsetY)
         this.points.push([x, y])
     }
 
-    onMove(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
-        liveCanvas.lineTo(x, y)
+    onMove(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
+        liveCanvas.lineTo(x + offsetX, y + offsetY)
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
         liveCanvas.strokeStyle = color + this.transparency
         liveCanvas.lineWidth = this.lineWidth
@@ -61,8 +61,8 @@ export class Marker extends ColorizableResizableTool {
         this.points.push([x, y])
     }
 
-    onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {
-        liveCanvas.lineTo(x, y)
+    onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
+        liveCanvas.lineTo(x + offsetX, y + offsetY)
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
         liveCanvas.strokeStyle = color + this.transparency
         liveCanvas.lineWidth = this.lineWidth

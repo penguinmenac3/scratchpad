@@ -32,9 +32,9 @@ export abstract class StaticTool implements Tool {
         return canvas
     }
 
-    onStart(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {}
-    onMove(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {}
-    onEnd(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {}
+    onStart(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number, _offsetX: number, _offsetY: number, _scale: number): void {}
+    onMove(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number, _offsetX: number, _offsetY: number, _scale: number): void {}
+    onEnd(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number, _offsetX: number, _offsetY: number, _scale: number): void {}
     activate(): void {}
     deactivate(): void {}
 }
@@ -96,9 +96,9 @@ export abstract class ColorizableResizableTool implements Tool {
         return canvas
     }
 
-    onStart(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {}
-    onMove(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {}
-    onEnd(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number): void {}
+    onStart(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number, _offsetX: number, _offsetY: number, _scale: number): void {}
+    onMove(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number, _offsetX: number, _offsetY: number, _scale: number): void {}
+    onEnd(_documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, _y: number, _offsetX: number, _offsetY: number, _scale: number): void {}
     activate(): void {}
     deactivate(): void {}
 }
