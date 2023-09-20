@@ -1,6 +1,6 @@
-import { Event, Eventbus } from "../../webui/eventbus"
-import { Button } from "../../webui/form"
-import { Module } from "../../webui/module"
+import { Event, Eventbus } from "../../../webui/eventbus"
+import { Button } from "../../../webui/form"
+import { Module } from "../../../webui/module"
 
 export class ToolButton extends Module<HTMLDivElement> {
     private static selectableTools: string[] = []

@@ -1,19 +1,34 @@
-export interface RenderableData {
+import { Module } from "../webui/module"
+
+// Specifications around a document
+export interface PageElement {
     uuid: string
     type: string
     layer: string
     bbox_xyxy: number[]
     data: any
 }
+export type Document = Map<string, PageElement>  // uuid -> element
+export interface DocumentAPI {
+    // Modify content of document
+    addElements(element: PageElement[]): void
+    modifyElements(element: PageElement[]): void
+    deleteElements(uuid: PageElement[]): void
+    // Get the documents to browse them (despite being modifiable do not modify direclty!)
+    getDocument(): Document
+}
 
-export type Sprite = CanvasImageSource  // TODO find what the type actualy is for a sprite. Renderers create sprites and the notepad desides when rerender must be done.
-
-export interface Renderable {
-    setId(id: string): void
-    render(element: RenderableData): Sprite
-    onStart(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
-    onMove(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
-    onEnd(liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
+// Specifications around tools which generate or modify page elements
+export type Sprite = CanvasImageSource
+export interface Tool {
+    register(tools: Map<string, Tool>): void
+    // Render a page element into a sprite
+    render(element: PageElement): Sprite
+    // Handle user interaction with the canvas.
+    onStart(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
+    onMove(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
+    onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void
+    // When a tool is selected or deselected you might need to do some preparation.
     activate(): void
     deactivate(): void
 }

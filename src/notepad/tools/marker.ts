@@ -1,15 +1,15 @@
 import {v4 as uuidv4} from 'uuid';
 import { PageElement, Sprite, DocumentAPI } from "../interfaces";
 import { Module } from '../../webui/module';
-import { iconPen } from './toolbar/icons';
+import { iconMarker } from './toolbar/icons';
 import { ColorizableResizableTool } from './abstractTools';
 
 
-export class Pen extends ColorizableResizableTool {
+export class Marker extends ColorizableResizableTool {
     private points: number[][] = []
 
     constructor(toolbar: Module<HTMLDivElement>) {
-        super(toolbar, iconPen, "pen", "brand", 2, "FF", 2, 5, true)
+        super(toolbar, iconMarker, "marker", "accent", 20, "77", 20, 50)
     }
 
     render(element: PageElement): Sprite {

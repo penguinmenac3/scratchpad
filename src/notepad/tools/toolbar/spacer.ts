@@ -1,4 +1,4 @@
-import { Module } from "../../webui/module"
+import { Module } from "../../../webui/module"
 
 export class Spacer extends Module<HTMLDivElement> { 
     public constructor(right: boolean = false)

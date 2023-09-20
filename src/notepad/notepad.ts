@@ -1,24 +1,16 @@
 import "./notepad.css"
 import { KWARGS, Module } from "../webui/module"
 import { Event, Eventbus } from "../webui/eventbus"
-import { RenderableData, Renderable, Sprite } from "./interfaces"
-import { Pen } from "./tools/pen"
-import { Text } from "./tools/text"
-import { Toolbar } from './toolbar/toolbar'
+import { PageElement, Tool, Sprite, DocumentAPI, Document } from "./interfaces"
+import { Toolbar } from './tools/toolbar/toolbar'
 
 
-export class Notepad extends Module<HTMLDivElement> {
-    private static renderers = new Map<string, Renderable>()
-    static {
-        Notepad.register("pen", new Pen("base", 2, "FF"))
-        Notepad.register("text", new Text("base", 12))
-        Notepad.register("marker", new Pen("accent", 20, "77"))
-    }
-
+export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
+    private tools = new Map<string, Tool>()
     private canvasContainer: Module<HTMLDivElement>
     private layers = new Map<string, string[]>()  // layerid -> element.uuids
     private textures = new Map<string, Sprite>()
-    private renderables = new Map<string, RenderableData>()
+    private pageElements = new Map<string, PageElement>()
     private canvas: HTMLCanvasElement
     private context: CanvasRenderingContext2D
     private activeTool: string = "pen"
@@ -27,7 +19,8 @@ export class Notepad extends Module<HTMLDivElement> {
 
     constructor() {
         super("div")
-        this.add(new Toolbar())
+        this.add(new Toolbar(this.tools))
+        
         this.canvasContainer = new Module<HTMLDivElement>("div", "", "notepad-canvasContainer")
         this.add(this.canvasContainer)
         this.canvas = document.createElement("canvas")
@@ -37,9 +30,6 @@ export class Notepad extends Module<HTMLDivElement> {
         window.onresize = this.resizeHandler.bind(this)
 
         Eventbus.register("toolbar/change", this.onToolbarChange.bind(this))
-        Eventbus.register("render/updateElement", this.onUpdateRenderElement.bind(this))
-        Eventbus.register("render/deleteElement", this.onDeleteRenderElement.bind(this))
-        Eventbus.register("render/redraw", this.redraw.bind(this))
 
         this.canvas.addEventListener('touchstart', function(ev: TouchEvent) {ev.preventDefault();}, false);
         this.canvas.addEventListener('pointerdown', this.pointermove.bind(this), false);
@@ -57,72 +47,69 @@ export class Notepad extends Module<HTMLDivElement> {
         let y = ev.y + this.offset[1] - rect.top
         if (ev.pressure > 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
             if (!this.isDown) {
-                Notepad.renderers.get(this.activeTool)?.onStart(this.context, x, y)
+                this.tools.get(this.activeTool)?.onStart(this, this.context, x, y)
                 this.isDown = true
             } else {
-                Notepad.renderers.get(this.activeTool)?.onMove(this.context, x, y)
+                this.tools.get(this.activeTool)?.onMove(this, this.context, x, y)
             }
         }
         if(ev.pressure <= 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
             if (this.isDown) {
-                Notepad.renderers.get(this.activeTool)?.onEnd(this.context, x, y)
+                this.tools.get(this.activeTool)?.onEnd(this, this.context, x, y)
                 this.isDown = false
             }
         }
     }
 
-    public static register(elementType: string, renderer: Renderable) {
-        renderer.setId(elementType)
-        this.renderers.set(elementType, renderer)
+    getDocument(): Document {
+        return this.pageElements
     }
 
-    private onUpdateRenderElement(_topic: string, event: Event) {
-        if (event.type == "RenderElement") {
-            let renderElement: RenderableData = event.data
-            let rendererName = renderElement.type
-            if (!Notepad.renderers.has(rendererName)) {
-                alert("Unsupported renderer please let the dev know: " + rendererName)
+    addElements(elements: PageElement[]): void {
+        this.modifyElements(elements)
+    }
+
+    modifyElements(elements: PageElement[]): void {
+        for (let element of elements) {
+            let toolName = element.type
+            if (!this.tools.has(toolName)) {
+                alert("Unsupported tool please let the dev know: " + toolName)
             }
-            let renderer = Notepad.renderers.get(rendererName)!
-            let sprite = renderer.render(renderElement)
-            this.renderables.set(renderElement.uuid, renderElement)
-            this.textures.set(renderElement.uuid, sprite)
-            if (!this.layers.has(renderElement.layer)) {
-                this.layers.set(renderElement.layer, [])
+            let tool = this.tools.get(toolName)!
+            let sprite = tool.render(element)
+            this.pageElements.set(element.uuid, element)
+            this.textures.set(element.uuid, sprite)
+            if (!this.layers.has(element.layer)) {
+                this.layers.set(element.layer, [])
             }
-            let list = this.layers.get(renderElement.layer)!
-            if (list.indexOf(renderElement.uuid) == -1)
+            let list = this.layers.get(element.layer)!
+            if (list.indexOf(element.uuid) == -1)
             {
-                list.push(renderElement.uuid)
+                list.push(element.uuid)
             }
-            Eventbus.send("render/redraw", {type: "Redraw", data: null, allowNetwork: false})
         }
+        this.redraw()
     }
 
-    private onDeleteRenderElement(_topic: string, event: Event) {
-        if (event.type == "RenderElement") {
-            let renderElement: RenderableData = event.data
-            let rendererName = renderElement.type
-            if (!Notepad.renderers.has(rendererName)) {
-                alert("Unsupported renderer please let the dev know: " + rendererName)
-            }
-            this.renderables.delete(renderElement.uuid)
-            this.textures.delete(renderElement.uuid)
-            let list = this.layers.get(renderElement.layer)!
-            let idx = list.indexOf(renderElement.uuid)
+    deleteElements(elements: PageElement[]): void {
+        for (let element of elements) {
+            this.pageElements.delete(element.uuid)
+            this.textures.delete(element.uuid)
+            let list = this.layers.get(element.layer)!
+            let idx = list.indexOf(element.uuid)
             if (idx > -1)
             {
                 list.splice(idx, 1)
             }
-            Eventbus.send("render/redraw", {type: "Redraw", data: null, allowNetwork: false})
         }
+        this.redraw()
     }
 
-    private redraw(_topic: string = "", _event: Event | null = null) {
+    private redraw() {
         this.context.clearRect(0,0,this.canvas.width, this.canvas.height)
         for (let [_layer, uuids] of this.layers) {
             for (let uuid of uuids) {
-                let renderable = this.renderables.get(uuid)!
+                let renderable = this.pageElements.get(uuid)!
                 let sprite = this.textures.get(uuid)!
                 let [x1,y1,x2,y2] = renderable.bbox_xyxy
                 this.context.drawImage(sprite, x1, y1, x2-x1, y2-y1)
@@ -135,8 +122,8 @@ export class Notepad extends Module<HTMLDivElement> {
             let oldTool = this.activeTool
             this.activeTool = event.data.substring(5)
             if (oldTool != this.activeTool) {
-                Notepad.renderers.get(oldTool)?.deactivate()
-                Notepad.renderers.get(this.activeTool)?.activate()
+                this.tools.get(oldTool)?.deactivate()
+                this.tools.get(this.activeTool)?.activate()
                 console.log("Switched tool to: " + this.activeTool)
             }
         }
