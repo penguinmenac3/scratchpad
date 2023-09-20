@@ -2,7 +2,7 @@ import './toolbar.css'
 import { ToolButton, ToolColorSetting, ToolPopup, ToolSizeSetting } from './toolbutton'
 import { Spacer } from './spacer'
 import { Module } from '../../webui/module'
-import { iconArrowLeft, iconErasor, iconMarker, iconPen, iconRectangle, iconRedo, iconSave, iconSelect, iconSplit, iconText, iconUndo } from './icons'
+import { iconArrowLeft, iconErasor, iconImage, iconMarker, iconPen, iconRectangle, iconRedo, iconText, iconUndo, iconUpDown } from './icons'
 import { iconBars } from '../../webui/icons/icons'
 
 
@@ -34,9 +34,7 @@ export class Toolbar extends Module<HTMLDivElement> {
       new ToolSizeSetting("O", 40),
     ]))
     this.add(marker)
-    let erasor = new ToolButton("tool_erasor", true, iconErasor)
-    erasor.addPopup(new ToolPopup())
-    this.add(erasor)
+    this.add(new ToolButton("tool_erasor", true, iconErasor))
     let text = new ToolButton("tool_text", true, iconText)
     text.addPopup(new ToolPopup([
       new ToolColorSetting(iconText, "base", true),
@@ -44,17 +42,14 @@ export class Toolbar extends Module<HTMLDivElement> {
       new ToolColorSetting(iconText, "accent"),
       new ToolColorSetting(iconText, "good"),
       new ToolColorSetting(iconText, "bad"),
-      new ToolSizeSetting("Tv", 1),
-      new ToolSizeSetting("T^", 2),
+      new ToolSizeSetting("a", 1),
+      new ToolSizeSetting("A", 2),
     ]))
     this.add(text)
+    this.add(new ToolButton("tool_select", true, iconRectangle))
+    this.add(new ToolButton("tool_insertspace", true, iconUpDown))
+    this.add(new ToolButton("tool_image", false, iconImage))
     this.add(new Spacer())
-    let shape = new ToolButton("tool_shape", true, iconRectangle)
-    shape.addPopup(new ToolPopup())
-    this.add(shape)
-    let select = new ToolButton("tool_select", true, iconSelect)
-    select.addPopup(new ToolPopup())
-    this.add(select)
 
     this.add(new ToolButton("settings_document", false, iconBars, true))
     this.add(new Spacer(true))
