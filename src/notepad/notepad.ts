@@ -75,7 +75,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
                 this.redraw()
             }
         }
-        else if (ev.pressure <= 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen")) {
+        else if (ev.pressure <= 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen" || (ev.pointerType == "touch" && this.isTouchAllowed))) {
             if (this.isMainDown) {
                 this.tools.get(this.activeTool)?.onEnd(this, this.context, x, y, this.offset[0], this.offset[1], this.scale)
                 this.isMainDown = false
