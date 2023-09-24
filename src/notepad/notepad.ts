@@ -1,7 +1,7 @@
 import "./notepad.css"
 import { KWARGS, Module } from "../webui/module"
 import { Event, Eventbus } from "../webui/eventbus"
-import { PageElement, Tool, Sprite, DocumentAPI, Document, LAYER_BG } from "./interfaces"
+import { PageElement, Tool, Sprite, DocumentAPI, Document } from "./interfaces"
 import { Toolbar } from './tools/toolbar/toolbar'
 
 
