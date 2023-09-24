@@ -47,8 +47,8 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
 
     private pointermove(ev: PointerEvent) {
         let rect = this.canvas.getBoundingClientRect()
-        let x = ev.x - rect.left - this.offset[0]
-        let y = ev.y - rect.top - this.offset[1]
+        let x = ev.x - rect.left + this.offset[0]
+        let y = ev.y - rect.top + this.offset[1]
         if (!this.isMoveDown && ev.pressure > 0 && ((ev.pointerType == "mouse" && (ev.button == 0 || this.isMainDown)) || ev.pointerType == "pen")) {
             if (!this.isMainDown) {
                 this.tools.get(this.activeTool)?.onStart(this, this.context, x, y, this.offset[0], this.offset[1], this.scale)
@@ -62,8 +62,12 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
                 this.lastPos = [x, y]
                 this.isMoveDown = true
             } else {
-                this.offset[0] += x - this.lastPos[0]
-                this.offset[1] += y - this.lastPos[1]
+                this.offset[0] += this.lastPos[0] - x
+                this.offset[1] += this.lastPos[1] - y
+                this.offset[0] = Math.min(this.offset[0], 1000 - this.canvas.width)
+                this.offset[0] = Math.max(this.offset[0], 0)
+                this.offset[1] = Math.max(this.offset[1], 0)
+                console.log(this.offset)
                 this.redraw()
             }
         }
@@ -133,10 +137,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
                 let renderable = this.pageElements.get(uuid)!
                 let sprite = this.textures.get(uuid)!
                 let [x1,y1,x2,y2] = renderable.bbox_xyxy
-                x1 += this.offset[0]
-                y1 += this.offset[1]
-                x2 += this.offset[0]
-                y2 += this.offset[1]
+                x1 -= this.offset[0]
+                y1 -= this.offset[1]
+                x2 -= this.offset[0]
+                y2 -= this.offset[1]
                 this.context.drawImage(sprite, x1, y1, x2-x1, y2-y1)
             }
         }
