@@ -19,6 +19,10 @@
     background-color: var(--color-brand-selected);
 }
 
+.selected-tool-good {
+    fill: var(--color-good);
+}
+
 .spacer {
     float: left;
     background-color: var(--color-brand-selected);

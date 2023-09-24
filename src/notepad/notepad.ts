@@ -163,6 +163,8 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
                 this.tools.get(this.activeTool)?.activate()
                 console.log("Switched tool to: " + this.activeTool)
             }
+        } else if (event.type == "string" && event.data == "touchToggle") {
+            this.isTouchAllowed = !this.isTouchAllowed
         }
     }
 

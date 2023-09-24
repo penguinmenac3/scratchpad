@@ -2,7 +2,7 @@ import './toolbar.css'
 import { ToolButton } from './toolbutton'
 import { Spacer } from './spacer'
 import { Module } from '../../../webui/module'
-import { iconArrowLeft, iconRedo, iconUndo } from './icons'
+import { iconArrowLeft, iconFinger, iconRedo, iconUndo } from './icons'
 import { iconBars } from '../../../webui/icons/icons'
 import { Tool } from '../../interfaces'
 import { Pen } from '../pen'
@@ -32,6 +32,8 @@ export class Toolbar extends Module<HTMLDivElement> {
     this.add(new Spacer(true))
     this.add(new ToolButton("redo", false, iconRedo, true))
     this.add(new ToolButton("undo", false, iconUndo, true))
+    this.add(new Spacer(true))
+    this.add(new ToolButton("touchToggle", false, iconFinger, true, true))
     //this.add(new Spacer(true))
   }
 }

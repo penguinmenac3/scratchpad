@@ -6,7 +6,12 @@ export class ToolButton extends Module<HTMLDivElement> {
     private static selectableTools: string[] = []
     protected popup: ToolPopup | null = null
     
-    public constructor(protected id: string, selectable: boolean, innerHTML: string = "", right: boolean = false)
+    public constructor(
+        protected id: string,
+        selectable: boolean,
+        innerHTML: string = "",
+        right: boolean = false,
+        protected togglable: boolean = false)
     {
         super("div", innerHTML, "tool")
         if (right) {
@@ -27,6 +32,16 @@ export class ToolButton extends Module<HTMLDivElement> {
             Eventbus.send("toolbar/change", {
                 "type": "string", "data": this.id, "allowNetwork": false
             })
+            if (this.togglable) {
+                this.setClass("selected-tool")
+                this.setClass("selected-tool-good")
+            }
+        } else if (this.togglable) {
+            Eventbus.send("toolbar/change", {
+                "type": "string", "data": this.id, "allowNetwork": false
+            })
+            this.unsetClass("selected-tool")
+            this.unsetClass("selected-tool-good")
         } else {
             this.popup?.show()
         }
@@ -36,10 +51,12 @@ export class ToolButton extends Module<HTMLDivElement> {
     protected onSelectionChanged(topic: string, event: Event): void {
         if (topic == "toolbar/change" && event.type == "string"){
             if (ToolButton.selectableTools.indexOf(event.data) == -1) return
-            if (event.data == this.id) {
-                this.setClass("selected-tool")
-            } else {
-                this.unsetClass("selected-tool")
+            if (!this.togglable) {
+                if (event.data == this.id) {
+                    this.setClass("selected-tool")
+                } else {
+                    this.unsetClass("selected-tool")
+                }
             }
         }
         return
