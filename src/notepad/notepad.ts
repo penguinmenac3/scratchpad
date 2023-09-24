@@ -30,7 +30,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         this.add(this.canvasContainer)
         this.canvas = document.createElement("canvas")
         this.canvasContainer.htmlElement.appendChild(this.canvas)
-        this.context = this.canvas.getContext("2d")!
+        this.context = this.canvas.getContext("2d", {
+            alpha: true,
+            desynchronized: true,
+        })!
         
         window.onresize = this.resizeHandler.bind(this)
 
