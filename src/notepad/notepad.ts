@@ -20,6 +20,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
     private offset = [0.0, 0.0]
     private scale = 1.0
     private lastPos = [0.0, 0.0]
+    private lowestEntity = 0.0
 
     constructor() {
         super("div")
@@ -66,6 +67,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
                 this.offset[1] += this.lastPos[1] - y
                 this.offset[0] = Math.min(this.offset[0], 1000 - this.canvas.width)
                 this.offset[0] = Math.max(this.offset[0], 0)
+                this.offset[1] = Math.min(this.offset[1], this.lowestEntity - this.canvas.height * 0.1)
                 this.offset[1] = Math.max(this.offset[1], 0)
                 console.log(this.offset)
                 this.redraw()
@@ -109,6 +111,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
             {
                 list.push(element.uuid)
             }
+        }
+        this.lowestEntity = 0
+        for (let [_uuid, element] of this.pageElements) {
+            this.lowestEntity = Math.max(element.bbox_xyxy[3], this.lowestEntity)
         }
         this.redraw()
     }
