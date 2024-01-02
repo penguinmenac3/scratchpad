@@ -18,6 +18,7 @@ export interface DocumentAPI {
     deleteElements(element: PageElement[]): void
     // Get the documents to browse them (despite being modifiable do not modify direclty!)
     getDocument(): Document
+    redraw(): void
 }
 
 // Specifications around tools which generate or modify page elements

@@ -135,7 +135,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         this.redraw()
     }
 
-    private redraw() {
+    redraw() {
         this.context.clearRect(0,0,this.canvas.width, this.canvas.height)
         let layers = Array.from( this.layers.keys())
         layers = layers.sort()
