@@ -5,6 +5,21 @@
       "title": "Backlog",
       "cards": [
         {
+          "id": "38a8c1d8-0258-4834-aa08-28de0ac0e3f3",
+          "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
+          "title": "BUG - Drawing with a fast mouse causes delay of stroke after some time, due to many events ending up in the queue.",
+          "description": "",
+          "labels": [
+            {
+              "id": "4494ee48-c908-4b5b-a00e-92478aebbda5",
+              "title": "BUG",
+              "color": "#eb5a46"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
+        {
           "id": "9ce08fdb-a08f-4f7f-895f-e14a4e79a852",
           "listId": "2e97706c-3826-42bc-9f02-6da7b0947f82",
           "title": "As a user without pen I can write text using my keyboard, so I do not need a pen everywhere.",
@@ -154,7 +169,7 @@
             {
               "id": "82095c0f-a614-407f-a83b-b42693774296",
               "title": "EXTERNAL",
-              "color": "#eb5a46"
+              "color": "#51e898"
             }
           ],
           "checkboxes": [],
@@ -169,7 +184,7 @@
             {
               "id": "82095c0f-a614-407f-a83b-b42693774296",
               "title": "EXTERNAL",
-              "color": "#eb5a46"
+              "color": "#51e898"
             }
           ],
           "checkboxes": [],
@@ -184,7 +199,7 @@
             {
               "id": "82095c0f-a614-407f-a83b-b42693774296",
               "title": "EXTERNAL",
-              "color": "#eb5a46"
+              "color": "#51e898"
             }
           ],
           "checkboxes": [],
@@ -199,7 +214,7 @@
             {
               "id": "82095c0f-a614-407f-a83b-b42693774296",
               "title": "EXTERNAL",
-              "color": "#eb5a46"
+              "color": "#51e898"
             }
           ],
           "checkboxes": [],
@@ -211,6 +226,21 @@
       "id": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
       "title": "To Do",
       "cards": [
+        {
+          "id": "01fced13-8519-4862-9797-3e139fd4c582",
+          "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
+          "title": "As a notetaker, I can delete strokes, so I can fix errors and modify my notes.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
         {
           "id": "9f5643db-d9ca-42b8-a11f-eb2cc44c8c38",
           "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
@@ -297,22 +327,21 @@
     {
       "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",
       "title": "Doing",
-      "cards": [
-        {
-          "id": "bfbd68b4-1e76-4b12-af15-5e24c84c765f",
-          "listId": "5fd4a638-7227-47f4-8e74-9147c045d30f",
-          "title": "As a note taker, I can select stylus and textmarker as well as color, so I can highlight and write to structure my notes better.",
-          "description": "",
-          "labels": [],
-          "checkboxes": [],
-          "comments": []
-        }
-      ]
+      "cards": []
     },
     {
       "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
       "title": "Done",
       "cards": [
+        {
+          "id": "bfbd68b4-1e76-4b12-af15-5e24c84c765f",
+          "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
+          "title": "As a note taker, I can select stylus and textmarker as well as color, so I can highlight and write to structure my notes better.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [],
+          "comments": []
+        },
         {
           "id": "f82b3580-d7bf-4dab-9c50-0d2b479b7d21",
           "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
@@ -427,12 +456,17 @@
       {
         "id": "82095c0f-a614-407f-a83b-b42693774296",
         "title": "EXTERNAL",
-        "color": "#eb5a46"
+        "color": "#51e898"
       },
       {
         "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
         "title": "MVP",
         "color": "#0079bf"
+      },
+      {
+        "id": "4494ee48-c908-4b5b-a00e-92478aebbda5",
+        "title": "BUG",
+        "color": "#eb5a46"
       }
     ]
   }
