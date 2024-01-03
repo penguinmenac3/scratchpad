@@ -21,6 +21,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
     private scale = 1.0
     private lastPos = [0.0, 0.0]
     private lowestEntity = 0.0
+    private openDocumentIdentifier: string = ""
 
     constructor() {
         super("div")
@@ -45,8 +46,39 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         this.canvas.addEventListener('pointerup',   this.pointermove.bind(this), false);
     }
 
-    public update(_kwargs: KWARGS, _changedPage: boolean) {
+    public update(kwargs: KWARGS, _changedPage: boolean) {
+        if (kwargs.file) {
+            this.loadLocalStorage(kwargs.file)
+        } else if (localStorage["sp_last_file"]) {
+            this.loadLocalStorage(localStorage["sp_last_file"])
+        }
         window.setTimeout(this.resizeHandler.bind(this), 100)
+    }
+
+    private loadLocalStorage(identifier: string) {
+        if (!localStorage["sp_file_" + identifier]) {
+            alert("Error file not locally available: " + identifier)
+            return
+        }
+        this.openDocumentIdentifier = identifier
+        this.deleteElements(this.getDocument().values(), false)
+        this.addElements(JSON.parse(localStorage["sp_file_" + identifier]), false)
+    }
+
+    private saveLocalStorage() {
+        if (this.openDocumentIdentifier == "") {
+            let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":","")
+            this.openDocumentIdentifier = timestamp + "_Unnamed.spf"
+        }
+        let files: string[] = JSON.parse(localStorage["sp_files"] || "[]")
+        if (!files.includes(this.openDocumentIdentifier)) {
+            files.push(this.openDocumentIdentifier)
+            localStorage["sp_files"] = JSON.stringify(files)
+        }
+        const pageElements = Array.from(this.getDocument().values())
+        localStorage["sp_file_" + this.openDocumentIdentifier] = JSON.stringify(pageElements)
+        localStorage["sp_last_file"] = this.openDocumentIdentifier
+        console.log("Saved: " + this.openDocumentIdentifier)
     }
 
     private pointermove(ev: PointerEvent) {
@@ -91,11 +123,11 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         return this.pageElements
     }
 
-    addElements(elements: PageElement[]): void {
-        this.modifyElements(elements)
+    addElements(elements: Iterable<PageElement>, autosave: boolean = true): void {
+        this.modifyElements(elements, autosave)
     }
 
-    modifyElements(elements: PageElement[]): void {
+    modifyElements(elements: Iterable<PageElement>, autosave: boolean = true): void {
         for (let element of elements) {
             let toolName = element.type
             if (!this.tools.has(toolName)) {
@@ -119,9 +151,12 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
             this.lowestEntity = Math.max(element.bbox_xyxy[3], this.lowestEntity)
         }
         this.redraw()
+        if (autosave) {
+            this.saveLocalStorage()
+        }
     }
 
-    deleteElements(elements: PageElement[]): void {
+    deleteElements(elements: Iterable<PageElement>, autosave: boolean = true): void {
         for (let element of elements) {
             this.pageElements.delete(element.uuid)
             this.textures.delete(element.uuid)
@@ -133,6 +168,9 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
             }
         }
         this.redraw()
+        if (autosave) {
+            this.saveLocalStorage()
+        }
     }
 
     redraw() {

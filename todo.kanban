@@ -227,21 +227,6 @@
       "title": "To Do",
       "cards": [
         {
-          "id": "9f5643db-d9ca-42b8-a11f-eb2cc44c8c38",
-          "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
-          "title": "As a user my notes are saved between sessions, so I can continue where I left of.",
-          "description": "",
-          "labels": [
-            {
-              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
-              "title": "MVP",
-              "color": "#0079bf"
-            }
-          ],
-          "checkboxes": [],
-          "comments": []
-        },
-        {
           "id": "76affefa-49f0-4d8e-baf2-ba9ba98ec6d4",
           "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
           "title": "As a user I can see a page with all my scratch pads (from local storage), so I can quickly jot down notes.",
@@ -318,6 +303,21 @@
       "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
       "title": "Done",
       "cards": [
+        {
+          "id": "9f5643db-d9ca-42b8-a11f-eb2cc44c8c38",
+          "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
+          "title": "As a user my notes are saved between sessions, so I can continue where I left of.",
+          "description": "",
+          "labels": [
+            {
+              "id": "1955c44a-5711-4a0a-a6f0-8cba77537ef7",
+              "title": "MVP",
+              "color": "#0079bf"
+            }
+          ],
+          "checkboxes": [],
+          "comments": []
+        },
         {
           "id": "01fced13-8519-4862-9797-3e139fd4c582",
           "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
