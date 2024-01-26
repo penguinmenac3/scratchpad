@@ -23,12 +23,12 @@ export class Erasor extends StaticTool {
         this.y0 = y
     }
 
-    onMove(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, _scale: number): void {
+    onMove(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
         if (x != this.x0 && y != this.y0) {
             // We first identify what to remove and then remove it
             let toRemove: PageElement[] = []
             let erasorLine: Line = [[this.x0,this.y0],[x,y]]
-            this.drawDebugLine(liveCanvas, erasorLine, offsetX, offsetY, "#FF000033", 1);
+            this.drawDebugLine(liveCanvas, erasorLine, offsetX, offsetY, scale, "#FF000033", 1);
             documentAPI.getDocument().forEach((element, _key) => {
                 // Early exit so we save computations for non erazable elements
                 if (!ERASABLE_ELEMENTS.includes(element.type)) return
@@ -63,10 +63,10 @@ export class Erasor extends StaticTool {
         }
     }
 
-    private drawDebugLine(liveCanvas: CanvasRenderingContext2D, line: Line, offsetX: number, offsetY: number, color: string, width: number) {
+    private drawDebugLine(liveCanvas: CanvasRenderingContext2D, line: Line, offsetX: number, offsetY: number, scale: number, color: string, width: number) {
         liveCanvas.beginPath();
-        liveCanvas.moveTo(line[0][0] - offsetX, line[0][1] - offsetY);
-        liveCanvas.lineTo(line[1][0] - offsetX, line[1][1] - offsetY);
+        liveCanvas.moveTo((line[0][0] - offsetX) / scale, (line[0][1] - offsetY) / scale);
+        liveCanvas.lineTo((line[1][0] - offsetX) / scale, (line[1][1] - offsetY) / scale);
         liveCanvas.strokeStyle = color;
         liveCanvas.lineWidth = width;
         liveCanvas.stroke();

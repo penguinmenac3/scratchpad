@@ -23,11 +23,13 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
     private lowestEntity = 0.0
     private openDocumentIdentifier: string = ""
     private saving: null | number = null
+    private px = 0.0
+    private py = 0.0
 
     constructor() {
         super("div")
         this.add(new Toolbar(this.tools))
-        
+
         this.canvasContainer = new Module<HTMLDivElement>("div", "", "notepad-canvasContainer")
         this.add(this.canvasContainer)
         this.canvas = document.createElement("canvas")
@@ -36,15 +38,17 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
             alpha: true,
             desynchronized: true,
         })!
-        
+
         window.onresize = this.resizeHandler.bind(this)
 
         Eventbus.register("toolbar/change", this.onToolbarChange.bind(this))
 
-        this.canvas.addEventListener('touchstart', function(ev: TouchEvent) {ev.preventDefault();}, false);
+        this.canvas.oncontextmenu = () => false  // disable context menu on right click
+        this.canvas.addEventListener('touchstart', function (ev: TouchEvent) { ev.preventDefault(); }, false);
         this.canvas.addEventListener('pointerdown', this.pointermove.bind(this), false);
         this.canvas.addEventListener('pointermove', this.pointermove.bind(this), false);
-        this.canvas.addEventListener('pointerup',   this.pointermove.bind(this), false);
+        this.canvas.addEventListener('pointerup', this.pointermove.bind(this), false);
+        this.canvas.addEventListener("wheel", this.scroll.bind(this), false);
     }
 
     public update(kwargs: KWARGS, _changedPage: boolean) {
@@ -79,7 +83,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
 
     private saveLocalStorage() {
         if (this.openDocumentIdentifier == "") {
-            let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":","")
+            let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":", "")
             this.openDocumentIdentifier = timestamp + "_Unnamed.spf"
         }
         let files: string[] = JSON.parse(localStorage["sp_files"] || "[]")
@@ -95,35 +99,81 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         // Trigger a sync with remote
     }
 
-    private pointermove(ev: PointerEvent) {
+    private scroll(ev: WheelEvent): void {
+        // Collect variables needed for offset update
+        let oldScale = this.scale
         let rect = this.canvas.getBoundingClientRect()
-        let x = ev.x - rect.left + this.offset[0]
-        let y = ev.y - rect.top + this.offset[1]
+        let w = rect.width * this.scale
+        let h = rect.height * this.scale
+        let dx = this.offset[0]
+        let dy = this.offset[1]
+
+        // Update scale
+        if (ev.deltaY > 0) {
+            this.scale *= 1.2
+        } else {
+            this.scale /= 1.2
+        }
+        if (this.scale < 0.25) {
+            this.scale = 0.25
+        }
+        if (this.scale > 10.0) {
+            this.scale = 10.0
+        }
+        // Update offset
+        let s = this.scale / oldScale
+        dx += (1 - s) * w * this.px
+        dy += (1 - s) * h * this.py
+        this.offset[0] = dx
+        this.offset[1] = dy
+        this.limitOffset()
+
+        // Redraw to make changes visible
+        this.redraw()
+    }
+
+    private pointermove(ev: PointerEvent) {
+        ev.preventDefault()
+        let rect = this.canvas.getBoundingClientRect()
+        let dx = this.offset[0]
+        let dy = this.offset[1]
+        let px = (ev.x - rect.left)
+        let py = (ev.y - rect.top)
+        let x = px * this.scale + dx
+        let y = py * this.scale + dy
+        // Save where mouse is pointing at for zoom
+        if (ev.pointerType == "mouse") {
+            this.px = px / rect.width
+            this.py = py / rect.height
+        }
+        // LMB and PEN can draw/use tools
         if (!this.isMoveDown && ev.pressure > 0 && ((ev.pointerType == "mouse" && (ev.button == 0 || this.isMainDown)) || ev.pointerType == "pen")) {
             if (!this.isMainDown) {
-                this.tools.get(this.activeTool)?.onStart(this, this.context, x, y, this.offset[0], this.offset[1], this.scale)
+                this.tools.get(this.activeTool)?.onStart(this, this.context, x, y, dx, dy, this.scale)
                 this.isMainDown = true
             } else {
-                this.tools.get(this.activeTool)?.onMove(this, this.context, x, y, this.offset[0], this.offset[1], this.scale)
+                this.tools.get(this.activeTool)?.onMove(this, this.context, x, y, dx, dy, this.scale)
             }
         }
-        if (!this.isMainDown && ev.pressure > 0 && ((ev.pointerType == "mouse" && (ev.button == 1 || this.isMoveDown)) || (ev.pointerType == "touch" && this.isTouchAllowed))) {
+        // RMB, MMB and TOUCH can move the canvas
+        if (!this.isMainDown && (
+            (ev.pointerType == "mouse" && ev.pressure > 0 && (ev.button == 1 || ev.button == 2 || this.isMoveDown))
+            || (ev.pointerType == "touch" && this.isTouchAllowed && ev.type == "pointermove"))) {
             if (!this.isMoveDown) {
                 this.lastPos = [x, y]
                 this.isMoveDown = true
             } else {
                 this.offset[0] += this.lastPos[0] - x
                 this.offset[1] += this.lastPos[1] - y
-                this.offset[0] = Math.min(this.offset[0], 1000 - this.canvas.width)
-                this.offset[0] = Math.max(this.offset[0], 0)
-                this.offset[1] = Math.min(this.offset[1], this.lowestEntity - this.canvas.height * 0.1)
-                this.offset[1] = Math.max(this.offset[1], 0)
+                this.limitOffset()
+                //console.log(this.offset[0], this.offset[1])
                 this.redraw()
             }
         }
+        // Release event handling
         else if (ev.pressure <= 0 && (ev.pointerType == "mouse" || ev.pointerType == "pen" || (ev.pointerType == "touch" && this.isTouchAllowed))) {
             if (this.isMainDown) {
-                this.tools.get(this.activeTool)?.onEnd(this, this.context, x, y, this.offset[0], this.offset[1], this.scale)
+                this.tools.get(this.activeTool)?.onEnd(this, this.context, x, y, dx, dy, this.scale)
                 this.isMainDown = false
             }
             if (this.isMoveDown) {
@@ -131,6 +181,13 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
                 this.isMoveDown = false
             }
         }
+    }
+
+    private limitOffset() {
+        this.offset[0] = Math.min(this.offset[0], (1000 / this.scale) - this.canvas.width)
+        this.offset[0] = Math.max(this.offset[0], 0)
+        this.offset[1] = Math.min(this.offset[1], this.lowestEntity - this.canvas.height * 0.1)
+        this.offset[1] = Math.max(this.offset[1], 0)
     }
 
     getDocument(): Document {
@@ -155,8 +212,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
                 this.layers.set(element.layer, [])
             }
             let list = this.layers.get(element.layer)!
-            if (list.indexOf(element.uuid) == -1)
-            {
+            if (list.indexOf(element.uuid) == -1) {
                 list.push(element.uuid)
             }
         }
@@ -176,8 +232,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
             this.textures.delete(element.uuid)
             let list = this.layers.get(element.layer)!
             let idx = list.indexOf(element.uuid)
-            if (idx > -1)
-            {
+            if (idx > -1) {
                 list.splice(idx, 1)
             }
         }
@@ -188,22 +243,36 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
     }
 
     redraw() {
-        this.context.clearRect(0,0,this.canvas.width, this.canvas.height)
-        let layers = Array.from( this.layers.keys())
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        let layers = Array.from(this.layers.keys())
         layers = layers.sort()
+        let rect = this.canvas.getBoundingClientRect()
+        let dx = this.offset[0]
+        let dy = this.offset[1]
         for (let layer of layers) {
             let uuids = this.layers.get(layer)!
             for (let uuid of uuids) {
                 let renderable = this.pageElements.get(uuid)!
                 let sprite = this.textures.get(uuid)!
-                let [x1,y1,x2,y2] = renderable.bbox_xyxy
-                x1 -= this.offset[0]
-                y1 -= this.offset[1]
-                x2 -= this.offset[0]
-                y2 -= this.offset[1]
-                this.context.drawImage(sprite, x1, y1, x2-x1, y2-y1)
+                let [x1, y1, x2, y2] = renderable.bbox_xyxy
+                // px * this.scale + (1-this.scale) * rect.width / 2 + this.offset[0]
+                x1 = (x1 - dx) / this.scale
+                y1 = (y1 - dy) / this.scale
+                x2 = (x2 - dx) / this.scale
+                y2 = (y2 - dy) / this.scale
+                this.context.drawImage(sprite, x1, y1, x2 - x1, y2 - y1)
             }
         }
+        // Draw page width limit
+        let xLimit = (1000 - dx) / this.scale
+        this.context.beginPath()
+        this.context.moveTo(xLimit, 0)
+        this.context.lineTo(xLimit, rect.height)
+        let color = getComputedStyle(document.body).getPropertyValue('--color-bad-font')
+        this.context.strokeStyle = color + "AA"
+        this.context.lineWidth = 1
+        this.context.stroke()
+        this.context.closePath()
     }
 
     private onToolbarChange(_topic: string, event: Event) {

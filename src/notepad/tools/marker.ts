@@ -43,57 +43,64 @@ export class Marker extends ColorizableResizableTool {
         //return ctx.getImageData(0,0,canvas.width, canvas.height)
     }
 
-    onStart(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, _scale: number): void {
+    onStart(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
         liveCanvas.strokeStyle = color + this.transparency
-        liveCanvas.lineWidth = this.lineWidth
+        liveCanvas.lineWidth = this.lineWidth / scale
         liveCanvas.beginPath()
-        liveCanvas.moveTo(x - offsetX, y - offsetY)
+        liveCanvas.moveTo((x - offsetX) / scale, (y - offsetY) / scale)
         this.points.push([x, y])
     }
 
-    onMove(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, _scale: number): void {
-        liveCanvas.lineTo(x - offsetX, y - offsetY)
+    onMove(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
+        liveCanvas.lineTo((x - offsetX) / scale, (y - offsetY) / scale)
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
         liveCanvas.strokeStyle = color + this.transparency
-        liveCanvas.lineWidth = this.lineWidth
+        liveCanvas.lineWidth = this.lineWidth / scale
         liveCanvas.stroke()
         this.points.push([x, y])
     }
 
-    onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, _scale: number): void {
-        liveCanvas.lineTo(x - offsetX, y - offsetY)
+    onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
+        liveCanvas.lineTo((x - offsetX) / scale, (y - offsetY) / scale)
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
         liveCanvas.strokeStyle = color + this.transparency
-        liveCanvas.lineWidth = this.lineWidth
+        liveCanvas.lineWidth = this.lineWidth / scale
         liveCanvas.stroke()
         liveCanvas.closePath()
         this.points.push([x, y])
-        let [minx, miny, maxx, maxy] = [x, y, x, y]
-        for (let pt of this.points) {
-            minx = Math.min(minx, pt[0])
-            miny = Math.min(miny, pt[1])
-            maxx = Math.max(maxx, pt[0])
-            maxy = Math.max(maxy, pt[1])
-        }
-        minx -= 5 + this.lineWidth
-        miny -= 5 + this.lineWidth
-        maxx += 5 + this.lineWidth
-        maxy += 5 + this.lineWidth
-        let normalizedPoints = []
-        for (let pt of this.points) {
-            normalizedPoints.push([pt[0]-minx, pt[1]-miny])
-        }
+        let [normalizedPoints, bbox] = this.normalizePoints(this.points, this.lineWidth)
         this.points = []
         documentAPI.addElements([{
             uuid: uuidv4(),
             type: this.id,
             layer: LAYER_MARKER,
-            bbox_xyxy: [minx, miny, maxx, maxy],
+            bbox_xyxy: bbox,
             data: [this.color, this.lineWidth, normalizedPoints]
         }])
     }
 
+    normalizePoints(points: number[][], lineWidth: number): [number[][], number[]] {
+        let x = points[0][0]
+        let y = points[0][1]
+        let [minx, miny, maxx, maxy] = [x, y, x, y]
+        for (let pt of points) {
+            minx = Math.min(minx, pt[0])
+            miny = Math.min(miny, pt[1])
+            maxx = Math.max(maxx, pt[0])
+            maxy = Math.max(maxy, pt[1])
+        }
+        minx -= 5 + lineWidth
+        miny -= 5 + lineWidth
+        maxx += 5 + lineWidth
+        maxy += 5 + lineWidth
+        let normalizedPoints = []
+        for (let pt of points) {
+            normalizedPoints.push([pt[0]-minx, pt[1]-miny])
+        }
+        return [normalizedPoints, [minx, miny, maxx, maxy]]
+    }
+
     activate(): void {}
     deactivate(): void {}
-}
+    }

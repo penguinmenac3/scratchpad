@@ -261,43 +261,49 @@
             }
           ],
           "comments": []
-        },
-        {
-          "id": "da3fd5ca-2baa-47b0-97da-75aec2d68c1d",
-          "listId": "30d17a9a-d2fd-402b-bc24-c4da7ea7cd77",
-          "title": "As a reader, I can scroll along pages using the preview and zoom in on details I want to see more precise.",
-          "description": "",
-          "labels": [],
-          "checkboxes": [
-            {
-              "id": "c7959c45-f82b-4b80-980b-b1c4ebb8e54b",
-              "title": "Click on page preview centers view on selected point.",
-              "checked": false
-            },
-            {
-              "id": "9b7ab43b-180e-4cd3-9a91-b24f993c520b",
-              "title": "Scrollwheel scrolls along page.",
-              "checked": false
-            },
-            {
-              "id": "8371bfaf-647e-48df-8521-60ecd04a64d4",
-              "title": "CTRL+Scrollwheel zooms in/out on mousecursor/last touchpoint",
-              "checked": false
-            },
-            {
-              "id": "6ac335c0-45cc-49d3-8935-7d11170bbf76",
-              "title": "A button +, [], - in the page overview menu allow to zoom in, fit width and zoom out.",
-              "checked": false
-            }
-          ],
-          "comments": []
         }
       ]
     },
     {
       "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",
       "title": "Doing",
-      "cards": []
+      "cards": [
+        {
+          "id": "da3fd5ca-2baa-47b0-97da-75aec2d68c1d",
+          "listId": "5fd4a638-7227-47f4-8e74-9147c045d30f",
+          "title": "As a reader, I can scroll along pages using the preview and zoom in on details I want to see more precise.",
+          "description": "",
+          "labels": [],
+          "checkboxes": [
+            {
+              "id": "9b7ab43b-180e-4cd3-9a91-b24f993c520b",
+              "title": "Right/Middle mouse scroll along page",
+              "checked": true
+            },
+            {
+              "id": "8371bfaf-647e-48df-8521-60ecd04a64d4",
+              "title": "Scrollwheel zooms in/out on mousecursor/last touchpoint",
+              "checked": false
+            },
+            {
+              "id": "6ac335c0-45cc-49d3-8935-7d11170bbf76",
+              "title": "1 Finger scrolls along page",
+              "checked": true
+            },
+            {
+              "id": "20ceb126-1b81-4e63-bd02-da08f6606362",
+              "title": "2 Finger-Pinch to Zoom In/Out",
+              "checked": false
+            },
+            {
+              "id": "12e74624-a8d4-4074-a3fb-0f53d7316fcb",
+              "title": "Button to enable/disable finger gestures",
+              "checked": true
+            }
+          ],
+          "comments": []
+        }
+      ]
     },
     {
       "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
