@@ -22,6 +22,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
     private lastPos = [0.0, 0.0]
     private lowestEntity = 0.0
     private openDocumentIdentifier: string = ""
+    private saving: null | number = null
 
     constructor() {
         super("div")
@@ -65,6 +66,17 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         this.addElements(JSON.parse(localStorage["sp_file_" + identifier]), false)
     }
 
+    private delayedAutosave() {
+        // delay the autosave, so that we are not constantly saving after each stroke
+        // but only if user idles for some time
+        if (this.saving != null) {
+            document.title = document.title.replace("*", "")
+            window.clearTimeout(this.saving)
+        }
+        document.title = "*" + document.title
+        this.saving = window.setTimeout(this.saveLocalStorage.bind(this), 5000)
+    }
+
     private saveLocalStorage() {
         if (this.openDocumentIdentifier == "") {
             let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":","")
@@ -79,6 +91,8 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         localStorage["sp_file_" + this.openDocumentIdentifier] = JSON.stringify(pageElements)
         localStorage["sp_last_file"] = this.openDocumentIdentifier
         console.log("Saved: " + this.openDocumentIdentifier)
+        document.title = document.title.replace("*", "")
+        // Trigger a sync with remote
     }
 
     private pointermove(ev: PointerEvent) {
@@ -152,7 +166,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         }
         this.redraw()
         if (autosave) {
-            this.saveLocalStorage()
+            this.delayedAutosave()
         }
     }
 
@@ -169,7 +183,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI {
         }
         this.redraw()
         if (autosave) {
-            this.saveLocalStorage()
+            this.delayedAutosave()
         }
     }
 
