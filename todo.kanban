@@ -267,10 +267,15 @@
     {
       "id": "5fd4a638-7227-47f4-8e74-9147c045d30f",
       "title": "Doing",
+      "cards": []
+    },
+    {
+      "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
+      "title": "Done",
       "cards": [
         {
           "id": "da3fd5ca-2baa-47b0-97da-75aec2d68c1d",
-          "listId": "5fd4a638-7227-47f4-8e74-9147c045d30f",
+          "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",
           "title": "As a reader, I can scroll along pages using the preview and zoom in on details I want to see more precise.",
           "description": "",
           "labels": [],
@@ -302,13 +307,7 @@
             }
           ],
           "comments": []
-        }
-      ]
-    },
-    {
-      "id": "2d85862a-71b7-4775-a301-38c9c9c09417",
-      "title": "Done",
-      "cards": [
+        },
         {
           "id": "9f5643db-d9ca-42b8-a11f-eb2cc44c8c38",
           "listId": "2d85862a-71b7-4775-a301-38c9c9c09417",

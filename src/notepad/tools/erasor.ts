@@ -75,6 +75,6 @@ export class Erasor extends StaticTool {
 
     onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
         this.onMove(documentAPI, liveCanvas, x, y, offsetX, offsetY, scale)
-        documentAPI.redraw()
+        documentAPI.requestRedraw()
     }
 }
