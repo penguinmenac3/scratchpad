@@ -25,6 +25,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     private openDocumentIdentifier: string = ""
     private saving: null | number = null
     private mousePos: [number, number] = [0.0, 0.0]
+    private background: string = "grid"
 
     constructor() {
         super("div")
@@ -360,9 +361,12 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             this.context.closePath()
         }
 
-        // Insert background guide
-        this.drawGrid(rect, dx, dy)
-        // TODO make configurable grid or lines
+        // Insert background
+        if (this.background == "grid"){
+            this.drawGrid(rect, dx, dy)
+        } else if (this.background == "lines") {
+            this.drawLines(rect, dx, dy)
+        }
 
         // Draw content
         for (let layer of layers) {
@@ -387,7 +391,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         }
     }
 
-    private drawLines(rect: DOMRect, dx: number, dy: number) {
+    private drawLines(rect: DOMRect, _dx: number, dy: number) {
         let Nylines = Math.ceil(this.canvas.height / (100 / this.scale))
         let yidxOffset = Math.floor(dy / 100) + 1
         for (let i = 0; i < Nylines; i++) {
