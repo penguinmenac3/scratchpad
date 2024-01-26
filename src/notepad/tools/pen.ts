@@ -13,8 +13,9 @@ export class Pen extends ColorizableResizableTool {
     }
 
     render(element: PageElement): Sprite {
-        let width = element.bbox_xyxy[2] - element.bbox_xyxy[0]
-        let height = element.bbox_xyxy[3] - element.bbox_xyxy[1]
+        let scale = 2
+        let width = (element.bbox_xyxy[2] - element.bbox_xyxy[0]) * scale
+        let height = (element.bbox_xyxy[3] - element.bbox_xyxy[1]) * scale
         //let canvas = new OffscreenCanvas(width, height)
         let canvas = document.createElement("canvas")
         canvas.width = width
@@ -23,12 +24,12 @@ export class Pen extends ColorizableResizableTool {
         ctx.clearRect(0,0, width, height)
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + element.data[0] + '-font');
         ctx.strokeStyle = color + this.transparency
-        ctx.lineWidth = element.data[1]
+        ctx.lineWidth = element.data[1] * scale
         ctx.beginPath()
         let first: boolean = true
         for (let pt of element.data[2]) {
-            let x = pt[0]
-            let y = pt[1]
+            let x = pt[0] * scale
+            let y = pt[1] * scale
             if (first) {
                 ctx.moveTo(x, y)
                 first = false
