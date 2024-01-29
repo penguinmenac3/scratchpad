@@ -17,6 +17,8 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     private pageElements = new Map<string, PageElement>()
     private canvas: HTMLCanvasElement
     private context: CanvasRenderingContext2D
+    private offscreenCanvas: HTMLCanvasElement
+    private offscreenContext: CanvasRenderingContext2D
     private activeTool: string = "pen"
     private isTouchAllowed: boolean = false
     private offset = [0.0, 0.0]
@@ -34,11 +36,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         this.canvasContainer = new Module<HTMLDivElement>("div", "", "notepad-canvasContainer")
         this.add(this.canvasContainer)
         this.canvas = document.createElement("canvas")
+        this.offscreenCanvas = document.createElement("canvas")
         this.canvasContainer.htmlElement.appendChild(this.canvas)
-        this.context = this.canvas.getContext("2d", {
-            alpha: true,
-            desynchronized: true,
-        })!
+        this.context = this.canvas.getContext("2d", {desynchronized: true,})!
+        this.offscreenContext = this.offscreenCanvas.getContext("2d")!
 
         window.onresize = this.resizeHandler.bind(this)
 
@@ -330,44 +331,47 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     }
 
     private render() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        let width = this.canvas.width
+        let height = this.canvas.height
+        let color = getComputedStyle(document.body).getPropertyValue('--color-base');
+        this.offscreenContext.fillStyle = color
+        this.offscreenContext.fillRect(0, 0, width, height)
         let layers = Array.from(this.layers.keys())
         layers = layers.sort()
-        let rect = this.canvas.getBoundingClientRect()
         let dx = this.offset[0]
         let dy = this.offset[1]
 
         // Draw page width limit
         for (let i = 0; i < 2; i++) {
             let xLimit = (PAGE_WIDTH * i - dx) / this.scale
-            this.context.beginPath()
-            this.context.moveTo(xLimit, 0)
-            this.context.lineTo(xLimit, rect.height)
+            this.offscreenContext.beginPath()
+            this.offscreenContext.moveTo(xLimit, 0)
+            this.offscreenContext.lineTo(xLimit, height)
             let color = getComputedStyle(document.body).getPropertyValue('--color-bad-font')
-            this.context.strokeStyle = color + "AA"
-            this.context.lineWidth = 2
-            this.context.stroke()
-            this.context.closePath()
+            this.offscreenContext.strokeStyle = color + "AA"
+            this.offscreenContext.lineWidth = 2
+            this.offscreenContext.stroke()
+            this.offscreenContext.closePath()
         }
         let N = Math.ceil(this.canvas.height / (PAGE_HEIGHT / this.scale))
         let idxOffset = Math.floor(dy / PAGE_HEIGHT) + 1
         for (let i = 0; i < N; i++) {
             let yLimit = (PAGE_HEIGHT * (i + idxOffset) - dy) / this.scale
-            this.context.beginPath()
-            this.context.moveTo(0, yLimit)
-            this.context.lineTo(rect.width, yLimit)
+            this.offscreenContext.beginPath()
+            this.offscreenContext.moveTo(0, yLimit)
+            this.offscreenContext.lineTo(width, yLimit)
             let color = getComputedStyle(document.body).getPropertyValue('--color-bad-font')
-            this.context.strokeStyle = color + "AA"
-            this.context.lineWidth = 2
-            this.context.stroke()
-            this.context.closePath()
+            this.offscreenContext.strokeStyle = color + "AA"
+            this.offscreenContext.lineWidth = 2
+            this.offscreenContext.stroke()
+            this.offscreenContext.closePath()
         }
 
         // Insert background
         if (this.background == "grid"){
-            this.drawGrid(rect, dx, dy)
+            this.drawGrid(this.offscreenContext, dx, dy, width, height)
         } else if (this.background == "lines") {
-            this.drawLines(rect, dx, dy)
+            this.drawLines(this.offscreenContext, dx, dy, width, height)
         }
 
         // Draw content
@@ -383,58 +387,59 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
                 x2 = (x2 - dx) / this.scale
                 y2 = (y2 - dy) / this.scale
                 // Only render if box intersects with view area
-                if (((0 <= x1 && x1 <= rect.width) &&
-                    (0 <= y1 && y1 <= rect.height)) ||
-                    ((0 <= x2 && x2 <= rect.width) &&
-                        (0 <= y2 && y2 <= rect.height))) {
-                    this.context.drawImage(sprite, x1, y1, x2 - x1, y2 - y1)
+                if (((0 <= x1 && x1 <= width) &&
+                    (0 <= y1 && y1 <= height)) ||
+                    ((0 <= x2 && x2 <= width) &&
+                        (0 <= y2 && y2 <= height))) {
+                    this.offscreenContext.drawImage(sprite, x1, y1, x2 - x1, y2 - y1)
                 }
             }
         }
+        this.context.drawImage(this.offscreenCanvas, 0, 0, this.canvas.width, this.canvas.height)
     }
 
-    private drawLines(rect: DOMRect, _dx: number, dy: number) {
-        let Nylines = Math.ceil(this.canvas.height / (100 / this.scale))
+    private drawLines(context: CanvasRenderingContext2D, _dx: number, dy: number, width: number, height: number) {
+        let Nylines = Math.ceil(height / (100 / this.scale))
         let yidxOffset = Math.floor(dy / 100) + 1
         for (let i = 0; i < Nylines; i++) {
             let yLimit = (100 * (i + yidxOffset) - dy) / this.scale
-            this.context.beginPath()
-            this.context.moveTo(0, yLimit)
-            this.context.lineTo(rect.width, yLimit)
+            context.beginPath()
+            context.moveTo(0, yLimit)
+            context.lineTo(width, yLimit)
             let color = getComputedStyle(document.body).getPropertyValue('--color-base-hover')
-            this.context.strokeStyle = color + "AA"
-            this.context.lineWidth = 1
-            this.context.stroke()
-            this.context.closePath()
+            context.strokeStyle = color + "AA"
+            context.lineWidth = 1
+            context.stroke()
+            context.closePath()
         }
     }
 
-    private drawGrid(rect: DOMRect, dx: number, dy: number) {
-        let Nylines = Math.ceil(this.canvas.height / (50 / this.scale))
+    private drawGrid(context: CanvasRenderingContext2D, dx: number, dy: number, width: number, height: number) {
+        let Nylines = Math.ceil(height / (50 / this.scale))
         let yidxOffset = Math.floor(dy / 50) + 1
         for (let i = 0; i < Nylines; i++) {
             let yLimit = (50 * (i + yidxOffset) - dy) / this.scale
-            this.context.beginPath()
-            this.context.moveTo(0, yLimit)
-            this.context.lineTo(rect.width, yLimit)
+            context.beginPath()
+            context.moveTo(0, yLimit)
+            context.lineTo(width, yLimit)
             let color = getComputedStyle(document.body).getPropertyValue('--color-base-hover')
-            this.context.strokeStyle = color + "AA"
-            this.context.lineWidth = 1
-            this.context.stroke()
-            this.context.closePath()
+            context.strokeStyle = color + "AA"
+            context.lineWidth = 1
+            context.stroke()
+            context.closePath()
         }
-        let Nxlines = Math.ceil(rect.width / (50 / this.scale))
+        let Nxlines = Math.ceil(width / (50 / this.scale))
         let xidxOffset = Math.floor(dx / 50) + 1
         for (let i = 0; i < Nxlines; i++) {
             let xLimit = (50 * (i + xidxOffset) - dx) / this.scale
-            this.context.beginPath()
-            this.context.moveTo(xLimit, 0)
-            this.context.lineTo(xLimit, rect.height)
+            context.beginPath()
+            context.moveTo(xLimit, 0)
+            context.lineTo(xLimit, height)
             let color = getComputedStyle(document.body).getPropertyValue('--color-base-hover')
-            this.context.strokeStyle = color + "AA"
-            this.context.lineWidth = 1
-            this.context.stroke()
-            this.context.closePath()
+            context.strokeStyle = color + "AA"
+            context.lineWidth = 1
+            context.stroke()
+            context.closePath()
         }
     }
 
@@ -455,6 +460,8 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     protected resizeHandler() {
         this.canvas.width = this.canvasContainer.htmlElement.clientWidth
         this.canvas.height = this.canvasContainer.htmlElement.clientHeight
+        this.offscreenCanvas.width = this.canvas.width
+        this.offscreenCanvas.height = this.canvas.height
         if (this.scale = -1) {
             this.scale = PAGE_WIDTH / this.canvas.width * 1.05
         }
