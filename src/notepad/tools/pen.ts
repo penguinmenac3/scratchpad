@@ -8,6 +8,7 @@ import { ColorizableResizableTool } from './abstractTools';
 let MIN_MOTION = 0.2
 export class Pen extends ColorizableResizableTool {
     private points: number[][] = []
+    private lastPoint: [number, number] = [0, 0]
 
     constructor(toolbar: Module<HTMLDivElement>) {
         super(toolbar, iconPen, "pen", "brand", 0.4, "FF", 0.4, 0.8, true)
@@ -52,10 +53,11 @@ export class Pen extends ColorizableResizableTool {
         liveCanvas.beginPath()
         liveCanvas.moveTo((x - offsetX) / scale, (y - offsetY) / scale)
         this.points.push([x, y])
+        this.lastPoint = [x, y]
     }
 
     onMove(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
-        let [x0, y0] = this.points[this.points.length-1]
+        let [x0, y0] = this.lastPoint
         if (Math.sqrt((x-x0)**2 + (y-y0)**2) < MIN_MOTION) return
         liveCanvas.lineTo((x - offsetX) / scale, (y - offsetY) / scale)
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
@@ -63,6 +65,7 @@ export class Pen extends ColorizableResizableTool {
         liveCanvas.lineWidth = this.lineWidth / scale
         liveCanvas.stroke()
         this.points.push([x, y])
+        this.lastPoint = [x, y]
     }
 
     onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
