@@ -275,10 +275,11 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     }
 
     addElements(elements: Iterable<PageElement>, autosave: boolean = true): void {
-        this.modifyElements(elements, autosave)
+        this.modifyElements(elements, false, autosave)
     }
 
-    modifyElements(elements: Iterable<PageElement>, autosave: boolean = true): void {
+    modifyElements(elements: Iterable<PageElement>, skipRender: boolean = false, autosave: boolean = true): void {
+        if (!skipRender) {
         for (let element of elements) {
             let toolName = element.type
             if (!this.tools.has(toolName)) {
@@ -294,6 +295,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             let list = this.layers.get(element.layer)!
             if (list.indexOf(element.uuid) == -1) {
                 list.push(element.uuid)
+                }
             }
         }
         this.lowestEntity = 0

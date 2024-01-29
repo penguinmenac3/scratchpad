@@ -29,7 +29,7 @@ export class InsertSpace extends StaticTool {
             element.bbox_xyxy[3] += dx
         }
         this.lastY = y
-        documentAPI.modifyElements(this.movingElements)
+        documentAPI.modifyElements(this.movingElements, true)
     }
 
     onEnd(documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number): void {

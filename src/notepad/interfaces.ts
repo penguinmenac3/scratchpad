@@ -15,6 +15,7 @@ export interface DocumentAPI {
     // Modify content of document
     addElements(element: PageElement[]): void
     modifyElements(element: PageElement[]): void
+    modifyElements(element: PageElement[], skipRender: boolean): void
     deleteElements(element: PageElement[]): void
     // Get the documents to browse them (despite being modifiable do not modify direclty!)
     getDocument(): Document
