@@ -143,9 +143,6 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         if (mouseBtn == 0) {
             this.tools.get(this.activeTool)?.onStart(this, this.context, x, y, dx, dy, this.scale)
         }
-        //if (mouseBtn == 2) {
-        //    this.tools.get("erasor")?.onStart(this, this.context, x, y, dx, dy, this.scale)
-        //}
     }
     onMouseMove(ev: PointerEvent, mouseBtn: number, previousEv: PointerEvent): void {
         let rawPos = this.computeRawPointerPosition(ev)
@@ -153,10 +150,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         if (mouseBtn == 0) {
             this.tools.get(this.activeTool)?.onMove(this, this.context, x, y, dx, dy, this.scale)
         }
-        //if (mouseBtn == 2) {
-        //    this.tools.get("erasor")?.onMove(this, this.context, x, y, dx, dy, this.scale)
-        //}
-        if (mouseBtn == 1) {
+        if (mouseBtn == 1 || mouseBtn == 2) {
             let rawPreviousPos = this.computeRawPointerPosition(previousEv)
             let previousPos = this.computeVirtualPosition(rawPreviousPos)
             this.offset[0] += previousPos.x - x
@@ -171,9 +165,6 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         if (mouseBtn == 0) {
             this.tools.get(this.activeTool)?.onEnd(this, this.context, x, y, dx, dy, this.scale)
         }
-        //if (mouseBtn == 2) {
-        //    this.tools.get("erasor")?.onEnd(this, this.context, x, y, dx, dy, this.scale)
-        //}
     }
     onPenStart(ev: PointerEvent): void {
         let rawPos = this.computeRawPointerPosition(ev)
