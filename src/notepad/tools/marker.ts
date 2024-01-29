@@ -5,6 +5,7 @@ import { iconMarker } from './toolbar/icons';
 import { ColorizableResizableTool } from './abstractTools';
 
 
+let MIN_MOTION = 1
 export class Marker extends ColorizableResizableTool {
     private points: number[][] = []
 
@@ -54,6 +55,8 @@ export class Marker extends ColorizableResizableTool {
     }
 
     onMove(_documentAPI: DocumentAPI, liveCanvas: CanvasRenderingContext2D, x: number, y: number, offsetX: number, offsetY: number, scale: number): void {
+        let [x0, y0] = this.points[this.points.length-1]
+        if (Math.sqrt((x-x0)**2 + (y-y0)**2) < MIN_MOTION) return
         liveCanvas.lineTo((x - offsetX) / scale, (y - offsetY) / scale)
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + this.color + '-font')
         liveCanvas.strokeStyle = color + this.transparency
