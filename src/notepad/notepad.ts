@@ -6,8 +6,9 @@ import { Toolbar } from './tools/toolbar/toolbar'
 import { SimplePointerEventCallbacks, registerSimplePointerCallbacks } from "./simplePointerEvents"
 
 
-let PAGE_WIDTH: number = 1480
-let PAGE_HEIGHT: number = 2100
+// All units are now in mm
+let PAGE_WIDTH: number = 210
+let PAGE_HEIGHT: number = 297
 
 export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, SimplePointerEventCallbacks {
     private tools = new Map<string, Tool>()
@@ -22,7 +23,8 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     private activeTool: string = "pen"
     private isTouchAllowed: boolean = false
     private offset = [0.0, 0.0]
-    private scale = -1.0
+    private scale = 1.05
+    private deviceScale = 1.0
     private lowestEntity = 0.0
     private openDocumentIdentifier: string = ""
     private saving: null | number = null
@@ -67,7 +69,30 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         }
         this.openDocumentIdentifier = identifier
         this.deleteElements(this.getDocument().values(), false)
-        this.addElements(JSON.parse(localStorage["sp_file_" + identifier]), false)
+        let data = JSON.parse(localStorage["sp_file_" + identifier])
+        // Data from before has approximately a 1/7 conversion to mm format
+        if (data.version === undefined) {
+            for (const key in data) {
+                let element: PageElement = data[key]
+                let box = element.bbox_xyxy
+                element.bbox_xyxy = [
+                    box[0] / 7,
+                    box[1] / 7,
+                    box[2] / 7,
+                    box[3] / 7,
+                ]
+                if (element.type == "pen" || element.type == "marker") {
+                    element.data[1] = element.data[1] / 7
+                    for (const idx in element.data[2]) {
+                        element.data[2][idx][0] = element.data[2][idx][0] / 7
+                        element.data[2][idx][1] = element.data[2][idx][1] / 7
+                    }
+                }
+            }
+            data = {"version": 0, "elements": data}
+            this.delayedAutosave()
+        }
+        this.addElements(data.elements, false)
     }
 
     private delayedAutosave() {
@@ -92,7 +117,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             localStorage["sp_files"] = JSON.stringify(files)
         }
         const pageElements = Array.from(this.getDocument().values())
-        localStorage["sp_file_" + this.openDocumentIdentifier] = JSON.stringify(pageElements)
+        localStorage["sp_file_" + this.openDocumentIdentifier] = JSON.stringify({"version": "1", "elements":pageElements})
         localStorage["sp_last_file"] = this.openDocumentIdentifier
         console.log("Saved: " + this.openDocumentIdentifier)
         document.title = document.title.replace("*", "")
@@ -118,11 +143,11 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
 
         // Update scale
         this.scale *= delta
-        if (this.scale < 0.1) {
-            this.scale = 0.1
+        if (this.scale < 0.25 * this.deviceScale) {
+            this.scale = 0.25 * this.deviceScale
         }
-        if (this.scale > 10.0) {
-            this.scale = 10.0
+        if (this.scale > 5.0 * this.deviceScale) {
+            this.scale = 5.0 * this.deviceScale
         }
         
         // Update offset
@@ -258,7 +283,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             this.offset[0] = Math.min(this.offset[0], PAGE_WIDTH - this.scale * this.canvas.width * 19 / 20)
             this.offset[0] = Math.max(this.offset[0], - this.scale * this.canvas.width / 20)
         }
-        this.offset[1] = Math.min(this.offset[1], this.lowestEntity - this.canvas.height * 0.1)
+        this.offset[1] = Math.min(this.offset[1], this.lowestEntity - this.scale * this.canvas.height / 20)
         this.offset[1] = Math.max(this.offset[1], - this.scale * this.canvas.height / 20)
     }
 
@@ -272,21 +297,21 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
 
     modifyElements(elements: Iterable<PageElement>, skipRender: boolean = false, autosave: boolean = true): void {
         if (!skipRender) {
-        for (let element of elements) {
-            let toolName = element.type
-            if (!this.tools.has(toolName)) {
-                alert("Unsupported tool please let the dev know: " + toolName)
-            }
-            let tool = this.tools.get(toolName)!
-            let sprite = tool.render(element)
-            this.pageElements.set(element.uuid, element)
-            this.textures.set(element.uuid, sprite)
-            if (!this.layers.has(element.layer)) {
-                this.layers.set(element.layer, [])
-            }
-            let list = this.layers.get(element.layer)!
-            if (list.indexOf(element.uuid) == -1) {
-                list.push(element.uuid)
+            for (let element of elements) {
+                let toolName = element.type
+                if (!this.tools.has(toolName)) {
+                    alert("Unsupported tool please let the dev know: " + toolName)
+                }
+                let tool = this.tools.get(toolName)!
+                let sprite = tool.render(element)
+                this.pageElements.set(element.uuid, element)
+                this.textures.set(element.uuid, sprite)
+                if (!this.layers.has(element.layer)) {
+                    this.layers.set(element.layer, [])
+                }
+                let list = this.layers.get(element.layer)!
+                if (list.indexOf(element.uuid) == -1) {
+                    list.push(element.uuid)
                 }
             }
         }
@@ -390,10 +415,11 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     }
 
     private drawLines(context: CanvasRenderingContext2D, _dx: number, dy: number, width: number, height: number) {
-        let Nylines = Math.ceil(height / (100 / this.scale))
+        let spacing = 10  // mm
+        let Nylines = Math.ceil(this.canvas.height / (spacing / this.scale))
         let yidxOffset = Math.floor(dy / 100) + 1
         for (let i = 0; i < Nylines; i++) {
-            let yLimit = (100 * (i + yidxOffset) - dy) / this.scale
+            let yLimit = (spacing * (i + yidxOffset) - dy) / this.scale
             context.beginPath()
             context.moveTo(0, yLimit)
             context.lineTo(width, yLimit)
@@ -406,10 +432,11 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     }
 
     private drawGrid(context: CanvasRenderingContext2D, dx: number, dy: number, width: number, height: number) {
-        let Nylines = Math.ceil(height / (50 / this.scale))
-        let yidxOffset = Math.floor(dy / 50) + 1
+        let spacing = 5.0 // mm
+        let Nylines = Math.ceil(height / (spacing / this.scale))
+        let yidxOffset = Math.floor(dy / spacing) + 1
         for (let i = 0; i < Nylines; i++) {
-            let yLimit = (50 * (i + yidxOffset) - dy) / this.scale
+            let yLimit = (spacing * (i + yidxOffset) - dy) / this.scale
             context.beginPath()
             context.moveTo(0, yLimit)
             context.lineTo(width, yLimit)
@@ -419,10 +446,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             context.stroke()
             context.closePath()
         }
-        let Nxlines = Math.ceil(width / (50 / this.scale))
-        let xidxOffset = Math.floor(dx / 50) + 1
+        let Nxlines = Math.ceil(width / (spacing / this.scale))
+        let xidxOffset = Math.floor(dx / spacing) + 1
         for (let i = 0; i < Nxlines; i++) {
-            let xLimit = (50 * (i + xidxOffset) - dx) / this.scale
+            let xLimit = (spacing * (i + xidxOffset) - dx) / this.scale
             context.beginPath()
             context.moveTo(xLimit, 0)
             context.lineTo(xLimit, height)
@@ -453,9 +480,9 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         this.canvas.height = this.canvasContainer.htmlElement.clientHeight
         this.offscreenCanvas.width = this.canvas.width
         this.offscreenCanvas.height = this.canvas.height
-        if (this.scale = -1) {
-            this.scale = PAGE_WIDTH / this.canvas.width * 1.05
-        }
+        let oldDeviceScale = this.deviceScale
+        this.deviceScale = PAGE_WIDTH / this.canvas.width
+        this.scale = this.scale / oldDeviceScale * this.deviceScale
         this.limitOffset()
         this.requestRedraw()
         console.log("resized")

@@ -9,13 +9,13 @@ export class Marker extends ColorizableResizableTool {
     private points: number[][] = []
 
     constructor(toolbar: Module<HTMLDivElement>) {
-        super(toolbar, iconMarker, "marker", "accent", 20, "77", 20, 50)
+        super(toolbar, iconMarker, "marker", "accent", 5, "77", 5, 10)
     }
 
     render(element: PageElement): Sprite {
-        let scale = 2
-        let width = (element.bbox_xyxy[2] - element.bbox_xyxy[0]) * scale
-        let height = (element.bbox_xyxy[3] - element.bbox_xyxy[1]) * scale
+        let pixels_per_mm = 5
+        let width = (element.bbox_xyxy[2] - element.bbox_xyxy[0]) * pixels_per_mm
+        let height = (element.bbox_xyxy[3] - element.bbox_xyxy[1]) * pixels_per_mm
         //let canvas = new OffscreenCanvas(width, height)
         let canvas = document.createElement("canvas")
         canvas.width = width
@@ -24,12 +24,12 @@ export class Marker extends ColorizableResizableTool {
         ctx.clearRect(0,0, width, height)
         let color = getComputedStyle(document.body).getPropertyValue('--color-' + element.data[0] + '-font');
         ctx.strokeStyle = color + this.transparency
-        ctx.lineWidth = element.data[1] * scale
+        ctx.lineWidth = element.data[1] * pixels_per_mm
         ctx.beginPath()
         let first: boolean = true
         for (let pt of element.data[2]) {
-            let x = pt[0] * scale
-            let y = pt[1] * scale
+            let x = pt[0] * pixels_per_mm
+            let y = pt[1] * pixels_per_mm
             if (first) {
                 ctx.moveTo(x, y)
                 first = false
