@@ -416,7 +416,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
 
     private drawLines(context: CanvasRenderingContext2D, _dx: number, dy: number, width: number, height: number) {
         let spacing = 10  // mm
-        let Nylines = Math.ceil(this.canvas.height / (spacing / this.scale))
+        let Nylines = Math.ceil(height / (spacing / this.scale))
         let yidxOffset = Math.floor(dy / 100) + 1
         for (let i = 0; i < Nylines; i++) {
             let yLimit = (spacing * (i + yidxOffset) - dy) / this.scale
