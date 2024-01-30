@@ -4,6 +4,7 @@ import { Event, Eventbus } from "../webui/eventbus"
 import { PageElement, Tool, Sprite, DocumentAPI, Document } from "./interfaces"
 import { Toolbar } from './tools/toolbar/toolbar'
 import { SimplePointerEventCallbacks, registerSimplePointerCallbacks } from "./simplePointerEvents"
+import { PageManager } from "../webui/pagemanager"
 
 
 // All units are now in mm
@@ -55,7 +56,12 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
 
     public update(kwargs: KWARGS, _changedPage: boolean) {
         if (kwargs.file) {
-            this.loadLocalStorage(kwargs.file)
+            if (kwargs.file == "NEW") {
+                this.deleteElements(this.getDocument().values(), false)
+                this.openDocumentIdentifier = ""
+            } else {
+                this.loadLocalStorage(kwargs.file)
+            }
         } else if (localStorage["sp_last_file"]) {
             this.loadLocalStorage(localStorage["sp_last_file"])
         }
@@ -65,6 +71,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     private loadLocalStorage(identifier: string) {
         if (!localStorage["sp_file_" + identifier]) {
             alert("Error file not locally available: " + identifier)
+            PageManager.open("overview", {})
             return
         }
         this.openDocumentIdentifier = identifier
@@ -472,6 +479,12 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             }
         } else if (event.type == "string" && event.data == "touchToggle") {
             this.isTouchAllowed = !this.isTouchAllowed
+        } else if (event.type == "string" && event.data == "back") {
+            if (document.title.startsWith("*")) {
+                alert("Cannot leave document while save is pending.")
+            } else {
+                PageManager.open("overview", {})
+            }
         }
     }
 
