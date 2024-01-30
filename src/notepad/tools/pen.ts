@@ -3,6 +3,7 @@ import { PageElement, Sprite, DocumentAPI, LAYER_FG } from "../interfaces";
 import { Module } from '../../webui/module';
 import { iconPen } from './toolbar/icons';
 import { ColorizableResizableTool } from './abstractTools';
+import { toTwoDigits } from '../../numbertools';
 
 
 let MIN_MOTION = 0.2
@@ -102,8 +103,12 @@ export class Pen extends ColorizableResizableTool {
         maxx += 5 + lineWidth
         maxy += 5 + lineWidth
         let normalizedPoints = []
+        minx = toTwoDigits(minx)
+        maxx = toTwoDigits(maxx)
+        miny = toTwoDigits(miny)
+        maxy = toTwoDigits(maxy)
         for (let pt of points) {
-            normalizedPoints.push([pt[0]-minx, pt[1]-miny])
+            normalizedPoints.push([toTwoDigits(pt[0]-minx), toTwoDigits(pt[1]-miny)])
         }
         return [normalizedPoints, [minx, miny, maxx, maxy]]
     }

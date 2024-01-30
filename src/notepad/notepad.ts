@@ -5,6 +5,7 @@ import { PageElement, Tool, Sprite, DocumentAPI, Document } from "./interfaces"
 import { Toolbar } from './tools/toolbar/toolbar'
 import { SimplePointerEventCallbacks, registerSimplePointerCallbacks } from "./simplePointerEvents"
 import { PageManager } from "../webui/pagemanager"
+import { toTwoDigits } from "../numbertools"
 
 
 // All units are now in mm
@@ -83,21 +84,40 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
                 let element: PageElement = data[key]
                 let box = element.bbox_xyxy
                 element.bbox_xyxy = [
-                    box[0] / 7,
-                    box[1] / 7,
-                    box[2] / 7,
-                    box[3] / 7,
+                    toTwoDigits(box[0] / 7),
+                    toTwoDigits(box[1] / 7),
+                    toTwoDigits(box[2] / 7),
+                    toTwoDigits(box[3] / 7),
                 ]
                 if (element.type == "pen" || element.type == "marker") {
-                    element.data[1] = element.data[1] / 7
+                    element.data[1] = toTwoDigits(element.data[1] / 7)
                     for (const idx in element.data[2]) {
-                        element.data[2][idx][0] = element.data[2][idx][0] / 7
-                        element.data[2][idx][1] = element.data[2][idx][1] / 7
+                        element.data[2][idx][0] = toTwoDigits(element.data[2][idx][0] / 7)
+                        element.data[2][idx][1] = toTwoDigits(element.data[2][idx][1] / 7)
                     }
                 }
             }
-            data = {"version": 0, "elements": data}
+            data = {"version": "0", "elements": data}
             this.delayedAutosave()
+        }
+        if (data.version == "1") {
+            for (const key in data) {
+                let element: PageElement = data[key]
+                let box = element.bbox_xyxy
+                element.bbox_xyxy = [
+                    toTwoDigits(box[0]),
+                    toTwoDigits(box[1]),
+                    toTwoDigits(box[2]),
+                    toTwoDigits(box[3]),
+                ]
+                if (element.type == "pen" || element.type == "marker") {
+                    element.data[1] = toTwoDigits(element.data[1])
+                    for (const idx in element.data[2]) {
+                        element.data[2][idx][0] = toTwoDigits(element.data[2][idx][0])
+                        element.data[2][idx][1] = toTwoDigits(element.data[2][idx][1])
+                    }
+                }
+            }
         }
         this.addElements(data.elements, false)
     }
@@ -124,7 +144,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             localStorage["sp_files"] = JSON.stringify(files)
         }
         const pageElements = Array.from(this.getDocument().values())
-        localStorage["sp_file_" + this.openDocumentIdentifier] = JSON.stringify({"version": "1", "elements":pageElements})
+        localStorage["sp_file_" + this.openDocumentIdentifier] = JSON.stringify({"version": "1.1", "elements": pageElements})
         localStorage["sp_last_file"] = this.openDocumentIdentifier
         console.log("Saved: " + this.openDocumentIdentifier)
         document.title = document.title.replace("*", "")

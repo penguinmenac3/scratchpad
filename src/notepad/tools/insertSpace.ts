@@ -2,6 +2,7 @@ import { Module } from '../../webui/module';
 import { iconUpDown } from './toolbar/icons';
 import { StaticTool } from './abstractTools';
 import { DocumentAPI, PageElement } from '../interfaces';
+import { toTwoDigits } from '../../numbertools';
 
 
 export class InsertSpace extends StaticTool {
@@ -25,8 +26,8 @@ export class InsertSpace extends StaticTool {
     onMove(documentAPI: DocumentAPI, _liveCanvas: CanvasRenderingContext2D, _x: number, y: number): void {
         for (let element of this.movingElements) {
             let dx = y - this.lastY
-            element.bbox_xyxy[1] += dx
-            element.bbox_xyxy[3] += dx
+            element.bbox_xyxy[1] = toTwoDigits(element.bbox_xyxy[1] + dx)
+            element.bbox_xyxy[3] = toTwoDigits(element.bbox_xyxy[3] + dx)
         }
         this.lastY = y
         documentAPI.modifyElements(this.movingElements, true)
