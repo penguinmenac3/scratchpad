@@ -16,6 +16,7 @@ export class English {
     public static APPNAME = "ScratchPad"
 
     public static LOGIN_KNOWN_CONNECTIONS = "Reuse Connection"
+    public static LOGIN_ALL_CONNECTIONS = "All"
     public static LOGIN_SESSION_NAME = "Session Name"
     public static LOGIN_API_ENDPOINT_LABEL = "API Endpoint URL"
     public static LOGIN_API_TOKEN_LABEL = "API Token"
