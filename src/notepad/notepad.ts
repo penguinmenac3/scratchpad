@@ -101,8 +101,8 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             this.delayedAutosave()
         }
         if (data.version == "1") {
-            for (const key in data) {
-                let element: PageElement = data[key]
+            for (const key in data.elements) {
+                let element: PageElement = data.elements[key]
                 let box = element.bbox_xyxy
                 element.bbox_xyxy = [
                     toTwoDigits(box[0]),
