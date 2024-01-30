@@ -18,13 +18,15 @@ export class Overview extends Module<HTMLDivElement> {
     }
     public update(_kwargs: KWARGS, _changedPage: boolean): void {
         this.fileList.htmlElement.innerHTML = ""
-        let files = JSON.parse(localStorage.sp_files)
-        files = files.filter(notEmpty)
-        // Sort reversed, so newest date is at top
-        files.sort((a: string, b: string) => b.localeCompare(a))
         this.fileList.add(new FileEntry("NEW"))
-        for (let fname of files) {
-            this.fileList.add(new FileEntry(fname))
+        if (localStorage.sp_files) {
+            let files = JSON.parse(localStorage.sp_files)
+            files = files.filter(notEmpty)
+            // Sort reversed, so newest date is at top
+            files.sort((a: string, b: string) => b.localeCompare(a))
+            for (let fname of files) {
+                this.fileList.add(new FileEntry(fname))
+            }
         }
     }
 }
