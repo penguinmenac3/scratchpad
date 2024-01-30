@@ -3,6 +3,7 @@ import './main.css'
 import { PageManager } from './webui/pagemanager'
 import { STRINGS, setupLanguage } from './language/default'
 import { Notepad } from './notepad/notepad'
+import { Overview } from './overview/overview'
 
 async function main() {
   setupLanguage()
@@ -11,6 +12,7 @@ async function main() {
     "notepad",
     {
       notepad: new Notepad(),
+      overview: new Overview(),
     }
   )
 }
