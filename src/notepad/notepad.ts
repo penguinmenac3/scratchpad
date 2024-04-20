@@ -6,6 +6,8 @@ import { Toolbar } from './tools/toolbar/toolbar'
 import { SimplePointerEventCallbacks, registerSimplePointerCallbacks } from "./simplePointerEvents"
 import { PageManager } from "../webui/pagemanager"
 import { toTwoDigits } from "../numbertools"
+import { ConfirmCancelPopup } from "../webui/popup"
+import { STRINGS } from "../language/default"
 
 
 // All units are now in mm
@@ -28,10 +30,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     private scale = 1.05
     private deviceScale = 1.0
     private lowestEntity = 0.0
-    private openDocumentIdentifier: string = ""
     private saving: null | number = null
     private mousePos: [number, number] = [0.0, 0.0]
     private background: string = "grid"
+    private remoteDocumentURL = ""
 
     constructor() {
         super("div")
@@ -56,29 +58,18 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     }
 
     public update(kwargs: KWARGS, _changedPage: boolean) {
-        if (kwargs.file) {
-            if (kwargs.file == "NEW") {
-                this.deleteElements(this.getDocument().values(), false)
-                this.openDocumentIdentifier = ""
-            } else {
-                this.loadLocalStorage(kwargs.file)
-            }
-        } else if (localStorage["sp_last_file"]) {
-            this.loadLocalStorage(localStorage["sp_last_file"])
-        }
-        window.setTimeout(this.resizeHandler.bind(this), 100)
-    }
-
-    private loadLocalStorage(identifier: string) {
-        if (!localStorage["sp_file_" + identifier]) {
-            alert("Error file not locally available: " + identifier)
-            PageManager.open("overview", {})
-            return
-        }
-        this.openDocumentIdentifier = identifier
         this.deleteElements(this.getDocument().values(), false)
-        let spf = localStorage["sp_file_" + identifier]
-        this.loadFromSPF(spf)
+        let spf = undefined
+        if (kwargs.file) {
+            alert("Error: Loading file from url not implemented!")
+            this.remoteDocumentURL = kwargs.file
+            // TODO load remote files spf into variable
+        } else {
+            this.remoteDocumentURL = ""
+            spf = localStorage["sp_file"]
+        }
+        if (spf) this.loadFromSPF(spf)
+        window.setTimeout(this.resizeHandler.bind(this), 100)
     }
 
     private loadFromSPF(spf: string) {
@@ -131,33 +122,25 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         // delay the autosave, so that we are not constantly saving after each stroke
         // but only if user idles for some time
         if (this.saving != null) {
-            document.title = document.title.replace("*", "")
             window.clearTimeout(this.saving)
         }
-        document.title = "*" + document.title
-        this.saving = window.setTimeout(this.saveLocalStorage.bind(this), 5000)
+        Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "dirty"})
+        this.saving = window.setTimeout(this.save.bind(this), 5000)
+    }
+
+    private save() {
+        if (this.remoteDocumentURL == "") {
+            localStorage["sp_file"] = this.getSPF()
+        } else {
+            alert("ERROR: Saving to remote url not implemented yet!")
+            // TODO implement saving to url
+        }
+        Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "saved"})
     }
 
     private getSPF(): string {
         const pageElements = Array.from(this.getDocument().values())
         return JSON.stringify({"version": "1.1", "elements": pageElements})
-    }
-
-    private saveLocalStorage() {
-        if (this.openDocumentIdentifier == "") {
-            let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":", "")
-            this.openDocumentIdentifier = timestamp + "_Unnamed.spf"
-        }
-        let files: string[] = JSON.parse(localStorage["sp_files"] || "[]")
-        if (!files.includes(this.openDocumentIdentifier)) {
-            files.push(this.openDocumentIdentifier)
-            localStorage["sp_files"] = JSON.stringify(files)
-        }
-        localStorage["sp_file_" + this.openDocumentIdentifier] = this.getSPF()
-        localStorage["sp_last_file"] = this.openDocumentIdentifier
-        console.log("Saved: " + this.openDocumentIdentifier)
-        document.title = document.title.replace("*", "")
-        // Trigger a sync with remote
     }
 
     private scroll(ev: WheelEvent): void {
@@ -508,15 +491,25 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             }
         } else if (event.type == "string" && event.data == "touchToggle") {
             this.isTouchAllowed = !this.isTouchAllowed
-        } else if (event.type == "string" && event.data == "back") {
-            if (document.title.startsWith("*")) {
-                alert("Cannot leave document while save is pending.")
-            } else {
-                PageManager.open("overview", {})
+        } else if (event.type == "string" && event.data == "save") {
+            if (this.saving != null) {
+                window.clearTimeout(this.saving)
             }
+            this.save()
         } else if (event.type == "string" && event.data == "export") {
             let spf = this.getSPF()
-            this.saveToLocalTextFile(spf, this.openDocumentIdentifier)
+            let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":", "")
+            this.saveToLocalTextFile(spf, timestamp + "_Note.spf")
+        } else if (event.type == "string" && event.data == "clear") {
+            let innerClass = "popupContent"
+            let containerClass = 'popupContainer'
+            let popup = new ConfirmCancelPopup(innerClass, containerClass, STRINGS.NOTEPAD_CLEAR_QUESTION, STRINGS.NOTEPAD_CLEAR_CANCEL, STRINGS.NOTEPAD_CLEAR_CONFIRM)
+            popup.onConfirm = () => {}
+            popup.onCancel = () => {
+                this.deleteElements(this.getDocument().values(), false)
+                Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "dirty"})
+            }
+            popup.show()
         }
     }
 

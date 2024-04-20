@@ -27,4 +27,8 @@ export class English {
     public static LOGIN_OFFLINE_MODAL_QUESTION = "Cannot connect to server. Do you want to continue in offline mode? Offline mode might show you outdated files and data."
     public static LOGIN_OFFLINE_MODAL_CONFIRM = "Continue offline"
     public static LOGIN_OFFLINE_MODAL_CANCEL = "Return to login"
+
+    public static NOTEPAD_CLEAR_QUESTION = "Are you sure you want to clear the document? This will delete all strokes and content of it irreversibly!"
+    public static NOTEPAD_CLEAR_CONFIRM = "Yes, delete it"
+    public static NOTEPAD_CLEAR_CANCEL = "No, keep it"
 }
