@@ -543,7 +543,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             for (let uuid of uuids) {
                 let renderable = this.pageElements.get(uuid)!
                 console.log(renderable.type)
-                let [x1, y1, x2, y2] = renderable.bbox_xyxy
+                let [x1, y1, _x2, _y2] = renderable.bbox_xyxy
                 let toolName = renderable.type
                 if (!this.tools.has(toolName)) {
                     alert("Unsupported tool please let the dev know: " + toolName)

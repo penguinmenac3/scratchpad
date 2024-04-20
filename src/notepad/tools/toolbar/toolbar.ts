@@ -2,7 +2,7 @@ import './toolbar.css'
 import { ToolButton } from './toolbutton'
 import { Spacer } from './spacer'
 import { Module } from '../../../webui/module'
-import { iconArrowLeft, iconExport, iconFinger, iconRedo, iconSave, iconTrash, iconUndo } from './icons'
+import { iconExport, iconFinger, iconRedo, iconSave, iconTrash, iconUndo } from './icons'
 import { Tool } from '../../interfaces'
 import { Pen } from '../pen'
 import { Marker } from '../marker'
@@ -12,14 +12,13 @@ import { Select } from '../select'
 import { InsertSpace } from '../insertSpace'
 import { Image } from '../image'
 import { Event, Eventbus } from '../../../webui/eventbus'
-import { iconBars, iconXmark } from '../../../webui/icons/icons'
 
 
 export class Toolbar extends Module<HTMLDivElement> {
   public constructor(tools: Map<string, Tool>) {
     super("div", "", "toolbar")
     let saveButton = new ToolButton("save", false, iconSave)
-    Eventbus.register("save", (topic: string, event: Event) => {
+    Eventbus.register("save", (_topic: string, event: Event) => {
       if (event.type == "saved") {
         saveButton.htmlElement.style.fill = "var(--color-brand-c1)"
       } else {
