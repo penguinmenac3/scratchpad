@@ -79,6 +79,10 @@ export abstract class ColorizableResizableTool implements Tool {
             }
         }
     }
+
+    public getTransparancy(): string {
+        return this.transparency
+    }
     
     register(tools: Map<string, Tool>): void {
         tools.set(this.id, this)

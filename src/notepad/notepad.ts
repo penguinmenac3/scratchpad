@@ -4,10 +4,11 @@ import { Event, Eventbus } from "../webui/eventbus"
 import { PageElement, Tool, Sprite, DocumentAPI, Document } from "./interfaces"
 import { Toolbar } from './tools/toolbar/toolbar'
 import { SimplePointerEventCallbacks, registerSimplePointerCallbacks } from "./simplePointerEvents"
-import { PageManager } from "../webui/pagemanager"
 import { toTwoDigits } from "../numbertools"
 import { ConfirmCancelPopup } from "../webui/popup"
 import { STRINGS } from "../language/default"
+import { svgAddHeader, svgEncodePolyline, svgEncodeSPFComment } from "./svg"
+import { ColorizableResizableTool } from "./tools/abstractTools"
 
 
 // All units are now in mm
@@ -497,9 +498,9 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             }
             this.save()
         } else if (event.type == "string" && event.data == "export") {
-            let spf = this.getSPF()
             let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":", "")
-            this.saveToLocalTextFile(spf, timestamp + "_Note.spf")
+            let svg = this.getSVG()
+            this.saveToLocalTextFile(svg, timestamp + "_Note.spf.svg")
         } else if (event.type == "string" && event.data == "clear") {
             let innerClass = "popupContent"
             let containerClass = 'popupContainer'
@@ -511,6 +512,59 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             }
             popup.show()
         }
+    }
+
+    private getSVG(): string {
+        let pixels_per_mm = 1
+        let maxx = 0
+        let maxy = 0
+        let minx = 100000
+        let miny = 100000
+        let svg = ""
+        svg += svgEncodeSPFComment(this.getSPF())
+        let layers = Array.from(this.layers.keys())
+        layers = layers.sort()
+        // Get boundaries of all objects to find canvas sizes
+        for (let layer of layers) {
+            let uuids = this.layers.get(layer)!
+            for (let uuid of uuids) {
+                let renderable = this.pageElements.get(uuid)!
+                console.log(renderable.type)
+                let [x1, y1, x2, y2] = renderable.bbox_xyxy
+                if (x2 > maxx) maxx = x2
+                if (y2 > maxy) maxy = y2
+                if (x1 < minx) minx = x1
+                if (y1 < miny) miny = y1
+            }
+        }
+        // Convert elements to SVG elements
+        for (let layer of layers) {
+            let uuids = this.layers.get(layer)!
+            for (let uuid of uuids) {
+                let renderable = this.pageElements.get(uuid)!
+                console.log(renderable.type)
+                let [x1, y1, x2, y2] = renderable.bbox_xyxy
+                let toolName = renderable.type
+                if (!this.tools.has(toolName)) {
+                    alert("Unsupported tool please let the dev know: " + toolName)
+                }
+                if (toolName == "pen" || toolName == "marker")  {
+                    let tool = this.tools.get(toolName)! as ColorizableResizableTool
+                    let color = getComputedStyle(document.body).getPropertyValue('--color-' + renderable.data[0] + '-font');
+                    color = color + tool.getTransparancy()
+                    let width = renderable.data[1] * pixels_per_mm
+                    let points: number[][] = []
+                    for (let pt of renderable.data[2]) {
+                        let x = x1 + pt[0] * pixels_per_mm
+                        let y = y1 + pt[1] * pixels_per_mm
+                        points.push([x - minx,y - miny])
+                    }
+                    let svg_part = svgEncodePolyline(points, color, width)
+                    svg += svg_part
+                }
+            }
+        }
+        return svgAddHeader(svg, (maxx-minx), (maxy-miny))
     }
 
     private saveToLocalTextFile(fileContent: string, fileName: string) {
