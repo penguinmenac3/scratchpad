@@ -2,8 +2,7 @@ import './toolbar.css'
 import { ToolButton } from './toolbutton'
 import { Spacer } from './spacer'
 import { Module } from '../../../webui/module'
-import { iconArrowLeft, iconFinger, iconRedo, iconUndo } from './icons'
-import { iconBars } from '../../../webui/icons/icons'
+import { iconArrowLeft, iconExport, iconFinger, iconRedo, iconUndo } from './icons'
 import { Tool } from '../../interfaces'
 import { Pen } from '../pen'
 import { Marker } from '../marker'
@@ -18,6 +17,7 @@ export class Toolbar extends Module<HTMLDivElement> {
   public constructor(tools: Map<string, Tool>) {
     super("div", "", "toolbar")
     this.add(new ToolButton("back", false, iconArrowLeft))
+    this.add(new ToolButton("export", false, iconExport))
     this.add(new Spacer())
     new Pen(this).register(tools)
     new Marker(this).register(tools)
@@ -28,8 +28,6 @@ export class Toolbar extends Module<HTMLDivElement> {
     new Image(this).register(tools)
     this.add(new Spacer())
 
-    this.add(new ToolButton("settings_document", false, iconBars, true))
-    this.add(new Spacer(true))
     this.add(new ToolButton("redo", false, iconRedo, true))
     this.add(new ToolButton("undo", false, iconUndo, true))
     this.add(new Spacer(true))

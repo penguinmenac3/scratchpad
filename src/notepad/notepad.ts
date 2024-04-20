@@ -77,7 +77,12 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         }
         this.openDocumentIdentifier = identifier
         this.deleteElements(this.getDocument().values(), false)
-        let data = JSON.parse(localStorage["sp_file_" + identifier])
+        let spf = localStorage["sp_file_" + identifier]
+        this.loadFromSPF(spf)
+    }
+
+    private loadFromSPF(spf: string) {
+        let data = JSON.parse(spf)
         // Data from before has approximately a 1/7 conversion to mm format
         if (data.version === undefined) {
             for (const key in data) {
@@ -133,6 +138,11 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         this.saving = window.setTimeout(this.saveLocalStorage.bind(this), 5000)
     }
 
+    private getSPF(): string {
+        const pageElements = Array.from(this.getDocument().values())
+        return JSON.stringify({"version": "1.1", "elements": pageElements})
+    }
+
     private saveLocalStorage() {
         if (this.openDocumentIdentifier == "") {
             let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":", "")
@@ -143,8 +153,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             files.push(this.openDocumentIdentifier)
             localStorage["sp_files"] = JSON.stringify(files)
         }
-        const pageElements = Array.from(this.getDocument().values())
-        localStorage["sp_file_" + this.openDocumentIdentifier] = JSON.stringify({"version": "1.1", "elements": pageElements})
+        localStorage["sp_file_" + this.openDocumentIdentifier] = this.getSPF()
         localStorage["sp_last_file"] = this.openDocumentIdentifier
         console.log("Saved: " + this.openDocumentIdentifier)
         document.title = document.title.replace("*", "")
@@ -505,7 +514,20 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             } else {
                 PageManager.open("overview", {})
             }
+        } else if (event.type == "string" && event.data == "export") {
+            let spf = this.getSPF()
+            this.saveToLocalTextFile(spf, this.openDocumentIdentifier)
         }
+    }
+
+    private saveToLocalTextFile(fileContent: string, fileName: string) {
+        let blob = new Blob([fileContent], {type:'text/plain'})
+        let a = document.createElement('a')
+        a.href = window.URL.createObjectURL(blob)
+        a.download = typeof(fileName) === 'string' ? fileName : 'download'
+        a.target = '_blank'
+        a.click()
+        a.remove()
     }
 
     protected resizeHandler() {
