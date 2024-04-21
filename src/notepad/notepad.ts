@@ -5,10 +5,11 @@ import { PageElement, Tool, Sprite, DocumentAPI, Document } from "./interfaces"
 import { Toolbar } from './tools/toolbar/toolbar'
 import { SimplePointerEventCallbacks, registerSimplePointerCallbacks } from "./simplePointerEvents"
 import { toTwoDigits } from "../numbertools"
-import { ConfirmCancelPopup } from "../webui/popup"
+import { ConfirmCancelPopup, ExitablePopup } from "../webui/popup"
 import { STRINGS } from "../language/default"
 import { svgAddHeader, svgEncodePolyline, svgEncodeSPFComment } from "./svg"
 import { ColorizableResizableTool } from "./tools/abstractTools"
+import { Button, FormInput } from "../webui/form"
 
 
 // All units are now in mm
@@ -501,6 +502,43 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
             let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":", "")
             let svg = this.getSVG()
             this.saveToLocalTextFile(svg, timestamp + "_Note.spf.svg")
+        }  else if (event.type == "string" && event.data == "import") {
+            let popup = new ExitablePopup()
+            popup.add(new Module<HTMLDivElement>("div", STRINGS.NOTEPAD_IMPORT_QUESTION, "notepad-importHeader"))
+            let importFile = new FormInput("importFile", "*.spf.svg or *.spf", "file", "notepad-importFile")
+            popup.add(importFile)
+            let button = new Button(STRINGS.NOTEPAD_IMPORT_CONFIRM, "notepad-importConfirm")
+            let that = this
+            button.onClick = () => {
+                if (importFile.htmlElement.files?.length) {
+                    let fileObject = importFile.htmlElement.files[0]
+                    if (!fileObject.name.endsWith(".spf.svg") && !fileObject.name.endsWith(".spf")) {
+                        alert(STRINGS.NOTEPAD_IMPORT_UNSUPPORTED_FILE)
+                        return
+                    }
+                    var reader = new FileReader()
+                    reader.onload = function(e)
+                    {
+                        let target = e.target
+                        if (target != null) {
+                            let content: string = target.result as string
+                            if (fileObject.name.endsWith(".spf.svg")) {
+                                let spfStart = content.indexOf("<!--\n")
+                                let spfEnd = content.indexOf("\n-->")
+                                content = content.slice(spfStart + 5, spfEnd)
+                            }
+                            that.deleteElements(that.getDocument().values(), false)
+                            that.remoteDocumentURL = ""
+                            if (content) that.loadFromSPF(content)
+                            Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "dirty"})
+                            popup.dispose()
+                        }
+                    };
+                    reader.readAsBinaryString(fileObject);
+                }
+            }
+            popup.add(button)
+            popup.show()
         } else if (event.type == "string" && event.data == "clear") {
             let innerClass = "popupContent"
             let containerClass = 'popupContainer'

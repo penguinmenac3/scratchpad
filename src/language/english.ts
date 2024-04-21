@@ -31,4 +31,8 @@ export class English {
     public static NOTEPAD_CLEAR_QUESTION = "Are you sure you want to clear the document? This will delete all strokes and content of it irreversibly!"
     public static NOTEPAD_CLEAR_CONFIRM = "Yes, delete it"
     public static NOTEPAD_CLEAR_CANCEL = "No, keep it"
+
+    public static NOTEPAD_IMPORT_QUESTION = "What file do you want to import (*.spf.svg or *.spf)? Note: Importing will overwrite content currently displayed."
+    public static NOTEPAD_IMPORT_CONFIRM = "Import"
+    public static NOTEPAD_IMPORT_UNSUPPORTED_FILE = "ERROR: Only *.spf and *.spf.svg are supported filetypes."
 }

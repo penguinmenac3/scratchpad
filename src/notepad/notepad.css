@@ -24,3 +24,43 @@
 .notepad-canvasContainer canvas {
     background-color: var(--color-base);
 }
+
+.notepad-importHeader {
+    display: block;
+    border-radius: var(--radius);
+    font-size: 1.2em;
+    margin-top: 1em;
+    padding: 0.4em;
+    align-items: center;
+    justify-content: center;
+}
+
+.notepad-importFile {
+    display: block;
+    border-radius: var(--radius);
+    font-size: 1.2em;
+    margin-bottom: 0.6em;
+    margin-top: 0.6em;
+    padding: 0.4em;
+    align-items: center;
+    justify-content: center;
+    width: -webkit-fill-available;
+}
+.notepad-importFile:hover {
+    background-color: var(--color-base-hover);
+}
+
+.notepad-importConfirm {
+    display: block;
+    border-radius: var(--radius);
+    background-color: var(--color-brand);
+    color: var(--color-brand-c);
+    font-size: 1.2em;
+    margin: 0.05em;
+    padding: 0.4em;
+    align-items: center;
+    justify-content: center;
+}
+.notepad-importConfirm:hover {
+    background-color: var(--color-brand-font-hover);
+}

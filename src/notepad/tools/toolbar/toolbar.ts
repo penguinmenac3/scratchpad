@@ -2,15 +2,14 @@ import './toolbar.css'
 import { ToolButton } from './toolbutton'
 import { Spacer } from './spacer'
 import { Module } from '../../../webui/module'
-import { iconExport, iconFinger, iconRedo, iconSave, iconTrash, iconUndo } from './icons'
+import { iconExport, iconFinger, iconImport, iconSave, iconTrash } from './icons'
 import { Tool } from '../../interfaces'
 import { Pen } from '../pen'
 import { Marker } from '../marker'
 import { Erasor } from '../erasor'
-import { Text } from '../text'
-import { Select } from '../select'
+//import { Select } from '../select'
 import { InsertSpace } from '../insertSpace'
-import { Image } from '../image'
+//import { Image } from '../image'
 import { Event, Eventbus } from '../../../webui/eventbus'
 
 
@@ -26,22 +25,21 @@ export class Toolbar extends Module<HTMLDivElement> {
       }
     })
     this.add(saveButton)
-    this.add(new ToolButton("export", false, iconExport))
-    this.add(new Spacer())
     new Pen(this).register(tools)
     new Marker(this).register(tools)
     new Erasor(this).register(tools)
-    new Text(this).register(tools)
-    new Select(this).register(tools)
+    //new Select(this).register(tools)
     new InsertSpace(this).register(tools)
-    new Image(this).register(tools)
+    //new Image(this).register(tools)
     this.add(new Spacer())
     this.add(new ToolButton("clear", false, iconTrash))
 
-    this.add(new ToolButton("redo", false, iconRedo, true))
-    this.add(new ToolButton("undo", false, iconUndo, true))
+    this.add(new ToolButton("export", false, iconExport, true))
+    this.add(new ToolButton("import", false, iconImport, true))
     this.add(new Spacer(true))
-    this.add(new ToolButton("touchToggle", false, iconFinger, true, true))
+    //this.add(new ToolButton("redo", false, iconRedo, true))
+    //this.add(new ToolButton("undo", false, iconUndo, true))
     //this.add(new Spacer(true))
+    this.add(new ToolButton("touchToggle", false, iconFinger, true, true))
   }
 }
