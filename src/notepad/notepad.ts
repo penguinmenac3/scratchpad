@@ -35,11 +35,10 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
     private saving: null | number = null
     private mousePos: [number, number] = [0.0, 0.0]
     private background: string = "grid"
-    private remoteDocumentURL = ""
 
-    constructor() {
-        super("div")
-        this.add(new Toolbar(this.tools))
+    constructor(spf:string, cssClass: string = "", hasBack: boolean = false) {
+        super("div", "", cssClass)
+        this.add(new Toolbar(this.tools, hasBack))
 
         this.canvasContainer = new Module<HTMLDivElement>("div", "", "notepad-canvasContainer")
         this.add(this.canvasContainer)
@@ -57,24 +56,32 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         this.canvas.addEventListener('pointermove', this.computeRawPointerPosition.bind(this))
         registerSimplePointerCallbacks(this.canvas, this)
         this.canvas.addEventListener("wheel", this.scroll.bind(this), false)
-    }
 
-    public update(kwargs: KWARGS, _changedPage: boolean) {
-        this.deleteElements(this.getDocument().values(), false)
-        let spf = undefined
-        if (kwargs.file) {
-            alert("Error: Loading file from url not implemented!")
-            this.remoteDocumentURL = kwargs.file
-            // TODO load remote files spf into variable
-        } else {
-            this.remoteDocumentURL = ""
-            spf = localStorage["sp_file"]
-        }
-        if (spf) this.loadFromSPF(spf)
+        this.setData(spf)
         window.setTimeout(this.resizeHandler.bind(this), 100)
     }
 
-    private loadFromSPF(spf: string) {
+    public onBack(_isUnsaved: boolean): void {
+        alert("Notepad::onBack has to be implemented by user.")
+    }
+
+    public onSave(_spf: string): void {
+        alert("Notepad::onSave has to be implemented by user.")
+    }
+
+    private save() {
+        this.onSave(this.getData())
+        Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "saved"})
+    }
+
+    public getData(): string {
+        const pageElements = Array.from(this.getDocument().values())
+        return JSON.stringify({"version": "1.1", "elements": pageElements})
+    }
+
+    public setData(spf: string) {
+        this.deleteElements(this.getDocument().values(), false)
+        if (!spf || spf == "") { return }
         let data = JSON.parse(spf)
         // Data from before has approximately a 1/7 conversion to mm format
         if (data.version === undefined) {
@@ -128,21 +135,6 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         }
         Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "dirty"})
         this.saving = window.setTimeout(this.save.bind(this), 5000)
-    }
-
-    private save() {
-        if (this.remoteDocumentURL == "") {
-            localStorage["sp_file"] = this.getSPF()
-        } else {
-            alert("ERROR: Saving to remote url not implemented yet!")
-            // TODO implement saving to url
-        }
-        Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "saved"})
-    }
-
-    private getSPF(): string {
-        const pageElements = Array.from(this.getDocument().values())
-        return JSON.stringify({"version": "1.1", "elements": pageElements})
     }
 
     private scroll(ev: WheelEvent): void {
@@ -498,6 +490,13 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
                 window.clearTimeout(this.saving)
             }
             this.save()
+         } else if (event.type == "string" && event.data == "back") {
+            if (this.saving != null) {
+                window.clearTimeout(this.saving)
+                this.onBack(true)
+            } else {
+                this.onBack(false)
+            }
         } else if (event.type == "string" && event.data == "export") {
             let timestamp = new Date().toISOString().substring(0, 19).replace("T", "_").replaceAll(":", "")
             let svg = this.getSVG()
@@ -527,9 +526,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
                                 let spfEnd = content.indexOf("\n-->")
                                 content = content.slice(spfStart + 5, spfEnd)
                             }
-                            that.deleteElements(that.getDocument().values(), false)
-                            that.remoteDocumentURL = ""
-                            if (content) that.loadFromSPF(content)
+                            that.setData(content)
                             Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "dirty"})
                             popup.dispose()
                         }
@@ -559,7 +556,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         let minx = 100000
         let miny = 100000
         let svg = ""
-        svg += svgEncodeSPFComment(this.getSPF())
+        svg += svgEncodeSPFComment(this.getData())
         let layers = Array.from(this.layers.keys())
         layers = layers.sort()
         // Get boundaries of all objects to find canvas sizes
