@@ -15,6 +15,23 @@
     background-color: var(--color-brand-hover);
 }
 
+.toolWithText {
+    display: inline-flex;
+    border-radius: var(--radius);
+    float: left;
+    font-size: 1.2em;
+    padding: 0.5em;
+    width: 8em; /* = 2.7/1.5  */
+    height: 1.7em; /* = 2.7/1.5  */
+    align-items: center;
+    justify-content: left;
+    padding-bottom: 0.3em;
+}
+
+.toolWithText:hover {
+    background-color: var(--color-brand-hover);
+}
+
 .selected-tool {
     background-color: var(--color-brand-selected);
 }
@@ -48,6 +65,25 @@
     justify-content: center;
     width: 15em;
     height: 8em;
+    overflow: visible;
+    border-radius: var(--radius);
+    color: var(--color-base-c);
+    background-color: var(--color-base);
+    z-index: 2;
+}
+
+.menuPopup {
+    display: flex;
+    position: absolute;
+    margin-top: 3.7em;
+    margin-left: -15.7em;
+    translate: 50% 50%;
+    font-size: 0.667em;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 9em;
+    height: 9em;
     overflow: visible;
     border-radius: var(--radius);
     color: var(--color-base-c);

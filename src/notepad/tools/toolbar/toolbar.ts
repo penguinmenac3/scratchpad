@@ -1,5 +1,5 @@
 import './toolbar.css'
-import { ToolButton } from './toolbutton'
+import { MenuPopup, ToolButton, ToolMenuButton } from './toolbutton'
 import { Spacer } from './spacer'
 import { Module } from '../../../webui/module'
 import { iconArrowLeft, iconExport, iconFinger, iconImport, iconSave, iconTrash } from './icons'
@@ -11,6 +11,7 @@ import { Erasor } from '../erasor'
 import { InsertSpace } from '../insertSpace'
 //import { Image } from '../image'
 import { Event, Eventbus } from '../../../webui/eventbus'
+import { iconBars } from '../../../webui/icons/icons'
 
 
 export class Toolbar extends Module<HTMLDivElement> {
@@ -28,18 +29,21 @@ export class Toolbar extends Module<HTMLDivElement> {
       }
     })
     this.add(saveButton)
+    this.add(new Spacer())
     new Pen(this).register(tools)
     new Marker(this).register(tools)
     new Erasor(this).register(tools)
     //new Select(this).register(tools)
     new InsertSpace(this).register(tools)
     //new Image(this).register(tools)
-    this.add(new Spacer())
-    this.add(new ToolButton("clear", false, iconTrash))
 
-    this.add(new ToolButton("export", false, iconExport, true))
-    this.add(new ToolButton("import", false, iconImport, true))
-    this.add(new Spacer(true))
+    let menu = new ToolButton("menu", false, iconBars, true, false)
+    menu.addPopup(new MenuPopup([
+      new ToolMenuButton("clear", iconTrash, "Clear"),
+      new ToolMenuButton("export", iconExport, "Export"),
+      new ToolMenuButton("import", iconImport, "Import"),
+    ]))
+    this.add(menu)
     //this.add(new ToolButton("redo", false, iconRedo, true))
     //this.add(new ToolButton("undo", false, iconUndo, true))
     //this.add(new Spacer(true))

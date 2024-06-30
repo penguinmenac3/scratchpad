@@ -4,11 +4,11 @@ import { Module } from "../../../webui/module"
 
 export class ToolButton extends Module<HTMLDivElement> {
     private static selectableTools: string[] = []
-    protected popup: ToolPopup | null = null
+    protected popup: ToolPopup | MenuPopup | null = null
     
     public constructor(
         protected id: string,
-        selectable: boolean,
+        protected selectable: boolean,
         innerHTML: string = "",
         right: boolean = false,
         protected togglable: boolean = false)
@@ -27,24 +27,24 @@ export class ToolButton extends Module<HTMLDivElement> {
         Eventbus.register("toolbar/setting", this.onSettingChanged.bind(this))
     }
 
-    public onClick() {
-        if (!this.hasClass("selected-tool")){
-            Eventbus.send("toolbar/change", {
-                "type": "string", "data": this.id, "allowNetwork": false
-            })
-            if (this.togglable) {
+    public onClick(): boolean {
+        if (this.togglable) {
+            if (!this.hasClass("selected-tool")){
                 this.setClass("selected-tool")
                 this.setClass("selected-tool-good")
+            } else {
+                this.unsetClass("selected-tool")
+                this.unsetClass("selected-tool-good")
             }
-        } else if (this.togglable) {
-            Eventbus.send("toolbar/change", {
-                "type": "string", "data": this.id, "allowNetwork": false
-            })
-            this.unsetClass("selected-tool")
-            this.unsetClass("selected-tool-good")
-        } else {
-            this.popup?.show()
         }
+        if (this.popup) {
+            if (!this.selectable || this.hasClass("selected-tool")) {
+                this.popup.show()
+            }
+        }
+        Eventbus.send("toolbar/change", {
+            "type": "string", "data": this.id, "allowNetwork": false
+        })
         return true
     }
 
@@ -73,13 +73,36 @@ export class ToolButton extends Module<HTMLDivElement> {
         return
     }
 
-    public addPopup(popup: ToolPopup) {
+    public addPopup(popup: ToolPopup | MenuPopup) {
         if (this.popup != null) {
             alert("CODING ERROR! Tool already has a popup attached!")
         }
         this.add(popup)
         this.popup = popup
         this.popup.setParent(this.id)
+    }
+}
+
+export class ToolMenuButton extends ToolButton {
+    protected parentMenu: MenuPopup | null = null
+
+    constructor(
+        protected id: string,
+        iconSvg: string = "",
+        text: string = "",
+    ) {
+        super(id, false, iconSvg + "&ensp;" +  text)
+        this.unsetClass("tool")
+        this.setClass("toolWithText")
+    }
+
+    public setParentMenu(menu: MenuPopup) {
+        this.parentMenu = menu
+    }
+    
+    public onClick(): boolean {
+        window.setTimeout(() => this.parentMenu?.hide(), 10)
+        return super.onClick()
     }
 }
 
@@ -101,7 +124,7 @@ export class ToolPopup extends Module<HTMLDivElement> {
 
     public setParent(parentId: string) {
         this.children.forEach(child => {
-            child.setParentTool(parentId)
+            child.setParentTool(parentId, this)
         });
     }
 
@@ -116,14 +139,46 @@ export class ToolPopup extends Module<HTMLDivElement> {
     }
 }
 
+export class MenuPopup extends Module<HTMLDivElement> {
+    private grayOut: HTMLDivElement
+
+    public constructor(children: ToolMenuButton[] = []) {
+        super("div", "", "menuPopup")
+        children.forEach(child => {
+            child.setParentMenu(this)
+            this.add(child)
+        });
+        this.grayOut = document.createElement("div")
+        this.grayOut.classList.add("toolPopupGrayout")
+        this.grayOut.onclick = this.hide.bind(this)
+        document.getElementById("global")!.appendChild(this.grayOut)
+        this.hide()
+    }
+    
+    public setParent(_parentId: string) {}
+
+    public show() {
+        super.show()
+        this.grayOut.style.display = "block"
+    }
+
+    public hide() {
+        super.hide()
+        this.grayOut.style.display = "none"
+    }
+}
+
 export class ToolSetting extends Button {
     protected parentId: string = ""
+    protected parentPopup: ToolPopup | null = null
+
     public constructor(innerHTML: string) {
         super(innerHTML, "tool")
     }
     
-    public setParentTool(parentId: string) {
+    public setParentTool(parentId: string, parentPopup: ToolPopup) {
         this.parentId = parentId
+        this.parentPopup = parentPopup
     }
 }
 
@@ -137,6 +192,7 @@ export class ToolColorSetting extends ToolSetting {
     }
 
     public onClick(): void {
+        window.setTimeout(() => this.parentPopup?.hide(), 10)
         Eventbus.send("toolbar/setting", {
             "type": "setting", "data": {"id": this.parentId, "color": this.color}, "allowNetwork": false
         })
@@ -152,6 +208,7 @@ export class ToolSizeSetting extends ToolSetting {
     }
 
     public onClick(): void {
+        window.setTimeout(() => this.parentPopup?.hide(), 10)
         Eventbus.send("toolbar/setting", {
             "type": "setting", "data": {"id": this.parentId, "size": this.size}, "allowNetwork": false
         })
