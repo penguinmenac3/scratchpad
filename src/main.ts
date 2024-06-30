@@ -15,6 +15,14 @@ async function main() {
     let notepad = new Notepad(localStorage["sp_file"], "", false)
     notepad.onSave = (spf: string) => {localStorage["sp_file"] = spf}
     notepad.onBack = () => {alert("This should not happen!")}
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+        // CTRL + S to save document
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault()
+            notepad.save()
+        }
+    });
+
     document.getElementsByTagName("title")[0].innerHTML = STRINGS.APPNAME
     document.getElementById("app")!.appendChild(notepad.htmlElement)
 }

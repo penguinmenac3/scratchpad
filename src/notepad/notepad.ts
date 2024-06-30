@@ -69,7 +69,7 @@ export class Notepad extends Module<HTMLDivElement> implements DocumentAPI, Simp
         alert("Notepad::onSave has to be implemented by user.")
     }
 
-    private save() {
+    public save() {
         this.onSave(this.getData())
         Eventbus.send("save", {"allowNetwork": false, "data": null, "type": "saved"})
     }
