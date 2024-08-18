@@ -1,0 +1,9 @@
+[submodule "src/webui"]
+	path = src/webui
+	url = git@github.com:penguinmenac3/WebUI.git
+[submodule "src/webfs"]
+	path = src/webfs
+	url = git@github.com:penguinmenac3/WebFS.git
+[submodule "src/scratchpad"]
+	path = src/scratchpad
+	url = git@github.com:penguinmenac3/scratchpad-lib.git
