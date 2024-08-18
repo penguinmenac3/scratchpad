@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-RUN apk update && apk upgrade && apk add git openssh
+RUN apk update && apk upgrade && apk add git openssh git-subtree
 
 WORKDIR /workspaces/scratchpad
 
