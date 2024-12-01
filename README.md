@@ -11,6 +11,8 @@ This way, data never leaves your control!
 To include the code in your project and adapt it to your needs, simply add the lib submodule as a submodule to your project, just like it has been done here.
 We opted to not distribute the code as a full node library, so that it is compatible with any build system as long as you use typescript.
 
+To run the code open it in a devcontainer (vscode) and run `npm run dev` or `npm run build`. If you entounter an error or do not use devcontainers, run `npm install` manually.
+
 ## Contribute
 
 1. Clone the repository (with `--recursive`).
